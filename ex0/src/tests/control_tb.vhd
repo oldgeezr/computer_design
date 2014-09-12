@@ -117,7 +117,7 @@ begin  -- architecture behavioural
       check(push = '0', "The processor should not push when popping A");
       check(pop = '1', "control should assert pop when popping A");
       check(operand_b_wen = '0',
-            "Control should not enable writes to B when popping A");
+           "Control should not enable writes to B when popping A");
       check(operand_a_wen = '1',
             "Control should enable writes to A when popping A");
  
