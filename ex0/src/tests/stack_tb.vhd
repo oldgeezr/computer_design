@@ -100,6 +100,10 @@ begin  -- architecture behavioural
 
     push <= '0';
     pop <= '1';
+	 wait for clk_period;
+    check(top = x"AA", "pop number 1 in a row should work");
+    report "Test 9.5 passed" severity note;
+	 
     wait for clk_period;
     check(top = x"F4", "pop number 1 in a row should work");
     report "Test 10 passed" severity note;
