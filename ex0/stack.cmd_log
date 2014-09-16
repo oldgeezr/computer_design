@@ -1,0 +1,12 @@
+vhdtdtfi -lib work defs.vhd -lib work stack.vhd -prj ex0 -o stack.spl -module stack -template /opt/Xilinx/12.4/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan6 stack.spl /opt/dmlab/home/chriram/Documents/computer_design/ex0/stack.sym 
+xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-2 stack.ngc stack.ngd  
+map -intstyle ise -p xc6slx16-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o stack_map.ncd stack.ngd stack.pcf 
+par -w -intstyle ise -ol high -mt off stack_map.ncd stack.ncd stack.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml stack.twx stack.ncd -o stack.twr stack.pcf 
+xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-2 stack.ngc stack.ngd  
+map -intstyle ise -p xc6slx16-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o stack_map.ncd stack.ngd stack.pcf 
+par -w -intstyle ise -ol high -mt off stack_map.ncd stack.ncd stack.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml stack.twx stack.ncd -o stack.twr stack.pcf 
