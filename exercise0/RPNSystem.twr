@@ -1,0 +1,694 @@
+--------------------------------------------------------------------------------
+Release 12.4 Trace  (lin)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+
+/opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/trce -intstyle ise -v 3 -s 2 -n 3
+-fastpaths -xml RPNSystem.twx RPNSystem.ncd -o RPNSystem.twr RPNSystem.pcf -ucf
+RPNSystem.ucf
+
+Design file:              RPNSystem.ncd
+Physical constraint file: RPNSystem.pcf
+Device,package,speed:     xc6slx16,csg324,C,-2 (PRODUCTION 1.15 2010-12-02)
+Report level:             verbose report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on 
+   a 50 Ohm transmission line loading model.  For the details of this model, 
+   and for more information on accounting for different loading conditions, 
+   please see the device datasheet.
+
+================================================================================
+Timing constraint: TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 24 MHz HIGH 
+50%;
+
+ 11054175 paths analyzed, 15721 endpoints analyzed, 0 failing endpoints
+ 0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
+ Minimum period is  25.968ns.
+--------------------------------------------------------------------------------
+
+Paths for end point RPNC/stack/top_1 (SLICE_X20Y30.B3), 50884 paths
+--------------------------------------------------------------------------------
+Slack (setup path):     15.698ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram (RAM)
+  Destination:          RPNC/stack/top_1 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.874ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.059ns (0.303 - 0.362)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram to RPNC/stack/top_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    RAMB8_X1Y8.DOBDO11   Trcko_DOB             2.950   InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+                                                       InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+    SLICE_X32Y14.B4      net (fanout=3)        1.206   instrDataSignal<11>
+    SLICE_X32Y14.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[101][7]_PUSH_POP.stack_mem[101][7]_mux_672_OUT<0>
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2_SW0
+    SLICE_X33Y17.A5      net (fanout=1)        0.765   N4
+    SLICE_X33Y17.A       Tilo                  0.341   RPNC/control/current_state_FSM_FFd1
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2
+    SLICE_X31Y21.A5      net (fanout=10)       0.868   RPNC/N3
+    SLICE_X31Y21.A       Tilo                  0.341   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv3
+    SLICE_X30Y25.AX      net (fanout=1)        1.385   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+    SLICE_X30Y25.BMUX    Taxb                  0.509   RPNC/Maddsub_result_cy<3>
+                                                       RPNC/Maddsub_result_cy<3>
+    SLICE_X32Y42.B3      net (fanout=2)        2.076   RPNC/result<1>
+    SLICE_X32Y42.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[247][7]_value_in[7]_mux_10_OUT<1>
+                                                       RPNC/Mmux_stack_in21
+    SLICE_X8Y7.C3        net (fanout=336)      5.777   RPNC/stack_in<1>
+    SLICE_X8Y7.C         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT<1>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT21
+    SLICE_X14Y3.D3       net (fanout=2)        2.377   RPNC/stack/PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT<1>
+    SLICE_X14Y3.BMUX     Topdb                 0.682   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_157
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_13_f7_5
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f8_4
+    SLICE_X22Y33.C6      net (fanout=1)        3.160   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+    SLICE_X22Y33.BMUX    Topcb                 0.646   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_53
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4_f7_0
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_0
+    SLICE_X20Y30.B3      net (fanout=1)        1.221   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT21
+                                                       RPNC/stack/top_1
+    -------------------------------------------------  ---------------------------
+    Total                                     25.874ns (7.039ns logic, 18.835ns route)
+                                                       (27.2% logic, 72.8% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.699ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram (RAM)
+  Destination:          RPNC/stack/top_1 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.873ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.059ns (0.303 - 0.362)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram to RPNC/stack/top_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    RAMB8_X1Y8.DOBDO11   Trcko_DOB             2.950   InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+                                                       InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+    SLICE_X32Y14.B4      net (fanout=3)        1.206   instrDataSignal<11>
+    SLICE_X32Y14.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[101][7]_PUSH_POP.stack_mem[101][7]_mux_672_OUT<0>
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2_SW0
+    SLICE_X33Y17.A5      net (fanout=1)        0.765   N4
+    SLICE_X33Y17.A       Tilo                  0.341   RPNC/control/current_state_FSM_FFd1
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2
+    SLICE_X31Y21.A5      net (fanout=10)       0.868   RPNC/N3
+    SLICE_X31Y21.A       Tilo                  0.341   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv3
+    SLICE_X30Y25.AX      net (fanout=1)        1.385   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+    SLICE_X30Y25.BMUX    Taxb                  0.509   RPNC/Maddsub_result_cy<3>
+                                                       RPNC/Maddsub_result_cy<3>
+    SLICE_X32Y42.B3      net (fanout=2)        2.076   RPNC/result<1>
+    SLICE_X32Y42.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[247][7]_value_in[7]_mux_10_OUT<1>
+                                                       RPNC/Mmux_stack_in21
+    SLICE_X11Y5.B5       net (fanout=336)      5.722   RPNC/stack_in<1>
+    SLICE_X11Y5.B        Tilo                  0.341   N1355
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_mem[113][7]_PUSH_POP.stack_mem[113][7]_mux_660_OUT21
+    SLICE_X14Y3.D1       net (fanout=2)        2.423   RPNC/stack/PUSH_POP.stack_mem[113][7]_PUSH_POP.stack_mem[113][7]_mux_660_OUT<1>
+    SLICE_X14Y3.BMUX     Topdb                 0.682   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_157
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_13_f7_5
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f8_4
+    SLICE_X22Y33.C6      net (fanout=1)        3.160   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+    SLICE_X22Y33.BMUX    Topcb                 0.646   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_53
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4_f7_0
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_0
+    SLICE_X20Y30.B3      net (fanout=1)        1.221   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT21
+                                                       RPNC/stack/top_1
+    -------------------------------------------------  ---------------------------
+    Total                                     25.873ns (7.047ns logic, 18.826ns route)
+                                                       (27.2% logic, 72.8% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.818ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram (RAM)
+  Destination:          RPNC/stack/top_1 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.754ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.059ns (0.303 - 0.362)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram to RPNC/stack/top_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    RAMB8_X1Y8.DOBDO10   Trcko_DOB             2.950   InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+                                                       InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram
+    SLICE_X32Y14.B5      net (fanout=3)        1.086   instrDataSignal<10>
+    SLICE_X32Y14.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[101][7]_PUSH_POP.stack_mem[101][7]_mux_672_OUT<0>
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2_SW0
+    SLICE_X33Y17.A5      net (fanout=1)        0.765   N4
+    SLICE_X33Y17.A       Tilo                  0.341   RPNC/control/current_state_FSM_FFd1
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv2
+    SLICE_X31Y21.A5      net (fanout=10)       0.868   RPNC/N3
+    SLICE_X31Y21.A       Tilo                  0.341   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+                                                       RPNC/GND_6_o_alu_operation_equal_6_o_inv3
+    SLICE_X30Y25.AX      net (fanout=1)        1.385   RPNC/GND_6_o_alu_operation_equal_6_o_inv
+    SLICE_X30Y25.BMUX    Taxb                  0.509   RPNC/Maddsub_result_cy<3>
+                                                       RPNC/Maddsub_result_cy<3>
+    SLICE_X32Y42.B3      net (fanout=2)        2.076   RPNC/result<1>
+    SLICE_X32Y42.B       Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[247][7]_value_in[7]_mux_10_OUT<1>
+                                                       RPNC/Mmux_stack_in21
+    SLICE_X8Y7.C3        net (fanout=336)      5.777   RPNC/stack_in<1>
+    SLICE_X8Y7.C         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT<1>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT21
+    SLICE_X14Y3.D3       net (fanout=2)        2.377   RPNC/stack/PUSH_POP.stack_mem[114][7]_PUSH_POP.stack_mem[114][7]_mux_659_OUT<1>
+    SLICE_X14Y3.BMUX     Topdb                 0.682   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_157
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_13_f7_5
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f8_4
+    SLICE_X22Y33.C6      net (fanout=1)        3.160   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_11_f85
+    SLICE_X22Y33.BMUX    Topcb                 0.646   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_53
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4_f7_0
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_0
+    SLICE_X20Y30.B3      net (fanout=1)        1.221   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<1>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT21
+                                                       RPNC/stack/top_1
+    -------------------------------------------------  ---------------------------
+    Total                                     25.754ns (7.039ns logic, 18.715ns route)
+                                                       (27.3% logic, 72.7% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point RPNC/stack/top_4 (SLICE_X17Y33.A3), 60860 paths
+--------------------------------------------------------------------------------
+Slack (setup path):     15.728ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_7_1 (FF)
+  Destination:          RPNC/stack/top_4 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.842ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.061ns (0.419 - 0.480)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_7_1 to RPNC/stack/top_4
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X31Y44.AQ      Tcko                  0.548   RPNC/stack/PUSH_POP.stack_ptr<0>
+                                                       RPNC/stack/PUSH_POP.stack_ptr_7_1
+    SLICE_X25Y43.B3      net (fanout=2)        1.416   RPNC/stack/PUSH_POP.stack_ptr_7_1
+    SLICE_X25Y43.B       Tilo                  0.341   RPNC/stack/n0002<31>31
+                                                       RPNC/stack/n0002<31>31_1
+    SLICE_X26Y40.A2      net (fanout=3)        1.631   RPNC/stack/n0002<31>31
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X34Y53.CX      net (fanout=256)      8.259   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X34Y53.BMUX    Tcxb                  0.293   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f7_19
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f8_3
+    SLICE_X12Y33.A6      net (fanout=1)        3.577   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+    SLICE_X12Y33.BMUX    Topab                 0.605   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_44
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7_3
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_3
+    SLICE_X17Y33.A3      net (fanout=1)        0.841   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+    SLICE_X17Y33.CLK     Tas                   0.505   RPNC/stack/top<7>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT51
+                                                       RPNC/stack/top_4
+    -------------------------------------------------  ---------------------------
+    Total                                     25.842ns (3.624ns logic, 22.218ns route)
+                                                       (14.0% logic, 86.0% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.760ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_6_1 (FF)
+  Destination:          RPNC/stack/top_4 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.817ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.054ns (0.419 - 0.473)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_6_1 to RPNC/stack/top_4
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X31Y41.AQ      Tcko                  0.548   RPNC/stack/PUSH_POP.stack_ptr_6_1
+                                                       RPNC/stack/PUSH_POP.stack_ptr_6_1
+    SLICE_X25Y43.B1      net (fanout=2)        1.391   RPNC/stack/PUSH_POP.stack_ptr_6_1
+    SLICE_X25Y43.B       Tilo                  0.341   RPNC/stack/n0002<31>31
+                                                       RPNC/stack/n0002<31>31_1
+    SLICE_X26Y40.A2      net (fanout=3)        1.631   RPNC/stack/n0002<31>31
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X34Y53.CX      net (fanout=256)      8.259   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X34Y53.BMUX    Tcxb                  0.293   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f7_19
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f8_3
+    SLICE_X12Y33.A6      net (fanout=1)        3.577   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+    SLICE_X12Y33.BMUX    Topab                 0.605   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_44
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7_3
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_3
+    SLICE_X17Y33.A3      net (fanout=1)        0.841   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+    SLICE_X17Y33.CLK     Tas                   0.505   RPNC/stack/top<7>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT51
+                                                       RPNC/stack/top_4
+    -------------------------------------------------  ---------------------------
+    Total                                     25.817ns (3.624ns logic, 22.193ns route)
+                                                       (14.0% logic, 86.0% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.764ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_3 (FF)
+  Destination:          RPNC/stack/top_4 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.836ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.031ns (0.419 - 0.450)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_3 to RPNC/stack/top_4
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X24Y42.AQ      Tcko                  0.553   RPNC/stack/PUSH_POP.stack_ptr<3>
+                                                       RPNC/stack/PUSH_POP.stack_ptr_3
+    SLICE_X31Y42.B1      net (fanout=190)      1.780   RPNC/stack/PUSH_POP.stack_ptr<3>
+    SLICE_X31Y42.B       Tilo                  0.341   RPNC/stack/n0002<31>2
+                                                       RPNC/stack/n0002<31>3
+    SLICE_X26Y40.A4      net (fanout=3)        1.256   RPNC/stack/n0002<31>2
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X34Y53.CX      net (fanout=256)      8.259   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X34Y53.BMUX    Tcxb                  0.293   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f7_19
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f8_3
+    SLICE_X12Y33.A6      net (fanout=1)        3.577   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_8_f84
+    SLICE_X12Y33.BMUX    Topab                 0.605   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_44
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7_3
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8_3
+    SLICE_X17Y33.A3      net (fanout=1)        0.841   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<4>
+    SLICE_X17Y33.CLK     Tas                   0.505   RPNC/stack/top<7>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT51
+                                                       RPNC/stack/top_4
+    -------------------------------------------------  ---------------------------
+    Total                                     25.836ns (3.629ns logic, 22.207ns route)
+                                                       (14.0% logic, 86.0% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point RPNC/stack/top_0 (SLICE_X20Y30.A3), 47556 paths
+--------------------------------------------------------------------------------
+Slack (setup path):     15.950ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_7_1 (FF)
+  Destination:          RPNC/stack/top_0 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.619ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.062ns (0.510 - 0.572)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_7_1 to RPNC/stack/top_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X31Y44.AQ      Tcko                  0.548   RPNC/stack/PUSH_POP.stack_ptr<0>
+                                                       RPNC/stack/PUSH_POP.stack_ptr_7_1
+    SLICE_X25Y43.B3      net (fanout=2)        1.416   RPNC/stack/PUSH_POP.stack_ptr_7_1
+    SLICE_X25Y43.B       Tilo                  0.341   RPNC/stack/n0002<31>31
+                                                       RPNC/stack/n0002<31>31_1
+    SLICE_X26Y40.A2      net (fanout=3)        1.631   RPNC/stack/n0002<31>31
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X32Y58.CX      net (fanout=256)      8.220   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X32Y58.BMUX    Tcxb                  0.310   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_12_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.A3      net (fanout=1)        3.380   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.BMUX    Topab                 0.644   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8
+    SLICE_X20Y30.A3      net (fanout=1)        0.732   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT11
+                                                       RPNC/stack/top_0
+    -------------------------------------------------  ---------------------------
+    Total                                     25.619ns (3.746ns logic, 21.873ns route)
+                                                       (14.6% logic, 85.4% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.982ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_6_1 (FF)
+  Destination:          RPNC/stack/top_0 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.594ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.055ns (0.510 - 0.565)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_6_1 to RPNC/stack/top_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X31Y41.AQ      Tcko                  0.548   RPNC/stack/PUSH_POP.stack_ptr_6_1
+                                                       RPNC/stack/PUSH_POP.stack_ptr_6_1
+    SLICE_X25Y43.B1      net (fanout=2)        1.391   RPNC/stack/PUSH_POP.stack_ptr_6_1
+    SLICE_X25Y43.B       Tilo                  0.341   RPNC/stack/n0002<31>31
+                                                       RPNC/stack/n0002<31>31_1
+    SLICE_X26Y40.A2      net (fanout=3)        1.631   RPNC/stack/n0002<31>31
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X32Y58.CX      net (fanout=256)      8.220   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X32Y58.BMUX    Tcxb                  0.310   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_12_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.A3      net (fanout=1)        3.380   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.BMUX    Topab                 0.644   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8
+    SLICE_X20Y30.A3      net (fanout=1)        0.732   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT11
+                                                       RPNC/stack/top_0
+    -------------------------------------------------  ---------------------------
+    Total                                     25.594ns (3.746ns logic, 21.848ns route)
+                                                       (14.6% logic, 85.4% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     15.986ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               RPNC/stack/PUSH_POP.stack_ptr_3 (FF)
+  Destination:          RPNC/stack/top_0 (FF)
+  Requirement:          41.666ns
+  Data Path Delay:      25.613ns (Levels of Logic = 7)
+  Clock Path Skew:      -0.032ns (0.510 - 0.542)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: RPNC/stack/PUSH_POP.stack_ptr_3 to RPNC/stack/top_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X24Y42.AQ      Tcko                  0.553   RPNC/stack/PUSH_POP.stack_ptr<3>
+                                                       RPNC/stack/PUSH_POP.stack_ptr_3
+    SLICE_X31Y42.B1      net (fanout=190)      1.780   RPNC/stack/PUSH_POP.stack_ptr<3>
+    SLICE_X31Y42.B       Tilo                  0.341   RPNC/stack/n0002<31>2
+                                                       RPNC/stack/n0002<31>3
+    SLICE_X26Y40.A4      net (fanout=3)        1.256   RPNC/stack/n0002<31>2
+    SLICE_X26Y40.A       Tilo                  0.373   RPNC/stack/n0002<31>3
+                                                       RPNC/stack/n0002<31>6_1
+    SLICE_X28Y36.A5      net (fanout=21)       0.862   RPNC/stack/n0002<31>6
+    SLICE_X28Y36.AMUX    Topaa                 0.626   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_ptr[31]_mux_775_OUT1101
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_778_OUT<31:0>_cy<3>
+    SLICE_X8Y5.B2        net (fanout=2566)     5.632   RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_cy<0>
+    SLICE_X8Y5.B         Tilo                  0.333   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+                                                       RPNC/stack/Msub_PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<7:0>_xor<2>11
+    SLICE_X32Y58.CX      net (fanout=256)      8.220   RPNC/stack/PUSH_POP.stack_ptr[31]_GND_8_o_sub_779_OUT<2>
+    SLICE_X32Y58.BMUX    Tcxb                  0.310   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_12_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.A3      net (fanout=1)        3.380   RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_10_f8
+    SLICE_X22Y31.BMUX    Topab                 0.644   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_4
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_3_f7
+                                                       RPNC/stack/Mmux_PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT_2_f8
+    SLICE_X20Y30.A3      net (fanout=1)        0.732   RPNC/stack/PUSH_POP.stack_ptr[31]_PUSH_POP.stack_mem[255][7]_wide_mux_779_OUT<0>
+    SLICE_X20Y30.CLK     Tas                   0.571   RPNC/stack/top<3>
+                                                       RPNC/stack/Mmux_top[7]_top[7]_mux_1813_OUT11
+                                                       RPNC/stack/top_0
+    -------------------------------------------------  ---------------------------
+    Total                                     25.613ns (3.751ns logic, 21.862ns route)
+                                                       (14.6% logic, 85.4% route)
+
+--------------------------------------------------------------------------------
+
+Hold Paths: TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 24 MHz HIGH 50%;
+--------------------------------------------------------------------------------
+
+Paths for end point InstrBufferInst/UARTHandlerInst/up/addrParam_10 (SLICE_X36Y22.A6), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.428ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               InstrBufferInst/UARTHandlerInst/up/addrParam_10 (FF)
+  Destination:          InstrBufferInst/UARTHandlerInst/up/addrParam_10 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.428ns (Levels of Logic = 1)
+  Clock Path Skew:      0.000ns
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path at Fast Process Corner: InstrBufferInst/UARTHandlerInst/up/addrParam_10 to InstrBufferInst/UARTHandlerInst/up/addrParam_10
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X36Y22.AQ      Tcko                  0.200   InstrBufferInst/UARTHandlerInst/up/addrParam<12>
+                                                       InstrBufferInst/UARTHandlerInst/up/addrParam_10
+    SLICE_X36Y22.A6      net (fanout=3)        0.038   InstrBufferInst/UARTHandlerInst/up/addrParam<10>
+    SLICE_X36Y22.CLK     Tah         (-Th)    -0.190   InstrBufferInst/UARTHandlerInst/up/addrParam<12>
+                                                       InstrBufferInst/UARTHandlerInst/up/Mmux_addrParam[15]_GND_44_o_mux_68_OUT21
+                                                       InstrBufferInst/UARTHandlerInst/up/addrParam_10
+    -------------------------------------------------  ---------------------------
+    Total                                      0.428ns (0.390ns logic, 0.038ns route)
+                                                       (91.1% logic, 8.9% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point InstrBufferInst/RPNCResetSignal (SLICE_X36Y18.DX), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.452ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               InstrBufferInst/UARTHandlerInst/up/intWrData_0 (FF)
+  Destination:          InstrBufferInst/RPNCResetSignal (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.457ns (Levels of Logic = 0)
+  Clock Path Skew:      0.005ns (0.132 - 0.127)
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path at Fast Process Corner: InstrBufferInst/UARTHandlerInst/up/intWrData_0 to InstrBufferInst/RPNCResetSignal
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X35Y18.AQ      Tcko                  0.198   InstrBufferInst/UARTHandlerInst/up/intWrData<3>
+                                                       InstrBufferInst/UARTHandlerInst/up/intWrData_0
+    SLICE_X36Y18.DX      net (fanout=4)        0.211   InstrBufferInst/UARTHandlerInst/up/intWrData<0>
+    SLICE_X36Y18.CLK     Tckdi       (-Th)    -0.048   InstrBufferInst/RPNCResetSignal
+                                                       InstrBufferInst/RPNCResetSignal
+    -------------------------------------------------  ---------------------------
+    Total                                      0.457ns (0.246ns logic, 0.211ns route)
+                                                       (53.8% logic, 46.2% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point InstrBufferInst/UARTHandlerInst/up/addrParam_11 (SLICE_X36Y22.C5), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.462ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               InstrBufferInst/UARTHandlerInst/up/addrParam_11 (FF)
+  Destination:          InstrBufferInst/UARTHandlerInst/up/addrParam_11 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.462ns (Levels of Logic = 1)
+  Clock Path Skew:      0.000ns
+  Source Clock:         clk_BUFGP rising at 0.000ns
+  Destination Clock:    clk_BUFGP rising at 41.666ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path at Fast Process Corner: InstrBufferInst/UARTHandlerInst/up/addrParam_11 to InstrBufferInst/UARTHandlerInst/up/addrParam_11
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X36Y22.CQ      Tcko                  0.200   InstrBufferInst/UARTHandlerInst/up/addrParam<12>
+                                                       InstrBufferInst/UARTHandlerInst/up/addrParam_11
+    SLICE_X36Y22.C5      net (fanout=3)        0.072   InstrBufferInst/UARTHandlerInst/up/addrParam<11>
+    SLICE_X36Y22.CLK     Tah         (-Th)    -0.190   InstrBufferInst/UARTHandlerInst/up/addrParam<12>
+                                                       InstrBufferInst/UARTHandlerInst/up/Mmux_addrParam[15]_GND_44_o_mux_68_OUT31
+                                                       InstrBufferInst/UARTHandlerInst/up/addrParam_11
+    -------------------------------------------------  ---------------------------
+    Total                                      0.462ns (0.390ns logic, 0.072ns route)
+                                                       (84.4% logic, 15.6% route)
+
+--------------------------------------------------------------------------------
+
+Component Switching Limit Checks: TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 24 MHz HIGH 50%;
+--------------------------------------------------------------------------------
+Slack: 37.821ns (period - min period limit)
+  Period: 41.666ns
+  Min period limit: 3.845ns (260.078MHz) (Trper_CLKA(Fmax))
+  Physical resource: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram/CLKAWRCLK
+  Logical resource: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram/CLKAWRCLK
+  Location pin: RAMB8_X1Y8.CLKAWRCLK
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 37.821ns (period - min period limit)
+  Period: 41.666ns
+  Min period limit: 3.845ns (260.078MHz) (Trper_CLKB(Fmax))
+  Physical resource: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram/CLKBRDCLK
+  Logical resource: InstrBufferInst/RPNDataMemInst/BU2/U0/blk_mem_generator/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/SDP.SIMPLE_PRIM9.ram/CLKBRDCLK
+  Location pin: RAMB8_X1Y8.CLKBRDCLK
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 39.000ns (period - min period limit)
+  Period: 41.666ns
+  Min period limit: 2.666ns (375.094MHz) (Tbcper_I)
+  Physical resource: clk_BUFGP/BUFG/I0
+  Logical resource: clk_BUFGP/BUFG/I0
+  Location pin: BUFGMUX_X2Y3.I0
+  Clock network: clk_BUFGP/IBUFG
+--------------------------------------------------------------------------------
+
+
+All constraints were met.
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Clock to Setup on destination clock clk
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+clk            |   25.968|         |         |         |
+---------------+---------+---------+---------+---------+
+
+
+Timing summary:
+---------------
+
+Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
+
+Constraints cover 11054175 paths, 0 nets, and 40671 connections
+
+Design statistics:
+   Minimum period:  25.968ns{1}   (Maximum frequency:  38.509MHz)
+
+
+------------------------------------Footnotes-----------------------------------
+1)  The minimum period statistic assumes all single cycle delays.
+
+Analysis completed Tue Sep 16 09:30:38 2014 
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 200 MB
+
+
+
