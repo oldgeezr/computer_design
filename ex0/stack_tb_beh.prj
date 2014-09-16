@@ -1,0 +1,4 @@
+vhdl work "defs.vhd"
+vhdl work "testutil.vhd"
+vhdl work "stack.vhd"
+vhdl work "stack_tb.vhd"
