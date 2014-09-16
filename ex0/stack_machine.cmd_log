@@ -1,8 +1,0 @@
-xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.syr" 
-ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-2 stack_machine.ngc stack_machine.ngd  
-xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.syr" 
-xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/ex0/stack_machine.syr" 
-ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-2 stack_machine.ngc stack_machine.ngd  
-map -intstyle ise -p xc6slx16-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o stack_machine_map.ncd stack_machine.ngd stack_machine.pcf 
-par -w -intstyle ise -ol high -mt off stack_machine_map.ncd stack_machine.ncd stack_machine.pcf 
-trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml stack_machine.twx stack_machine.ncd -o stack_machine.twr stack_machine.pcf 

@@ -4,14 +4,14 @@ Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
 Parameter TMPDIR set to xst/projnav.tmp
 
 
-Total REAL time to Xst completion: 1.00 secs
+Total REAL time to Xst completion: 0.00 secs
 Total CPU time to Xst completion: 0.07 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
-Total REAL time to Xst completion: 1.00 secs
+Total REAL time to Xst completion: 0.00 secs
 Total CPU time to Xst completion: 0.07 secs
  
 --> 
@@ -646,9 +646,9 @@ Synthesizing Unit <uartParser>.
 	inferred   2 Finite State Machine(s).
 Unit <uartParser> synthesized.
 RTL-Simplification CPUSTAT: 0.60 
-RTL-BasicInf CPUSTAT: 2.54 
+RTL-BasicInf CPUSTAT: 2.52 
 RTL-BasicOpt CPUSTAT: 0.02 
-RTL-Remain-Bus CPUSTAT: 0.05 
+RTL-Remain-Bus CPUSTAT: 0.04 
 
 =========================================================================
 HDL Synthesis Report
@@ -1038,13 +1038,13 @@ clk            |   17.194|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 188.00 secs
-Total CPU time to Xst completion: 185.58 secs
+Total REAL time to Xst completion: 186.00 secs
+Total CPU time to Xst completion: 184.93 secs
  
 --> 
 
 
-Total memory usage is 216456 kilobytes
+Total memory usage is 215560 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :    0 (   0 filtered)

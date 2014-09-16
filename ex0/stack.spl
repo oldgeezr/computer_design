@@ -1,9 +1,0 @@
-[Inputs]
-clk
-rst
-push
-pop
-=value_in[7:0]=
-[Outputs]
-=top[7:0]=
-[BiDir]

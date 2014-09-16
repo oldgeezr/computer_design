@@ -1,6 +1,0 @@
-v 3
-file . "defs.vhd" "20140910124026.000" "20140910154705.119":
-  package defs at 1( 0) + 0 on 11;
-file . "stack.vhd" "20140910134941.000" "20140910154944.127":
-  entity stack at 1( 0) + 0 on 14;
-  architecture behavioural of stack at 21( 416) + 0 on 15;

@@ -1,5 +1,6 @@
 ISim log file
-Running: /opt/dmlab/home/chriram/Documents/computer_design/exercise0/control_tb_isim_beh.exe -gui -tclbatch isim.cmd -wdb /opt/dmlab/home/chriram/Documents/computer_design/exercise0/control_tb_isim_beh.wdb 
+Running: /opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb_isim_beh.exe -gui -tclbatch isim.cmd -wdb /opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb_isim_beh.wdb 
+INFO: There is another simulation running in the same directory. Using database file name isim2.wdb.
 ISim M.81d (signature 0x141a37e9)
 ----------------------------------------------------------------------
 INFO:Security:51 - The XILINXD_LICENSE_FILE environment variable is not set.
@@ -20,40 +21,16 @@ Time resolution is 1 ps
 # run 1000 ns
 Simulator is doing circuit initialization process.
 Finished circuit initialization process.
-at 445 ns: Note: Test 1 passed (/control_tb/).
-at 465 ns: Note: Test 2 passed (/control_tb/).
-at 485 ns: Note: Test 3 passed (/control_tb/).
-at 505 ns: Note: Test 4 passed (/control_tb/).
-at 945 ns: Note: Test 5 passed (/control_tb/).
-at 965 ns: Note: Test 6 passed (/control_tb/).
-at 985 ns: Note: Test 7 passed (/control_tb/).
 # restart
 # run all
 Simulator is doing circuit initialization process.
 Finished circuit initialization process.
-at 445 ns: Note: Test 1 passed (/control_tb/).
-at 465 ns: Note: Test 2 passed (/control_tb/).
-at 485 ns: Note: Test 3 passed (/control_tb/).
-at 505 ns: Note: Test 4 passed (/control_tb/).
-at 945 ns: Note: Test 5 passed (/control_tb/).
-at 965 ns: Note: Test 6 passed (/control_tb/).
-at 985 ns: Note: Test 7 passed (/control_tb/).
-at 1005 ns: Note: Test 8 passed (/control_tb/).
-at 1025 ns: Note: Test 9 passed (/control_tb/).
-at 1045 ns: Note: Test 10 passed (/control_tb/).
-at 1065 ns: Note: Test 11 passed (/control_tb/).
-at 1085 ns: Note: Test 12 passed (/control_tb/).
-at 1105 ns: Note: Test 13 passed (/control_tb/).
-at 1125 ns: Note: Test 14 passed (/control_tb/).
-at 1145 ns: Note: Test 15 passed (/control_tb/).
-at 1165 ns: Note: Test 16 passed (/control_tb/).
-at 1185 ns: Note: Test 17 passed (/control_tb/).
-at 1205 ns: Note: Test 18 passed (/control_tb/).
-at 1645 ns: Note: Test 19 passed (/control_tb/).
 
 ** Failure:TEST SUCCESS
 User(VHDL) Code Called Simulation Stop
-In process control_tb.vhd:WaveGen_Proc 
+In process stack_machine_tb.vhd:WaveGen_Proc 
  
 INFO: Simulator is stopped.
+# exit 0
+# exit 0
 # exit 0

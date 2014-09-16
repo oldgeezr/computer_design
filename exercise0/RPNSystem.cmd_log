@@ -4,3 +4,4 @@ map -intstyle ise -p xc6slx16-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -re
 par -w -intstyle ise -ol high -mt off RPNSystem_map.ncd RPNSystem.ncd RPNSystem.pcf 
 trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml RPNSystem.twx RPNSystem.ncd -o RPNSystem.twr RPNSystem.pcf -ucf RPNSystem.ucf 
 bitgen -intstyle ise -f RPNSystem.ut RPNSystem.ncd 
+xst -intstyle ise -ifn "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/RPNSystem.xst" -ofn "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/RPNSystem.syr" 
