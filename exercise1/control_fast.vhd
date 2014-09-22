@@ -40,7 +40,7 @@ attribute enum_encoding : string;
 attribute enum_encoding of
 state_type : type is "0000 0001 0011 0010 1000 1001 0101 1010 1100 0100";
 	
-signal current_state : state_type; 
+signal current_state, next_state : state_type; 
 
 begin			  
 	
@@ -64,48 +64,90 @@ begin
 		case current_state is
 			when inst_fetch => 
 				pc_write <= '1'; 
-				i_or_d <= '0'; 
+				-- i_or_d <= '0'; 
 				mem_read <= '1'; 
 				ir_write <= '1';
 				-- alu_src_a <= '0'; 
-				alu_src_b <= "00";
-				alu_op <= "00";
-				pc_source <= "00";
+				alu_src_b <= "01";
+				-- alu_op <= "00";
+				-- pc_source <= "00"; 
+				
+				next_state <= inst_decode_reg_fetch;
+				
 			when inst_decode_reg_fetch =>  
 				-- alu_src_a <= '0'; 
-				alu_src_b <= "00";
-				-- alu_op <= '00';
+				alu_src_b <= "11";
+				-- alu_op <= '00';	
+				
+				if opcode = "000000" then -- R-type	
+					next_state <= execution;
+				elsif opcode = "100011" or opcode = "101011" then -- LW/SW
+					next_state <= mem_comp;
+				elsif opcode = "000100" then -- Beq	
+					next_state <= branch_comp;
+				elsif opcode = "000010" then -- J-type
+					next_state <= jump_comp;
+				end if;
+					
 			when mem_comp =>	 
 				alu_src_a <= '1'; 
-				alu_src_b <= "00";
-				-- alu_op <= '00';
+				alu_src_b <= "10";
+				-- alu_op <= '00'; 
+				
+				if opcode = "100011" then -- LW
+					next_state <= mem_r;
+				elsif opcode = "101011" then -- SW
+					next_state <= mem_w;
+				end if;
+					
 			when execution => 
 				alu_src_a <= '1'; 
 				-- alu_src_b <= '00';
-				alu_op <= "00";
+				alu_op <= "10";	   
+				
+				next_state <= r_comp;
+				
 			when branch_comp => 
 				pc_write_cond <= '1';
 				alu_src_a <= '1'; 
 				-- alu_src_b <= '00';
-				alu_op <= "00";
-				pc_source <= "00";
+				alu_op <= "01";
+				pc_source <= "01"; 
+				
+				next_state <= inst_fetch;
+				
 			when jump_comp => 
 				pc_write <= '1'; 
-				pc_source <= "00";
+				pc_source <= "10"; 
+				
+				next_state <= inst_fetch;
+				
 			when mem_r => 
 				i_or_d <= '1'; 
-				mem_read <= '1'; 	
+				mem_read <= '1'; 
+				
+				next_state <= write_back;
+				
 			when mem_w => 
 				i_or_d <= '1'; 
-				mem_write <= '1';
+				mem_write <= '1';  
+				
+				next_state <= inst_fetch;
+				
 			when r_comp =>
 				-- mem_to_reg <= '0'; 
 				reg_dest <= '1'; 
-				reg_write <= '1'; 
+				reg_write <= '1';  
+				
+				next_state <= inst_fetch;
+				
 			when write_back => 
 				mem_to_reg <= '1'; 
-				reg_dest <= '1'; 
-				reg_write <= '1';
+				-- reg_dest <= '0'; 
+				reg_write <= '1'; 
+				
+				next_state <= inst_fetch;
+				
 			when others =>
 				null;
 		end case;
@@ -116,42 +158,7 @@ begin
 		if reset = '1' then
 			current_state <= inst_fetch;
 		elsif clk'event and clk = '1' then 
-			case current_state is
-				when inst_fetch => 
-					current_state <= inst_decode_reg_fetch;
-				when inst_decode_reg_fetch => 
-					if opcode = "000000" then -- R-type	
-						current_state <= execution;
-					elsif opcode = "100011" or opcode = "101011" then -- LW/SW
-						current_state <= mem_comp;
-					elsif opcode = "000100" then -- Beq	
-						current_state <= branch_comp;
-					elsif opcode = "000010" then -- J-type
-						current_state <= jump_comp;
-					end if;
-				when mem_comp =>	
-					if opcode = "100011" then -- LW
-						current_state <= mem_r;
-					elsif opcode = "101011" then -- SW
-						current_state <= mem_w;
-					end if;
-				when execution => 
-					current_state <= r_comp;
-				when branch_comp => 
-					current_state <= inst_fetch;
-				when jump_comp => 
-					current_state <= inst_fetch;
-				when mem_r => 
-					current_state <= write_back;
-				when mem_w => 
-					current_state <= inst_fetch;
-				when r_comp =>
-					current_state <= inst_fetch;
-				when write_back => 
-					current_state <= inst_fetch;
-				when others =>
-					null;
-			end case;
+			current_state <= next_state;
 		end if;
 	end process;	  
 end architecture;
