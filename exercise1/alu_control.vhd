@@ -23,8 +23,8 @@ begin
 	r_type_ctrl(3) <= '0';
 	  
 	with alu_op select
-		alu_ctrl <= "0010" when "00", -- LW/SW
-					"0110" when "01", -- Beq
+	 	alu_ctrl <= "0010" when "00", -- LW/SW
+				"0110" when "01", -- Beq
 					r_type_ctrl when others; -- R-Type 
 	
 end architecture;
