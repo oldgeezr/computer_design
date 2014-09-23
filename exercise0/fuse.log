@@ -1,0 +1,31 @@
+Running: /opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb_isim_beh.exe -prj /opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb_beh.prj work.stack_machine_tb 
+ISim M.81d (signature 0x141a37e9)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/defs.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/control.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/testutil.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 29596 KB
+Fuse CPU Usage: 180 ms
+Using precompiled package standard from library std
+Using precompiled package std_logic_1164 from library ieee
+Using precompiled package numeric_std from library ieee
+Compiling package defs
+Compiling package testutil
+Compiling architecture behavioural of entity control [control_default]
+Compiling architecture behavioural of entity stack [\stack(1024)\]
+Compiling architecture behavioural of entity stack_machine [\stack_machine(1024)\]
+Compiling architecture behavioural of entity stack_machine_tb
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 12 VHDL Units
+Built simulation executable /opt/dmlab/home/chriram/Documents/computer_design/exercise0/stack_machine_tb_isim_beh.exe
+Fuse Memory Usage: 78800 KB
+Fuse CPU Usage: 230 ms
+GCC CPU Usage: 630 ms
