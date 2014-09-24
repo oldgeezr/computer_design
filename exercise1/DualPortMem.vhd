@@ -32,21 +32,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity DualPortMem is
 
 	generic (
-				ADDR_WIDTH : integer := 32;	
-				DATA_WIDTH : integer := 8;
+				ADDR_WIDTH : integer := 8;
+				DATA_WIDTH : integer := 32
 				size : natural := 8);
 
 	Port ( 
 				clka : in  std_logic;
 				clkb : in  std_logic;
 				wea : in  std_logic;
-				dina : in  std_logic;
-				addra : in  std_logic;
-				douta : out  std_logic;
 				web : in  std_logic;
-				addrb : in  std_logic;
-				dinb : in  std_logic;
-				doutb : out  std_logic);
+				dina : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+				dinb : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+				addra : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
+				addrb : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
+				douta : out  std_logic_vector(DATA_WIDTH-1 downto 0);
+				doutb : out  std_logic_vector(DATA_WIDTH-1 downto 0));
 end DualPortMem;
 
 architecture Behavioral of DualPortMem is
@@ -57,28 +57,32 @@ begin
 
 	
 
-	mema: process(clka)
+	mem: process(clka, clkb)
 	variable mem : mem_type := (others => (others => '0'));
 	begin
 	
 
 		if(rising_edge(clka)) then
+			if(wea and !web) then
+				mem(addra) = dina;
+			else
+				douta = mem(addra);
+			end if;
 			
 		end if;
-
-		
-	end process;
-	
-	memb: process(clkb)
-	begin
-	
 
 		if(rising_edge(clkb)) then
+			if(web and !wea) then
+				mem(addrb) = dinb;
+			else
+				doutb = mem(addrb);
+			end if;
 			
 		end if;
 
 		
 	end process;
+	
 
 end Behavioral;
 
