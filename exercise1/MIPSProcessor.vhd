@@ -74,6 +74,14 @@ architecture DummyArch of MIPSProcessor is
 					);	
 	end component;
 	
+	-- ALU
+	component alu is
+		port(	data_1:	in std_logic_vector(31 downto 0);
+				data_2:	in std_logic_vector(31 downto 0);
+				alu_op: in std_logic_vector(3 downto 0);
+				result:	out std_logic_vector(31 downto 0);
+				zero: out std_ulogic);
+	
 begin
 
 	-- Initialize the Control Unit
@@ -90,6 +98,12 @@ begin
 												alu_src => alu_src,
 												branch => branch,
 												jump => jump);
+												
+	alu : alu port map (	data_1 => data_1,
+				data_2 => data_2,
+				alu_op => alu_op,
+				result => result,
+				zero => zero);
 	
 	-- Branch MUX
 	branch_or_pluss_one <= pc_pluss_one when branch = '0' else 
