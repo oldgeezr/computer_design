@@ -30,18 +30,19 @@ entity MIPSProcessor is
 end MIPSProcessor;
 
 architecture DummyArch of MIPSProcessor is
+
+	---------------------------------
+	-- Signal Declarations
+	---------------------------------
+
 	signal counterReg : unsigned(31 downto 0);
 	
 	-- Jump/Branch mux out
-	signal next_pc_instruction : std_logic_vector(31 downto 0);
-	signal branch_instruction : std_logic_vector(31 downto 0);
 	signal pc_pluss_one : std_logic_vector(31 downto 0);
-	-- signal pc_source : std_logic_vector(1 downto 0);
 	signal branch_sel : std_logic;
 	signal jump : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
-	signal branch_temp : std_logic;
-	signal data_1 : std_logic;
+	signal data_2 : std_logic;
 	signal sign_extend : std_logic_vector(31 downto 0);
 	signal sign_extend_bits : std_logic_vector(15 downto 0);
 	signal branch_addr : std_logic_vector(31 downto 0);
@@ -61,8 +62,8 @@ architecture DummyArch of MIPSProcessor is
 	signal jump : std_logic;
 	
 	-- ALU Signals
-	signal data_1: std_logic_vector(31 downto 0);
-	signal data_2: std_logic_vector(31 downto 0);
+	signal alu_data_1: std_logic_vector(31 downto 0);
+	signal alu_data_2: std_logic_vector(31 downto 0);
 	signal alu_op: std_logic_vector(3 downto 0); -- Needs new name
 	signal alu_result: std_logic_vector(31 downto 0);
 	signal zero: std_ulogic;
@@ -72,18 +73,22 @@ architecture DummyArch of MIPSProcessor is
 	signal read_reg_1 : std_logic_vector(4 downto 0);
 	signal read_reg_2 : std_logic_vector(4 downto 0);
 	signal write_reg : std_logic_vector(4 downto 0);
-	signal write_data : std_logic_vector(DATA_WIDTH-1 downto 0); -- Get data width
+	signal write_data : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal read_data_1 : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal read_data_2 : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 	-- Program Counter
-	signal addr_in : std_logic(31 downto 0);
-	signal addr_out : std_logic(31 downto 0);
+	signal pc_addr_in : std_logic(31 downto 0);
+	signal pc_addr_out : std_logic(31 downto 0);
 	
 	-- ALU Control
 	signal alu_op : std_logic_vector(1 downto 0);
 	signal funct : std_logic_vector(5 downto 0);
 	signal alu_ctrl : std_logic_vector(3 downto 0);
+	
+	---------------------------------
+	-- Component Declarations
+	---------------------------------
 	
 	-- Control Unit
 	component control is
@@ -149,15 +154,18 @@ architecture DummyArch of MIPSProcessor is
 	
 begin
 
+	---------------------------------
+	-- Component Initialization
+	---------------------------------
+
 	-- Initialize the Control Unit
 	control_unit: control port map (	
 		clk => clk,
 		reset => reset,
-		opcode => opcode,
+		opcode => imem_data_in(31 downto 26),
 		mem_read => mem_read,
 		mem_write => mem_write,
 		mem_to_reg => mem_to_reg,
-		ir_write => ir_write,
 		reg_dest => reg_dest,
 		reg_write => reg_write,
 		alu_op => alu_op,
@@ -187,8 +195,8 @@ begin
 	-- Initialize the program counter
 	pc : program_counter port map (
 		clk => clk,
-		addr_in = addr_in,
-		addr_out = addr_out);
+		addr_in => pc_addr_in,
+		addr_out => pc_addr_out);
 		
 	-- Initialize the alu control
 	alu_control : alu_control port map (
@@ -197,8 +205,12 @@ begin
 		funct => imem_data_in(5 downto 0),
 		alu_ctrl => alu_ctrl);
 		
+	---------------------------------
+	-- Main Curcuit
+	---------------------------------
+		
 	-- PC addr to instruction memory
-	imem_address <= addr_out;
+	imem_address <= pc_addr_out;
 	
 	-- Instruction to register
 	read_reg_1 <= imem_data_in(25 downto 21);
@@ -215,7 +227,7 @@ begin
 	pc_pluss_one <= addr_out + 4;
 	
 	-- Jump address
-	jump_addr <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
+	pc_addr_in <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
 	
 	-- Branch adder
 	branch_addr <= pc_pluss_one + sign_extend;
@@ -237,7 +249,8 @@ begin
 	sign_extend <= sign_extend_bits & imem_data_in;
 	
 	-- ALU src MUX
-	data_2 <= read_data_2 when alu_src = '0' else sign_extend;
+	alu_data_2 <= read_data_2 when alu_src = '0' else sign_extend;
+	alu_data_1 <= read_data_1;
 										
 	DummyProc: process(clk, reset)
 	begin
