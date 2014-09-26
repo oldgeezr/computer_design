@@ -1,4 +1,8 @@
 # intermediate build files
+*.xreport
+*.xise
+*.gise
+*.xmsgs
 *.bgn
 *.bit
 *.bld

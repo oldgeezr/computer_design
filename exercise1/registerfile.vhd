@@ -32,7 +32,8 @@ entity registerfile is
 
 	generic (
 				DATA_WIDTH : integer := 32;
-				size : integer := 32;
+				size : integer := 32
+				);
 
 	Port ( 
 				clk : in  std_logic;
@@ -42,7 +43,8 @@ entity registerfile is
 				write_reg : in  std_logic_vector(4 downto 0);
 				write_data : in  std_logic_vector(DATA_WIDTH-1 downto 0);
 				read_data_1 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
-				read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
+				read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0)
+				);
 end registerfile;
 
 architecture Behavioral of registerfile is

@@ -31,11 +31,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity program_counter is
 
 	generic (
-				ADDR_WIDTH : integer := 8;
+				ADDR_WIDTH : integer := 8
+				);
 
 	Port ( 
 				clk : in  std_logic;
-				read_addr: out  std_logic_vector(ADDR_WIDTH-1 downto 0);
+				addr_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+				addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0);
+				);
 end program_counter;
 
 architecture Behavioral of program_counter is
@@ -47,10 +50,9 @@ begin
 	process(clk)
 	begin
 		if(rising_edge(clk)) then
-			-- Add branch functionality
-			pc <= pc + 4;
+			pc <= addr_in;
 		end if;
-		read_addr <= pc;
+		addr_out <= pc;
 	end process;
 
 
