@@ -1,0 +1,22 @@
+Running: /opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /opt/dmlab/home/erlenhes/computer_design/exercise1/ALU_isim_beh.exe -prj /opt/dmlab/home/erlenhes/computer_design/exercise1/ALU_beh.prj work.ALU 
+ISim M.81d (signature 0x141a37e9)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "/opt/dmlab/home/erlenhes/computer_design/exercise1/alu.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 30408 KB
+Fuse CPU Usage: 180 ms
+Using precompiled package standard from library std
+Using precompiled package std_logic_1164 from library ieee
+Using precompiled package std_logic_arith from library ieee
+Using precompiled package std_logic_unsigned from library ieee
+Compiling architecture behavioral of entity alu
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 5 VHDL Units
+Built simulation executable /opt/dmlab/home/erlenhes/computer_design/exercise1/ALU_isim_beh.exe
+Fuse Memory Usage: 75500 KB
+Fuse CPU Usage: 180 ms
+GCC CPU Usage: 280 ms
