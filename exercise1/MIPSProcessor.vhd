@@ -37,10 +37,16 @@ architecture DummyArch of MIPSProcessor is
 	signal branch_instruction : std_logic_vector(31 downto 0);
 	signal pc_pluss_one : std_logic_vector(31 downto 0);
 	-- signal pc_source : std_logic_vector(1 downto 0);
-	signal branch : std_logic;
+	signal branch_sel : std_logic;
 	signal jump : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
 	signal branch_temp : std_logic;
+	signal data_1 : std_logic;
+	signal sign_extend : std_logic_vector(31 downto 0);
+	signal sign_extend_bits : std_logic_vector(15 downto 0);
+	signal branch_addr : std_logic_vector(31 downto 0);
+	signal jump_addr : std_logic_vector(31 downto 0);
+	signal next_pc : std_logic_vector(31 downto 0);
 	
 	-- Control Unit Signals
 	signal opcode : std_logic_vector(5 downto 0);
@@ -58,7 +64,7 @@ architecture DummyArch of MIPSProcessor is
 	signal data_1: std_logic_vector(31 downto 0);
 	signal data_2: std_logic_vector(31 downto 0);
 	signal alu_op: std_logic_vector(3 downto 0); -- Needs new name
-	signal result: std_logic_vector(31 downto 0);
+	signal alu_result: std_logic_vector(31 downto 0);
 	signal zero: std_ulogic;
 	
 	-- Register
@@ -69,6 +75,15 @@ architecture DummyArch of MIPSProcessor is
 	signal write_data : std_logic_vector(DATA_WIDTH-1 downto 0); -- Get data width
 	signal read_data_1 : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal read_data_2 : std_logic_vector(DATA_WIDTH-1 downto 0);
+	
+	-- Program Counter
+	signal addr_in : std_logic(31 downto 0);
+	signal addr_out : std_logic(31 downto 0);
+	
+	-- ALU Control
+	signal alu_op : std_logic_vector(1 downto 0);
+	signal funct : std_logic_vector(5 downto 0);
+	signal alu_ctrl : std_logic_vector(3 downto 0);
 	
 	-- Control Unit
 	component control is
@@ -93,7 +108,7 @@ architecture DummyArch of MIPSProcessor is
 		port(	-- Input
 				data_1:	in std_logic_vector(31 downto 0);
 				data_2:	in std_logic_vector(31 downto 0);
-				alu_op: in std_logic_vector(3 downto 0);
+				alu_ctrl: in std_logic_vector(3 downto 0);
 				-- Output
 				result:	out std_logic_vector(31 downto 0);
 				zero: out std_ulogic);
@@ -111,6 +126,25 @@ architecture DummyArch of MIPSProcessor is
 					-- Output
 					read_data_1 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
 					read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0));
+	end component;
+	
+	-- Program Counter
+	component program_counter is
+		port (	-- Input
+					clk : in  std_logic;
+					addr_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+					-- Output
+					addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0));
+	end component;
+	
+	-- ALU Control
+	component alu_control is
+	port (	-- Input
+				clk : in std_logic;	
+				alu_op : in std_logic_vector(1 downto 0);
+				funct : in std_logic_vector(5 downto 0);
+				-- Output
+				alu_ctrl : out std_logic_vector(3 downto 0));
 	end component;
 	
 begin
@@ -133,10 +167,10 @@ begin
 		
 	-- Initialize the ALU
 	alu : alu port map (	
-		data_1 => data_1,
+		data_1 => read_data_1,
 		data_2 => data_2,
-		alu_op => alu_op,
-		result => result,
+		alu_ctrl => alu_ctrl,
+		result => alu_result,
 		zero => zero);
 								
 	-- Initialize the register file
@@ -149,15 +183,61 @@ begin
 		write_data => write_data,
 		read_data_1 => read_data_1,
 		read_data_2 => read_data_2); 
+		
+	-- Initialize the program counter
+	pc : program_counter port map (
+		clk => clk,
+		addr_in = addr_in,
+		addr_out = addr_out);
+		
+	-- Initialize the alu control
+	alu_control : alu_control port map (
+		clk => clk, 	
+		alu_op => alu_op,
+		funct => imem_data_in(5 downto 0),
+		alu_ctrl => alu_ctrl);
+		
+	-- PC addr to instruction memory
+	imem_address <= addr_out;
 	
-	-- And Gate for Branch MUX
-	branch_temp <= branch and zero;
+	-- Instruction to register
+	read_reg_1 <= imem_data_in(25 downto 21);
+	read_reg_2 <= imem_data_in(20 downto 16);
+	
+	-- Write register MUX
+	write_reg <= imem_data_in(15 downto 11) when reg_dest = '1' else imem_data_in(20 downto 16);
+	
+	-- Alu to mem MOVE THIS ONE
+	dmem_address <= result;
+	dmem_data_out <= reg_data_2;
+	
+	-- PC adder
+	pc_pluss_one <= addr_out + 4;
+	
+	-- Jump address
+	jump_addr <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
+	
+	-- Branch adder
+	branch_addr <= pc_pluss_one + sign_extend;
+	
+	-- Branch if zero
+	branch_sel <= branch and zero;
 	
 	-- Branch MUX
-	-- branch_or_pluss_one <= "THE RESULT FROM THE ADDER" when branch_temp = '1' else pc_pluss_one;
+	branch_or_pluss_one <= branch_addr when branch_sel = '1' else pc_pluss_one;
 	
 	-- Jump MUX
-	next_pc_source <= 
+	next_pc <= jump_addr when jump = '1' else branch_or_pluss_one;
+	
+	-- Mem to reg MUX
+	write_data <= dmem_data_in when mem_to_reg = '1' else alu_result;
+	
+	-- Sign extend
+	sign_extend_bits <= (others => '0') when imem_data_in(15) = '0' else (others => '1');
+	sign_extend <= sign_extend_bits & imem_data_in;
+	
+	-- ALU src MUX
+	data_2 <= read_data_2 when alu_src = '0' else sign_extend;
 										
 	DummyProc: process(clk, reset)
 	begin
