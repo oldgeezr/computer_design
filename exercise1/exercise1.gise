@@ -129,6 +129,8 @@
     <transform xil_pn:end_ts="1411471355" xil_pn:in_ck="3962551547196255072" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-44725954950988794" xil_pn:start_ts="1411471349">
       <status xil_pn:value="FailedRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="InputAdded"/>
       <outfile xil_pn:name="DualPortMem.ngr"/>
       <outfile xil_pn:name="MIPSSystem.lso"/>
       <outfile xil_pn:name="MIPSSystem.prj"/>

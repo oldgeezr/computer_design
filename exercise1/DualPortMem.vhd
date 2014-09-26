@@ -34,7 +34,8 @@ entity DualPortMem is
 	generic (
 				ADDR_WIDTH : integer := 8;
 				DATA_WIDTH : integer := 32;
-				size : integer := 2**ADDR_WIDTH );
+				size : integer := 2**ADDR_WIDTH
+				);
 
 	Port ( 
 				clka : in  std_logic;
@@ -46,7 +47,8 @@ entity DualPortMem is
 				addra : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
 				addrb : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
 				douta : out  std_logic_vector(DATA_WIDTH-1 downto 0);
-				doutb : out  std_logic_vector(DATA_WIDTH-1 downto 0));
+				doutb : out  std_logic_vector(DATA_WIDTH-1 downto 0)
+				);
 end DualPortMem;
 
 architecture Behavioral of DualPortMem is
