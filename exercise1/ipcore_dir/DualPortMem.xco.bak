@@ -1,7 +1,7 @@
 ##############################################################
 ##############################################################
 ##############################################################
-SET designentry = VHDL
+SET designentry = Verilog
 SET BusFormat = BusFormatAngleBracketNotRipped
 SET devicefamily = spartan6
 SET device = xc6slx16

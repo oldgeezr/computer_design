@@ -1,0 +1,3 @@
+NEWPROJECT "/opt/dmlab/home/chriram/Documents/computer_design/exercise1/ipcore_dir/coregen.cgp"
+SETPROJECT "/opt/dmlab/home/chriram/Documents/computer_design/exercise1/ipcore_dir/coregen.cgp"
+LAUNCHXCO "/opt/dmlab/home/chriram/Documents/computer_design/exercise1/ipcore_dir/DualPortMem.xco"
