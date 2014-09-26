@@ -40,10 +40,9 @@ architecture DummyArch of MIPSProcessor is
 	signal branch : std_logic;
 	signal jump : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
+	signal branch_temp : std_logic;
 	
 	-- Control Unit Signals
-	signal clk : std_logic;
-	signal reset : std_logic;
 	signal opcode : std_logic_vector(5 downto 0);
 	signal mem_read : std_logic;
 	signal mem_write : std_logic;
@@ -53,7 +52,23 @@ architecture DummyArch of MIPSProcessor is
 	signal alu_op : std_logic_vector(1 downto 0);
 	signal alu_src : std_logic;
 	signal branch : std_logic;
-	signal jump : std_logic;	
+	signal jump : std_logic;
+	
+	-- ALU Signals
+	signal data_1: std_logic_vector(31 downto 0);
+	signal data_2: std_logic_vector(31 downto 0);
+	signal alu_op: std_logic_vector(3 downto 0); -- Needs new name
+	signal result: std_logic_vector(31 downto 0);
+	signal zero: std_ulogic;
+	
+	-- Register
+	signal reg_write : std_logic;
+	signal read_reg_1 : std_logic_vector(4 downto 0);
+	signal read_reg_2 : std_logic_vector(4 downto 0);
+	signal write_reg : std_logic_vector(4 downto 0);
+	signal write_data : std_logic_vector(DATA_WIDTH-1 downto 0); -- Get data width
+	signal read_data_1 : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal read_data_2 : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 	-- Control Unit
 	component control is
@@ -70,43 +85,76 @@ architecture DummyArch of MIPSProcessor is
 					alu_op : out std_logic_vector(1 downto 0);
 					alu_src: out std_logic;
 					branch: out std_logic;
-					jump: out std_logic
-					);	
+					jump: out std_logic);	
 	end component;
 	
 	-- ALU
 	component alu is
-		port(	data_1:	in std_logic_vector(31 downto 0);
+		port(	-- Input
+				data_1:	in std_logic_vector(31 downto 0);
 				data_2:	in std_logic_vector(31 downto 0);
 				alu_op: in std_logic_vector(3 downto 0);
+				-- Output
 				result:	out std_logic_vector(31 downto 0);
 				zero: out std_ulogic);
+	end component;
+				
+	-- Register
+	component registerfile is
+		port ( 	-- Input
+					clk : in  std_logic;
+					reg_write : in  std_logic;
+					read_reg_1 : in  std_logic_vector(4 downto 0);
+					read_reg_2 : in  std_logic_vector(4 downto 0);
+					write_reg : in  std_logic_vector(4 downto 0);
+					write_data : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+					-- Output
+					read_data_1 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
+					read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0));
+	end component;
 	
 begin
 
 	-- Initialize the Control Unit
-	control_unit: control port map (	clk => clk,
-												reset => reset,
-												opcode => opcode,
-												mem_read => mem_read,
-												mem_write => mem_write,
-												mem_to_reg => mem_to_reg,
-												ir_write => ir_write,
-												reg_dest => reg_dest,
-												reg_write => reg_write,
-												alu_op => alu_op,
-												alu_src => alu_src,
-												branch => branch,
-												jump => jump);
-												
-	alu : alu port map (	data_1 => data_1,
-				data_2 => data_2,
-				alu_op => alu_op,
-				result => result,
-				zero => zero);
+	control_unit: control port map (	
+		clk => clk,
+		reset => reset,
+		opcode => opcode,
+		mem_read => mem_read,
+		mem_write => mem_write,
+		mem_to_reg => mem_to_reg,
+		ir_write => ir_write,
+		reg_dest => reg_dest,
+		reg_write => reg_write,
+		alu_op => alu_op,
+		alu_src => alu_src,
+		branch => branch,
+		jump => jump);
+		
+	-- Initialize the ALU
+	alu : alu port map (	
+		data_1 => data_1,
+		data_2 => data_2,
+		alu_op => alu_op,
+		result => result,
+		zero => zero);
+								
+	-- Initialize the register file
+	register_file : registerfile port map (	
+		clk => clk,
+		reg_write => reg_write,
+		read_reg_1 => read_reg_1,
+		read_reg_2 => read_reg_2,
+		write_reg => write_reg,
+		write_data => write_data,
+		read_data_1 => read_data_1,
+		read_data_2 => read_data_2); 
+	
+	-- And Gate for Branch MUX
+	branch_temp <= branch and zero;
 	
 	-- Branch MUX
-	branch_or_pluss_one <= pc_pluss_one when branch = '0' else 
+	-- branch_or_pluss_one <= "THE RESULT FROM THE ADDER" when branch_temp = '1' else pc_pluss_one;
 	
 	-- Jump MUX
 	next_pc_source <= 
