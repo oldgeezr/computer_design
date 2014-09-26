@@ -36,13 +36,13 @@ architecture DummyArch of MIPSProcessor is
 	---------------------------------
 
 	signal counterReg : unsigned(31 downto 0);
+	signal pc_increment_value : std_logic_vector(31 downto 0) := x"00000004";
 	
 	-- Jump/Branch mux out
 	signal pc_pluss_one : std_logic_vector(31 downto 0);
 	signal branch_sel : std_logic;
-	signal jump : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
-	signal data_2 : std_logic;
+	signal data_2 : std_logic_vector;
 	signal sign_extend : std_logic_vector(31 downto 0);
 	signal sign_extend_bits : std_logic_vector(15 downto 0);
 	signal branch_addr : std_logic_vector(31 downto 0);
@@ -55,7 +55,6 @@ architecture DummyArch of MIPSProcessor is
 	signal mem_write : std_logic;
 	signal mem_to_reg : std_logic;
 	signal reg_dest : std_logic;
-	signal reg_write : std_logic;
 	signal alu_op : std_logic_vector(1 downto 0);
 	signal alu_src : std_logic;
 	signal branch : std_logic;
@@ -64,7 +63,6 @@ architecture DummyArch of MIPSProcessor is
 	-- ALU Signals
 	signal alu_data_1: std_logic_vector(31 downto 0);
 	signal alu_data_2: std_logic_vector(31 downto 0);
-	signal alu_op: std_logic_vector(3 downto 0); -- Needs new name
 	signal alu_result: std_logic_vector(31 downto 0);
 	signal zero: std_ulogic;
 	
@@ -78,11 +76,10 @@ architecture DummyArch of MIPSProcessor is
 	signal read_data_2 : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 	-- Program Counter
-	signal pc_addr_in : std_logic(31 downto 0);
-	signal pc_addr_out : std_logic(31 downto 0);
+	signal pc_addr_in : std_logic_vector(31 downto 0);
+	signal pc_addr_out : std_logic_vector(31 downto 0);
 	
 	-- ALU Control
-	signal alu_op : std_logic_vector(1 downto 0);
 	signal funct : std_logic_vector(5 downto 0);
 	signal alu_ctrl : std_logic_vector(3 downto 0);
 	
@@ -174,7 +171,7 @@ begin
 		jump => jump);
 		
 	-- Initialize the ALU
-	alu : alu port map (	
+	alu_module : alu port map (	
 		data_1 => read_data_1,
 		data_2 => data_2,
 		alu_ctrl => alu_ctrl,
@@ -199,7 +196,7 @@ begin
 		addr_out => pc_addr_out);
 		
 	-- Initialize the alu control
-	alu_control : alu_control port map (
+	alu_control_module : alu_control port map (
 		clk => clk, 	
 		alu_op => alu_op,
 		funct => imem_data_in(5 downto 0),
@@ -220,11 +217,11 @@ begin
 	write_reg <= imem_data_in(15 downto 11) when reg_dest = '1' else imem_data_in(20 downto 16);
 	
 	-- Alu to mem MOVE THIS ONE
-	dmem_address <= result;
-	dmem_data_out <= reg_data_2;
+	dmem_address <= alu_result;
+	dmem_data_out <= read_data_2;
 	
 	-- PC adder
-	pc_pluss_one <= addr_out + 4;
+	pc_pluss_one <= unsigned(pc_addr_out) + 4;
 	
 	-- Jump address
 	pc_addr_in <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong

@@ -24,7 +24,7 @@ type state_type is (fetch, execute, stall);
 
 attribute enum_encoding : string;
 attribute enum_encoding of
-state_type : type is "00, 01, 11";
+state_type : type is "00 01 11";
 	
 signal current_state, next_state : state_type; 
 
@@ -98,7 +98,7 @@ begin
 	fsm_state : process (clk, reset)
 	begin		
 		if reset = '1' then
-			current_state <= inst_fetch;
+			current_state <= fetch;
 		elsif clk'event and clk = '1' then 
 			current_state <= next_state;
 		end if;

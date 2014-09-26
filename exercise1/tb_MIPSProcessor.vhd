@@ -12,6 +12,8 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
+USE work.defs.all;
+USE work.testutil.all;
  
 ENTITY tb_MIPSProcessor IS
 END tb_MIPSProcessor;
