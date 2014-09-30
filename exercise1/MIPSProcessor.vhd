@@ -42,7 +42,6 @@ architecture DummyArch of MIPSProcessor is
 	signal pc_pluss_one : std_logic_vector(31 downto 0);
 	signal branch_sel : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
-	signal data_2 : std_logic_vector;
 	signal sign_extend : std_logic_vector(31 downto 0);
 	signal sign_extend_bits : std_logic_vector(15 downto 0);
 	signal branch_addr : std_logic_vector(31 downto 0);
@@ -91,7 +90,7 @@ architecture DummyArch of MIPSProcessor is
 	component control is
 		port (	-- Input
 					clk : in std_logic;
-					reset : in std_logic;
+					processor_enable : in std_logic;
 					opcode : in std_logic_vector(5 downto 0);
 					-- Output 
 					mem_read : out std_logic;
@@ -134,9 +133,9 @@ architecture DummyArch of MIPSProcessor is
 	component program_counter is
 		port (	-- Input
 					clk : in  std_logic;
-					addr_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+					addr_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
 					-- Output
-					addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0));
+					addr_out : out  std_logic_vector(DATA_WIDTH-1 downto 0));
 	end component;
 	
 	-- ALU Control
@@ -158,7 +157,7 @@ begin
 	-- Initialize the Control Unit
 	control_unit: control port map (	
 		clk => clk,
-		reset => reset,
+		processor_enable => processor_enable,
 		opcode => imem_data_in(31 downto 26),
 		mem_read => mem_read,
 		mem_write => mem_write,
@@ -173,7 +172,7 @@ begin
 	-- Initialize the ALU
 	alu_module : alu port map (	
 		data_1 => read_data_1,
-		data_2 => data_2,
+		data_2 => alu_data_2,
 		alu_ctrl => alu_ctrl,
 		result => alu_result,
 		zero => zero);
@@ -207,7 +206,7 @@ begin
 	---------------------------------
 		
 	-- PC addr to instruction memory
-	imem_address <= pc_addr_out;
+	imem_address <= pc_addr_out(ADDR_WIDTH-1 downto 0);
 	
 	-- Instruction to register
 	read_reg_1 <= imem_data_in(25 downto 21);
@@ -217,37 +216,37 @@ begin
 	write_reg <= imem_data_in(15 downto 11) when reg_dest = '1' else imem_data_in(20 downto 16);
 	
 	-- Alu to mem MOVE THIS ONE
-	dmem_address <= alu_result;
+	dmem_address <= alu_result(ADDR_WIDTH-1 downto 0);
 	dmem_data_out <= read_data_2;
 	
 	-- PC adder
-	pc_pluss_one <= unsigned(pc_addr_out) + 4;
+	pc_pluss_one <= std_logic_vector(unsigned(pc_addr_out) + 4);
 	
 	-- Jump address
-	pc_addr_in <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
+	jump_addr <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
 	
 	-- Branch adder
-	branch_addr <= pc_pluss_one + sign_extend;
+	branch_addr <= std_logic_vector(unsigned(pc_pluss_one) + unsigned(sign_extend));
 	
 	-- Branch if zero
 	branch_sel <= branch and zero;
 	
 	-- Branch MUX
-	branch_or_pluss_one <= branch_addr when branch_sel = '1' else pc_pluss_one;
+	branch_or_pc_pluss_one <= branch_addr when branch_sel = '1' else pc_pluss_one;
 	
 	-- Jump MUX
-	next_pc <= jump_addr when jump = '1' else branch_or_pluss_one;
+	pc_addr_in <= jump_addr when jump = '1' else branch_or_pc_pluss_one;
 	
 	-- Mem to reg MUX
 	write_data <= dmem_data_in when mem_to_reg = '1' else alu_result;
 	
 	-- Sign extend
 	sign_extend_bits <= (others => '0') when imem_data_in(15) = '0' else (others => '1');
-	sign_extend <= sign_extend_bits & imem_data_in;
+	sign_extend <= sign_extend_bits & imem_data_in(15 downto 0);
 	
 	-- ALU src MUX
 	alu_data_2 <= read_data_2 when alu_src = '0' else sign_extend;
-	alu_data_1 <= read_data_1;
+	-- alu_data_1 <= read_data_1; NOT NECESSARY
 										
 	DummyProc: process(clk, reset)
 	begin
@@ -255,15 +254,16 @@ begin
 			counterReg <= (others => '0');
 		elsif rising_edge(clk) then
 			if processor_enable = '1' then
+				
 				counterReg <= counterReg + 1;
 			end if;
 		end if;
 	end process;
 	
 	dmem_write_enable <= processor_enable;
-	imem_address <= (others => '0');
-	dmem_address <= std_logic_vector(counterReg(7 downto 0));
-	dmem_data_out <= std_logic_vector(counterReg);
+	-- imem_address <= (others => '0');
+	-- dmem_address <= std_logic_vector(counterReg(7 downto 0));
+	-- dmem_data_out <= std_logic_vector(counterReg);
 
 end DummyArch;
 

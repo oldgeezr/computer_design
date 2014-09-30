@@ -12,8 +12,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
-USE work.defs.all;
-USE work.testutil.all;
  
 ENTITY tb_MIPSProcessor IS
 END tb_MIPSProcessor;
@@ -53,7 +51,7 @@ ARCHITECTURE behavior OF tb_MIPSProcessor IS
    constant clk_period : time := 10 ns; 
 BEGIN
 -- Instantiate the processor
-Processor: entity work.MIPSProcessor(Behavioral) port map (
+Processor: entity work.MIPSProcessor(DummyArch) port map (
 						clk => clk,	reset => reset,
 						processor_enable => processor_enable,
 						imem_data_in => imem_data_in,
@@ -87,9 +85,9 @@ DataMem:			entity work.DualPortMem port map (
    clk_process :process
    begin
 		clk <= '0';
-		wait for clk_period/2;
+		wait for clk_period / 2;
 		clk <= '1';
-		wait for clk_period/2;
+		wait for clk_period / 2;
    end process;
 	
 	imem_address <= proc_imem_address when processor_enable = '1' else tb_imem_address;
@@ -145,7 +143,9 @@ DataMem:			entity work.DualPortMem port map (
 				X"AC050010", --sw $5, 16($0)		/Saving value 14 (= 0xE) on address 16	
 				X"002A5020", --add $10, $1, $10  /add $1 to $ 10 and place in $10
 				X"1000FFFF", --beq $0, $0, -1	/Branch back one step to hold off code at this spot
+				X"AC050012", --sw $5, 18($0)		/SHOULD NEVER HAPPEN (Saving value 14 (= 0xE) on address 18.)
 				X"AC050012" --sw $5, 18($0)		/SHOULD NEVER HAPPEN (Saving value 14 (= 0xE) on address 18.)
+
 				);
 		begin
 			for i in 0 to TEST_INSTRS-1 loop

@@ -17,7 +17,6 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-
 entity MIPSSystem is
 	-- do not change these, the memories are pregenerated at the moment
 	-- and do not support changing the address width/word size
@@ -63,7 +62,7 @@ architecture Behavioral of MIPSSystem is
 	
 begin
 -- instantiate the processor
-MIPSProcInst:	entity work.MIPSProcessor(Behavioral) 
+MIPSProcInst:	entity work.MIPSProcessor(DummyArch) 
 					generic map (ADDR_WIDTH => ADDR_WIDTH, DATA_WIDTH => DATA_WIDTH) 
 					port map (
 						clk => clk, reset => processorReset,

@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity control is
 	port (	-- Input
 				clk : in std_logic;
-				reset : in std_logic;
+				processor_enable : in std_logic;
 				opcode : in std_logic_vector(5 downto 0);
 				-- Output 
 				mem_read : out std_logic;
@@ -85,6 +85,8 @@ begin
 						jump <= '1';
 					
 						next_state <= fetch;
+					when others =>
+						null;
 				end case;
 					
 			when stall => 
@@ -95,9 +97,9 @@ begin
 		end case;
 	end process;
 	
-	fsm_state : process (clk, reset)
+	fsm_state : process (clk, processor_enable)
 	begin		
-		if reset = '1' then
+		if processor_enable = '0' then
 			current_state <= fetch;
 		elsif clk'event and clk = '1' then 
 			current_state <= next_state;

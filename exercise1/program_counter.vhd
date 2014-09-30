@@ -31,23 +31,23 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity program_counter is
 
 	generic (
-				ADDR_WIDTH : integer := 8
+				DATA_WIDTH : integer := 32
 				);
 
 	Port ( 
 				clk : in  std_logic;
-				addr_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
-				addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0)
+				addr_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
+				addr_out : out  std_logic_vector(DATA_WIDTH-1 downto 0)
 				);
 end program_counter;
 
 architecture Behavioral of program_counter is
 
-	signal pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal pc : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 begin
 
-	process(clk)
+	process(clk, pc)
 	begin
 		if(rising_edge(clk)) then
 			pc <= addr_in;
