@@ -37,7 +37,7 @@ entity program_counter is
 	Port ( 
 				clk : in  std_logic;
 				addr_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
-				addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0);
+				addr_out : out  std_logic_vector(ADDR_WIDTH-1 downto 0)
 				);
 end program_counter;
 

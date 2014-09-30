@@ -3,55 +3,93 @@ use ieee.std_logic_1164.all;
 
 entity control is
 	port (	-- Input
-			clk : in std_logic;
-			reset : in std_logic;
-			instruction : in std_logic_vector(31 downto 0);
-			-- Output
-			alu_op : out std_logic_vector(1 downto 0));
+				clk : in std_logic;
+				reset : in std_logic;
+				opcode : in std_logic_vector(5 downto 0);
+				-- Output 
+				mem_read : out std_logic;
+				mem_write : out std_logic;
+				mem_to_reg : out std_logic;
+				reg_dest : out std_logic; 
+				reg_write : out std_logic;
+				alu_op : out std_logic_vector(1 downto 0);
+				alu_src : out std_logic;
+				branch : out std_logic;
+				jump : out std_logic);
 end entity;
 
 architecture fsm of control is		 
 
-type state_type is (
-	inst_fetch, 
-	inst_decode_reg_fetch, 
-	mem_comp, 
-	execution, 
-	branch_comp, 
-	jump_comp, 
-	mem_write, 
-	mem_read, 
-	reg_comp, 
-	write_back);		  		
+type state_type is (fetch, execute, stall);
+
+attribute enum_encoding : string;
+attribute enum_encoding of
+state_type : type is "00 01 11";
 	
-signal current_state : state_type; 
-signal opcode : std_logic_vector(5 downto 0) := instruction(5 downto 0) ;
+signal current_state, next_state : state_type; 
 
 begin			  
 	
 	control_output : process (current_state, opcode)
 	begin
+		
+		mem_read <= '0'; 
+		mem_write <= '0';
+		mem_to_reg <= '0'; 
+		reg_dest <= '0'; 
+		reg_write <= '0'; 
+		alu_op <= "00";
+		alu_src <= '1';
+		branch <= '0';
+		jump <= '0';
+		
 		case current_state is
-			when inst_fetch => 
-				alu_op <= "00";
-			when inst_decode_reg_fetch => 
-				alu_op <= "00";
-			when mem_comp =>	
-				alu_op <= "00";
-			when execution => 
-				alu_op <= "00";
-			when branch_comp => 
-				alu_op <= "00";
-			when jump_comp => 
-				alu_op <= "00";
-			when mem_read => 
-				alu_op <= "00";
-			when mem_write => 
-				alu_op <= "00";
-			when reg_comp =>
-				alu_op <= "00";
-			when write_back => 
-				alu_op <= "00";
+			when fetch => 
+				mem_read <= '1'; 
+				-- alu_op <= "00";
+				-- pc_source <= "00"; 
+				
+				next_state <= execute;
+				
+			when execute =>  
+				-- mem_to_reg <= '0'; 
+				
+				case opcode is
+					when "000000" => -- R-type
+						alu_op <= "10";
+						reg_dest <= '1'; 
+						reg_write <= '1'; 
+						
+						next_state <= fetch;
+					when "100011" => -- LW
+						alu_op <= "00";
+						mem_to_reg <= '1';
+						alu_src <= '1';
+						reg_write <= '1'; 
+						mem_read <= '1'; 
+						
+						next_state <= stall;
+					when "101011" => -- SW
+						alu_op <= "00";
+						alu_src <= '1';
+						mem_write <= '1';
+						
+						next_state <= stall;
+					when "000100" => -- Beq	
+						branch <= '1';
+						alu_op <= "01";
+						-- alu_src <= '0';
+						
+						next_state <= fetch;
+					when "000010" =>-- J-type	
+						jump <= '1';
+					
+						next_state <= fetch;
+				end case;
+					
+			when stall => 
+				
+				next_state <= fetch;		
 			when others =>
 				null;
 		end case;
@@ -60,44 +98,9 @@ begin
 	fsm_state : process (clk, reset)
 	begin		
 		if reset = '1' then
-			current_state <= inst_fetch;
+			current_state <= fetch;
 		elsif clk'event and clk = '1' then 
-			case current_state is
-				when inst_fetch => 
-					current_state <= inst_decode_reg_fetch;
-				when inst_decode_reg_fetch => 
-					if opcode = "000000" then -- R-type	
-						current_state <= execution;
-					elsif opcode = "100011" or opcode = "101011" then -- LW/SW
-						current_state <= mem_comp;
-					elsif opcode = "000100" then -- Beq	
-						current_state <= branch_comp;
-					elsif opcode = "000010" then -- J-type
-						current_state <= jump_comp;
-					end if;
-				when mem_comp =>	
-					if opcode = "100011" then -- LW
-						current_state <= mem_read;
-					elsif opcode = "101011" then -- SW
-						current_state <= mem_write;
-					end if;
-				when execution => 
-					current_state <= reg_comp;
-				when branch_comp => 
-					current_state <= inst_fetch;
-				when jump_comp => 
-					current_state <= inst_fetch;
-				when mem_read => 
-					current_state <= write_back;
-				when mem_write => 
-					current_state <= inst_fetch;
-				when reg_comp =>
-					current_state <= inst_fetch;
-				when write_back => 
-					current_state <= inst_fetch;
-				when others =>
-					null;
-			end case;
+			current_state <= next_state;
 		end if;
 	end process;	  
 end architecture;

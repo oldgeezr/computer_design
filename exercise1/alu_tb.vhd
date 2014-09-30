@@ -16,7 +16,7 @@ architecture behavioral of ALU_tb is
 -- component ports
 signal data_1: std_logic_vector(31 downto 0);
 signal data_2: std_logic_vector(31 downto 0);
-signal alu_op: std_logic_vector(3 downto 0);
+signal alu_ctrl: std_logic_vector(3 downto 0);
 signal result: std_logic_vector(31 downto 0);
 signal zero: std_ulogic;
 
@@ -31,7 +31,7 @@ begin	-- architecture behavioural
     port map (
       data_1      => data_1,
       data_2      => data_2,
-      alu_op => alu_op,
+      alu_ctrl => alu_ctrl,
       result     => result,
       zero      => zero
 		);
@@ -45,7 +45,7 @@ begin	-- architecture behavioural
 	
 	 report "Testbench started...";
     wait for clk_period;
-	 alu_op <= x"0";
+	 alu_ctrl <= x"0";
     data_1 <= x"000000FF";
 	 data_2 <= x"000000F0";
 	 wait for clk_period;
@@ -53,7 +53,7 @@ begin	-- architecture behavioural
 	 report "AND test 1 passed!" severity note;
 	 
 	 wait for clk_period;
-	 alu_op <= x"1";
+	 alu_ctrl <= x"1";
     data_1 <= x"000000FF";
 	 data_2 <= x"000000F0";
 	 wait for clk_period;
@@ -61,7 +61,7 @@ begin	-- architecture behavioural
 	 report "OR test 1 passed!" severity note;
 	 
 	 wait for clk_period;
-	 alu_op <= x"2";
+	 alu_ctrl <= x"2";
     data_1 <= x"000000FF";
 	 data_2 <= x"000000F0";
 	 wait for clk_period;
@@ -69,7 +69,7 @@ begin	-- architecture behavioural
 	 report "ADD test 1 passed!" severity note;
 	 
 	 wait for clk_period;
-	 alu_op <= x"2";
+	 alu_ctrl <= x"2";
     data_1 <= x"00004EAF";
 	 data_2 <= x"00008ABC";
 	 wait for clk_period;
@@ -77,7 +77,7 @@ begin	-- architecture behavioural
 	 report "ADD test 2 passed!" severity note;
 	 
 	 wait for clk_period;
-	 alu_op <= x"6";
+	 alu_ctrl <= x"6";
     data_1 <= x"000000FF";
 	 data_2 <= x"000000F0";
 	 wait for clk_period;
@@ -85,7 +85,7 @@ begin	-- architecture behavioural
 	 report "SUB test 1 passed!" severity note;
 	 
 	 wait for clk_period;
-	 alu_op <= x"8";
+	 alu_ctrl <= x"8";
     data_1 <= x"000000FF";
 	 data_2 <= x"000000F0";
 	 wait for clk_period;

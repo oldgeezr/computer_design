@@ -19,6 +19,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use ieee.std_logic_arith.all ; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -55,7 +56,7 @@ architecture Behavioral of registerfile is
 begin
 
 	
-	write_register: process(clk)
+	read_write: process(clk)
 	
 	variable mem : mem_type := (others => (others => '0'));
 	
