@@ -1,0 +1,22 @@
+Running: /opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /opt/dmlab/home/chriram/Documents/computer_design/ex1/control_tb_isim_beh.exe -prj /opt/dmlab/home/chriram/Documents/computer_design/ex1/control_tb_beh.prj work.control_tb 
+ISim M.81d (signature 0x141a37e9)
+Number of CPUs detected in this system: 4
+Turning on mult-threading, number of parallel sub-compilation jobs: 8 
+Determining compilation order of HDL files
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/ex1/control.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/ex1/control_tb.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 29256 KB
+Fuse CPU Usage: 160 ms
+Using precompiled package standard from library std
+Using precompiled package std_logic_1164 from library ieee
+Compiling architecture fsm of entity control [control_default]
+Compiling architecture arch of entity control_tb
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 5 VHDL Units
+Built simulation executable /opt/dmlab/home/chriram/Documents/computer_design/ex1/control_tb_isim_beh.exe
+Fuse Memory Usage: 74348 KB
+Fuse CPU Usage: 180 ms
+GCC CPU Usage: 320 ms

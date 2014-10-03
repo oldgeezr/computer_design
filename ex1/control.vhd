@@ -39,28 +39,25 @@ begin
 		reg_dest <= '0'; 
 		reg_write <= '0'; 
 		alu_op <= "00";
-		alu_src <= '1';
+		alu_src <= '0';
 		branch <= '0';
 		jump <= '0';
 		
 		case current_state is
 			when fetch => 
-				mem_read <= '1'; 
-				-- alu_op <= "00";
-				-- pc_source <= "00"; 
+				mem_read <= '1';
+				-- branch <= '0';
+				-- jump <= '0';
 				
 				next_state <= execute;
 				
 			when execute =>  
 				-- mem_to_reg <= '0'; 
 				
+				next_state <= fetch;
+				
 				case opcode is
-					when "000000" => -- R-type
-						alu_op <= "10";
-						reg_dest <= '1'; 
-						reg_write <= '1'; 
-						
-						next_state <= fetch;
+			
 					when "100011" => -- LW
 						alu_op <= "00";
 						mem_to_reg <= '1';
@@ -79,16 +76,17 @@ begin
 						branch <= '1';
 						alu_op <= "01";
 						-- alu_src <= '0';
-						
-						next_state <= fetch;
+
 					when "000010" =>-- J-type	
 						jump <= '1';
-					
-						next_state <= fetch;
-					when others =>
-						null;
+
+					when others => --R-type
+						alu_op <= "10";
+						reg_dest <= '1'; 
+						reg_write <= '1'; 
+						-- alu_src <= '0';
 				end case;
-					
+
 			when stall => 
 				
 				next_state <= fetch;		
@@ -98,11 +96,15 @@ begin
 	end process;
 	
 	fsm_state : process (clk, processor_enable)
-	begin		
-		if processor_enable = '0' then
-			current_state <= fetch;
-		elsif clk'event and clk = '1' then 
-			current_state <= next_state;
+	begin			
+	
+		if clk'event and clk = '1' then
+		
+			current_state <= execute;
+		
+			if processor_enable = '1' then
+				current_state <= next_state;
+			end if;
 		end if;
 	end process;	  
 end architecture;
