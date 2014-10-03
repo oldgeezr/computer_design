@@ -16,6 +16,8 @@ signal r_type_ctrl : std_logic_vector(3 downto 0);
 
 begin	 	   
 	
+	-- Check for correct behaviour
+	
 	-- Circuit
 	r_type_ctrl(0) <= funct(3) or funct(0);	
 	r_type_ctrl(1) <= (funct(3) and funct(2)) or funct(1);	
@@ -24,7 +26,7 @@ begin
 	  
 	with alu_op select
 	 	alu_ctrl <= "0010" when "00", -- LW/SW
-				"0110" when "01", -- Beq
-					r_type_ctrl when others; -- R-Type 
+						"0110" when "01", -- Beq
+						r_type_ctrl when others; -- R-Type 
 	
 end architecture;

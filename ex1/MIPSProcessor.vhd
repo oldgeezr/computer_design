@@ -47,6 +47,8 @@ architecture Behavioral of MIPSProcessor is
 	signal branch_addr : std_logic_vector(31 downto 0);
 	signal jump_addr : std_logic_vector(31 downto 0);
 	signal next_pc : std_logic_vector(31 downto 0);
+	signal pc_addr : std_logic_vector(31 downto 0);
+	signal pc_mux : std_logic;
 	
 	-- Control Unit Signals
 	signal opcode : std_logic_vector(5 downto 0);
@@ -101,7 +103,8 @@ architecture Behavioral of MIPSProcessor is
 					alu_op : out std_logic_vector(1 downto 0);
 					alu_src: out std_logic;
 					branch: out std_logic;
-					jump: out std_logic);	
+					jump: out std_logic;
+					pc_mux : out std_logic);	
 	end component;
 	
 	-- ALU
@@ -155,7 +158,7 @@ begin
 	---------------------------------
 
 	-- Initialize the Control Unit
-	control_unit: entity work.control(fsm) port map (	
+	control_unit: control port map (	
 		clk => clk,
 		processor_enable => processor_enable,
 		opcode => imem_data_in(31 downto 26),
@@ -167,7 +170,8 @@ begin
 		alu_op => alu_op,
 		alu_src => alu_src,
 		branch => branch,
-		jump => jump);
+		jump => jump,
+		pc_mux => pc_mux);
 		
 	-- Initialize the ALU
 	alu_module : alu port map (	
@@ -235,7 +239,10 @@ begin
 	branch_or_pc_pluss_one <= branch_addr when branch_sel = '1' else pc_pluss_one;
 	
 	-- Jump MUX
-	pc_addr_in <= jump_addr when jump = '1' else branch_or_pc_pluss_one;
+	pc_addr <= jump_addr when jump = '1' else branch_or_pc_pluss_one;
+	
+	-- PC MUX
+	pc_addr_in <= pc_addr when pc_mux = '1' else pc_addr_out;
 	
 	-- Mem to reg MUX
 	write_data <= dmem_data_in when mem_to_reg = '1' else alu_result;

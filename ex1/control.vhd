@@ -15,16 +15,17 @@ entity control is
 				alu_op : out std_logic_vector(1 downto 0);
 				alu_src : out std_logic;
 				branch : out std_logic;
-				jump : out std_logic);
+				jump : out std_logic;
+				pc_mux : out std_logic);
 end entity;
 
 architecture fsm of control is		 
 
-type state_type is (fetch, execute, stall);
+type state_type is (idle, fetch, execute, stall);
 
 attribute enum_encoding : string;
 attribute enum_encoding of
-state_type : type is "00 01 11";
+state_type : type is "10 00 01 11";
 	
 signal current_state, next_state : state_type; 
 
@@ -33,19 +34,26 @@ begin
 	control_output : process (current_state, opcode)
 	begin
 		
-		mem_read <= '0'; 
-		mem_write <= '0';
-		mem_to_reg <= '0'; 
-		reg_dest <= '0'; 
-		reg_write <= '0'; 
-		alu_op <= "00";
-		alu_src <= '0';
-		branch <= '0';
-		jump <= '0';
-		
+		if current_state /= stall then 
+			mem_read <= '0'; 
+			mem_write <= '0';
+			mem_to_reg <= '0'; 
+			reg_dest <= '0'; 
+			reg_write <= '0'; 
+			alu_op <= "00";
+			alu_src <= '0';
+			branch <= '0';
+			jump <= '0';
+			pc_mux <= '0';
+		end if;
+
 		case current_state is
+			when idle =>
+				next_state <= fetch;
+		
 			when fetch => 
 				mem_read <= '1';
+				pc_mux <= '1';
 				-- branch <= '0';
 				-- jump <= '0';
 				
@@ -57,6 +65,12 @@ begin
 				next_state <= fetch;
 				
 				case opcode is
+				
+					when "000000" => -- R-Type
+						alu_op <= "10";
+						reg_dest <= '1'; 
+						reg_write <= '1'; 
+						-- alu_src <= '0';
 			
 					when "100011" => -- LW
 						alu_op <= "00";
@@ -80,11 +94,8 @@ begin
 					when "000010" =>-- J-type	
 						jump <= '1';
 
-					when others => --R-type
-						alu_op <= "10";
-						reg_dest <= '1'; 
-						reg_write <= '1'; 
-						-- alu_src <= '0';
+					when others =>
+						null;
 				end case;
 
 			when stall => 
@@ -100,7 +111,7 @@ begin
 	
 		if clk'event and clk = '1' then
 		
-			current_state <= execute;
+			current_state <= idle;
 		
 			if processor_enable = '1' then
 				current_state <= next_state;

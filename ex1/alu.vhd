@@ -33,15 +33,17 @@ case alu_ctrl is
 	 when "0001" =>	
 		result <= data_1 or data_2;
 	 when "0010" =>
-		result <= data_1 + data_2;
+		result <= data_1 + data_2;	
 	 when "0110" =>	 
-		result <= data_1 - data_2;
-	 when "1000" =>
+		result <= data_2 - data_1;
+		if data_2 = data_1 then
+			zero <= '1';
+		end if;
+	 when "0111" =>
 		if (data_1 < data_2) then
 			result <= (others => '1');
 		else
 			result <= (others => '0');
-			zero <= '1';
 		end if;
 	 when others =>	 
 		result <= (others => '0');

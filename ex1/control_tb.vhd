@@ -49,11 +49,7 @@ architecture arch of control_tb is
 	signal beq : std_logic_vector(5 downto 0) := "000100";
 	
 	-- Register instructions
-	signal add : std_logic_vector(5 downto 0) := "100000";
-	signal sub : std_logic_vector(5 downto 0) := "100010";
-	signal and_op : std_logic_vector(5 downto 0) := "100100";
-	signal or_op : std_logic_vector(5 downto 0) := "100101";
-	signal set_on_less_than : std_logic_vector(5 downto 0) := "101010";
+	signal rtype : std_logic_vector(5 downto 0) := "000000";
 	
 begin
 	
@@ -108,19 +104,9 @@ begin
 		
 		-- Register instructions
 		wait for 2*clkperiod; 
-		opcode <= add;
+		opcode <= rtype;
 		
-		wait for 2*clkperiod; 
-		opcode <= sub;
-		
-		wait for 2*clkperiod; 
-		opcode <= and_op;
-		
-		wait for 2*clkperiod; 
-		opcode <= or_op;
-		
-		wait for 2*clkperiod; 
-		opcode <= set_on_less_than;
+		wait for 2*clkperiod;
 		
 		assert false report"END SIM" severity failure;
 		
