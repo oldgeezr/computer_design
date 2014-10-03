@@ -43,16 +43,17 @@ end program_counter;
 
 architecture Behavioral of program_counter is
 
-	signal pc : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pc : std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
 	
 begin
 
-	process(clk, pc)
+	addr_out <= pc;
+
+	process(clk)
 	begin
 		if(rising_edge(clk)) then
 			pc <= addr_in;
 		end if;
-		addr_out <= pc;
 	end process;
 
 
