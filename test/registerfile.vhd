@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+use ieee.std_logic_arith.all ; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -52,19 +52,21 @@ architecture Behavioral of registerfile is
 
 	type mem_type is array(size-1 downto 0) of std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal mem : mem_type := (others => (others => '0'));
-	
 begin
-
-	read_data_1 <= mem(to_integer(unsigned(read_reg_1)));
-	read_data_2 <= mem(to_integer(unsigned(read_reg_2)));
-
-	read_write: process(clk, read_reg_1, read_reg_2)
-	
+	write_register: process(clk)
 	begin
 		if(rising_edge(clk)) then
 			if(reg_write = '1') then
-				mem(to_integer(unsigned(write_reg))) <= write_data;
+				mem(conv_integer(unsigned(write_reg))) <= write_data;
 			end if;
+		end if;
+	end process;
+
+	read_register: process(clk)
+	begin
+		if(rising_edge(clk)) then
+			read_data_1 <= mem(conv_integer(unsigned(read_reg_1)));
+			read_data_2 <= mem(conv_integer(unsigned(read_reg_2)));
 		end if;
 	end process;
 	
