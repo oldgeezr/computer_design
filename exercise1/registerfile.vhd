@@ -19,7 +19,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use ieee.std_logic_arith.all ; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -42,7 +41,7 @@ entity registerfile is
 				reg_write : in  std_logic;
 				read_reg_1 : in  std_logic_vector(4 downto 0);
 				read_reg_2 : in  std_logic_vector(4 downto 0);
-				write_reg : in  std_logic_vector(4 downto 0) := (others => '0');
+				write_reg : in  std_logic_vector(4 downto 0);
 				write_data : in  std_logic_vector(DATA_WIDTH-1 downto 0);
 				read_data_1 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
 				read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0)
@@ -52,23 +51,19 @@ end registerfile;
 architecture Behavioral of registerfile is
 
 	type mem_type is array(size-1 downto 0) of std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal mem : mem_type := (others => (others => '0'));
 	
 begin
 
-	
-	read_write: process(clk)
-	
-	variable mem : mem_type := (others => (others => '0'));
+	read_data_1 <= mem(to_integer(unsigned(read_reg_1)));
+	read_data_2 <= mem(to_integer(unsigned(read_reg_2)));
+
+	read_write: process(clk, read_reg_1, read_reg_2)
 	
 	begin
 		if(rising_edge(clk)) then
 			if(reg_write = '1') then
-				mem(to_integer(unsigned(write_reg))) := write_data;
-		
-		
-			elsif(reg_write = '0') then
-				read_data_1 <= mem(to_integer(unsigned(read_reg_1)));
-				read_data_2 <= mem(to_integer(unsigned(read_reg_2)));
+				mem(to_integer(unsigned(write_reg))) <= write_data;
 			end if;
 		end if;
 	end process;
