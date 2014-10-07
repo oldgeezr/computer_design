@@ -30,6 +30,19 @@ at 2540 ns: Note: Expected data found at datamem addr 6 (/tb_mipsprocessor/).
 at 2550 ns: Note: Expected data found at datamem addr 7 (/tb_mipsprocessor/).
 at 2560 ns: Note: Expected data found at datamem addr 8 (/tb_mipsprocessor/).
 at 2570 ns: Note: Expected data found at datamem addr 9 (/tb_mipsprocessor/).
-at 2580 ns: Note: Expected data not found at datamem addr 12 found = -1 expected 1 (/tb_mipsprocessor/).
+at 2580 ns: Note: Expected data found at datamem addr 12 (/tb_mipsprocessor/).
 at 2590 ns: Note: Expected data found at datamem addr 13 (/tb_mipsprocessor/).
 at 2600 ns: Note: Expected data found at datamem addr 15 (/tb_mipsprocessor/).
+# restart
+# run 1.20us
+Simulator is doing circuit initialization process.
+at 0 ps, Instance /tb_mipsprocessor/Processor/register_file/ : Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+at 0 ps, Instance /tb_mipsprocessor/Processor/register_file/ : Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+Finished circuit initialization process.
+at 10 ns(1), Instance /tb_mipsprocessor/InstrMem/U0/mem_module/ : Warning: blk_mem_gen_v4_3 WARNING: collision detected: A write address: 00000000, B read address: 0000000000
+
+at 15 ns(1): Note: Block Memory Generator CORE Generator module is using a behavioral model FOR simulation which will not precisely model memory collision behavior. (/tb_mipsprocessor/InstrMem/U0/mem_module/).
+at 15 ns(1), Instance /tb_mipsprocessor/InstrMem/U0/mem_module/ : Warning: blk_mem_gen_v4_3 WARNING: collision detected: A write address: 00000000, B read address: 0000000000
+
+at 315 ns(1): Note: Block Memory Generator CORE Generator module is using a behavioral model FOR simulation which will not precisely model memory collision behavior. (/tb_mipsprocessor/DataMem/U0/mem_module/).
+# exit 0
