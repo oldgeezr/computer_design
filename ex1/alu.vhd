@@ -35,7 +35,7 @@ case alu_ctrl is
 	 when "0010" =>
 		result <= data_1 + data_2;	
 	 when "0110" =>	 
-		result <= data_2 - data_1;
+		result <= data_1 - data_2;
 		if data_2 = data_1 then
 			zero <= '1';
 		end if;

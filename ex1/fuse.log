@@ -13,8 +13,8 @@ Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/ex1/MIPSPro
 Parsing VHDL file "/opt/dmlab/home/chriram/Documents/computer_design/ex1/testbench/tb_MIPSProcessor.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 30896 KB
-Fuse CPU Usage: 240 ms
+Fuse Memory Usage: 30900 KB
+Fuse CPU Usage: 250 ms
 Using precompiled package standard from library std
 Using precompiled package std_logic_1164 from library ieee
 Using precompiled package numeric_std from library ieee
@@ -39,6 +39,6 @@ Time Resolution for simulation is 1ps.
 Waiting for 1 sub-compilation(s) to finish...
 Compiled 32 VHDL Units
 Built simulation executable /opt/dmlab/home/chriram/Documents/computer_design/ex1/tb_MIPSProcessor_isim_beh.exe
-Fuse Memory Usage: 76780 KB
-Fuse CPU Usage: 360 ms
-GCC CPU Usage: 1540 ms
+Fuse Memory Usage: 76800 KB
+Fuse CPU Usage: 380 ms
+GCC CPU Usage: 1560 ms

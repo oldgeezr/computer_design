@@ -42,7 +42,9 @@ architecture Behavioral of MIPSProcessor is
 	signal pc_pluss_one : std_logic_vector(31 downto 0);
 	signal branch_sel : std_logic;
 	signal branch_or_pc_pluss_one : std_logic_vector(31 downto 0);
+	signal shift_left : std_logic_vector(31 downto 0);
 	signal sign_extend : std_logic_vector(31 downto 0);
+	signal shift_left_or_sign_extend : std_logic_vector(31 downto 0);
 	signal sign_extend_bits : std_logic_vector(15 downto 0);
 	signal branch_addr : std_logic_vector(31 downto 0);
 	signal jump_addr : std_logic_vector(31 downto 0);
@@ -53,13 +55,13 @@ architecture Behavioral of MIPSProcessor is
 	-- Control Unit Signals
 	signal opcode : std_logic_vector(5 downto 0);
 	signal mem_read : std_logic;
-	signal mem_write : std_logic;
 	signal mem_to_reg : std_logic;
 	signal reg_dest : std_logic;
 	signal alu_op : std_logic_vector(1 downto 0);
 	signal alu_src : std_logic;
 	signal branch : std_logic;
 	signal jump : std_logic;
+	signal shift : std_logic;
 	
 	-- ALU Signals
 	signal alu_data_1: std_logic_vector(31 downto 0);
@@ -104,6 +106,7 @@ architecture Behavioral of MIPSProcessor is
 					alu_src: out std_logic;
 					branch: out std_logic;
 					jump: out std_logic;
+					shift : out std_logic;
 					pc_mux : out std_logic);	
 	end component;
 	
@@ -136,6 +139,7 @@ architecture Behavioral of MIPSProcessor is
 	component program_counter is
 		port (	-- Input
 					clk : in  std_logic;
+					reset : in std_logic;
 					addr_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
 					-- Output
 					addr_out : out  std_logic_vector(DATA_WIDTH-1 downto 0));
@@ -144,7 +148,6 @@ architecture Behavioral of MIPSProcessor is
 	-- ALU Control
 	component alu_control is
 	port (	-- Input
-				clk : in std_logic;	
 				alu_op : in std_logic_vector(1 downto 0);
 				funct : in std_logic_vector(5 downto 0);
 				-- Output
@@ -163,7 +166,7 @@ begin
 		processor_enable => processor_enable,
 		opcode => imem_data_in(31 downto 26),
 		mem_read => mem_read,
-		mem_write => mem_write,
+		mem_write => dmem_write_enable,
 		mem_to_reg => mem_to_reg,
 		reg_dest => reg_dest,
 		reg_write => reg_write,
@@ -171,6 +174,7 @@ begin
 		alu_src => alu_src,
 		branch => branch,
 		jump => jump,
+		shift => shift,
 		pc_mux => pc_mux);
 		
 	-- Initialize the ALU
@@ -195,12 +199,12 @@ begin
 	-- Initialize the program counter
 	pc : program_counter port map (
 		clk => clk,
+		reset => reset,
 		addr_in => pc_addr_in,
 		addr_out => pc_addr_out);
 		
 	-- Initialize the alu control
 	alu_control_module : alu_control port map (
-		clk => clk, 	
 		alu_op => alu_op,
 		funct => imem_data_in(5 downto 0),
 		alu_ctrl => alu_ctrl);
@@ -224,13 +228,13 @@ begin
 	dmem_data_out <= read_data_2;
 	
 	-- PC adder
-	pc_pluss_one <= std_logic_vector(unsigned(pc_addr_out) + 4);
+	pc_pluss_one <= std_logic_vector(unsigned(pc_addr_out) + 1);
 	
 	-- Jump address
-	jump_addr <= pc_pluss_one(31 downto 28) & imem_data_in(25 downto 0) & "00"; -- Might be wrong
+	jump_addr <= pc_pluss_one(31 downto 26) & imem_data_in(25 downto 0); -- Might be wrong
 	
 	-- Branch adder
-	branch_addr <= std_logic_vector(unsigned(pc_pluss_one) + unsigned(sign_extend));
+	branch_addr <= std_logic_vector(unsigned(pc_pluss_one) + unsigned(shift_left_or_sign_extend));
 	
 	-- Branch if zero
 	branch_sel <= branch and zero;
@@ -251,8 +255,12 @@ begin
 	sign_extend_bits <= (others => '0') when imem_data_in(15) = '0' else (others => '1');
 	sign_extend <= sign_extend_bits & imem_data_in(15 downto 0);
 	
+	-- Shift left 16
+	shift_left <= imem_data_in(15 downto 0) & x"0000";
+	shift_left_or_sign_extend <= shift_left when shift = '1' else sign_extend;
+	
 	-- ALU src MUX
-	alu_data_2 <= read_data_2 when alu_src = '0' else sign_extend;
+	alu_data_2 <= read_data_2 when alu_src = '0' else shift_left_or_sign_extend;
 	-- alu_data_1 <= read_data_1; NOT NECESSARY
 										
 	DummyProc: process(clk, reset)
@@ -267,7 +275,7 @@ begin
 		end if;
 	end process;
 	
-	dmem_write_enable <= processor_enable;
+	-- dmem_write_enable <= processor_enable;
 	-- imem_address <= (others => '0');
 	-- dmem_address <= std_logic_vector(counterReg(7 downto 0));
 	-- dmem_data_out <= std_logic_vector(counterReg);

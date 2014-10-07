@@ -16,6 +16,7 @@ entity control is
 				alu_src : out std_logic;
 				branch : out std_logic;
 				jump : out std_logic;
+				shift : out std_logic;
 				pc_mux : out std_logic);
 end entity;
 
@@ -27,9 +28,15 @@ attribute enum_encoding : string;
 attribute enum_encoding of
 state_type : type is "10 00 01 11";
 	
-signal current_state, next_state : state_type; 
+signal current_state : state_type := idle;
+signal next_state : state_type; 
 
-begin			  
+begin		
+
+	with opcode select 
+		alu_op <=	"10" when "000000", -- 0, R-Type
+						"01" when "000100", -- 4, Beq
+						"00" when others; -- 35 | 43, LW | SW
 	
 	control_output : process (current_state, opcode)
 	begin
@@ -40,11 +47,12 @@ begin
 			mem_to_reg <= '0'; 
 			reg_dest <= '0'; 
 			reg_write <= '0'; 
-			alu_op <= "00";
+			-- alu_op <= "00";
 			alu_src <= '0';
 			branch <= '0';
 			jump <= '0';
 			pc_mux <= '0';
+			shift <= '0';
 		end if;
 
 		case current_state is
@@ -53,7 +61,6 @@ begin
 		
 			when fetch => 
 				mem_read <= '1';
-				pc_mux <= '1';
 				-- branch <= '0';
 				-- jump <= '0';
 				
@@ -67,32 +74,43 @@ begin
 				case opcode is
 				
 					when "000000" => -- R-Type
-						alu_op <= "10";
+						-- alu_op <= "10";
 						reg_dest <= '1'; 
 						reg_write <= '1'; 
 						-- alu_src <= '0';
+						pc_mux <= '1';
 			
 					when "100011" => -- LW
-						alu_op <= "00";
+						-- alu_op <= "00";
 						mem_to_reg <= '1';
 						alu_src <= '1';
 						reg_write <= '1'; 
 						mem_read <= '1'; 
 						
 						next_state <= stall;
+						
+					when "001111" => -- LUI
+						-- alu_op <= "00";
+						alu_src <= '1';
+						reg_write <= '1'; 
+						shift <= '1';
+						pc_mux <= '1';
+						
 					when "101011" => -- SW
-						alu_op <= "00";
+						-- alu_op <= "00";
 						alu_src <= '1';
 						mem_write <= '1';
 						
 						next_state <= stall;
 					when "000100" => -- Beq	
 						branch <= '1';
-						alu_op <= "01";
+						-- alu_op <= "01";
 						-- alu_src <= '0';
+						pc_mux <= '1';
 
 					when "000010" =>-- J-type	
 						jump <= '1';
+						pc_mux <= '1';
 
 					when others =>
 						null;
@@ -100,7 +118,8 @@ begin
 
 			when stall => 
 				
-				next_state <= fetch;		
+				next_state <= fetch;
+				pc_mux <= '1';
 			when others =>
 				null;
 		end case;

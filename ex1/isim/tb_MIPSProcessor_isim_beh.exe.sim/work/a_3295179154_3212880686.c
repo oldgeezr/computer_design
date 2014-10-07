@@ -37,11 +37,11 @@ static void work_a_3295179154_3212880686_p_0(char *t0)
     char *t6;
     char *t7;
 
-LAB0:    xsi_set_current_line(50, ng0);
+LAB0:    xsi_set_current_line(51, ng0);
 
-LAB3:    t1 = (t0 + 868U);
+LAB3:    t1 = (t0 + 960U);
     t2 = *((char **)t1);
-    t1 = (t0 + 1952);
+    t1 = (t0 + 2044);
     t3 = (t1 + 32U);
     t4 = *((char **)t3);
     t5 = (t4 + 32U);
@@ -49,7 +49,7 @@ LAB3:    t1 = (t0 + 868U);
     memcpy(t6, t2, 32U);
     xsi_driver_first_trans_fast_port(t1);
 
-LAB2:    t7 = (t0 + 1900);
+LAB2:    t7 = (t0 + 1992);
     *((int *)t7) = 1;
 
 LAB1:    return;
@@ -60,36 +60,61 @@ LAB4:    goto LAB2;
 static void work_a_3295179154_3212880686_p_1(char *t0)
 {
     char *t1;
-    unsigned char t2;
-    char *t3;
-    char *t4;
+    char *t2;
+    unsigned char t3;
+    unsigned char t4;
     char *t5;
     char *t6;
     char *t7;
     char *t8;
+    char *t9;
+    char *t10;
 
-LAB0:    xsi_set_current_line(54, ng0);
-    t1 = (t0 + 568U);
-    t2 = ieee_p_2592010699_sub_1744673427_503743352(IEEE_P_2592010699, t1, 0U, 0U);
-    if (t2 != 0)
+LAB0:    xsi_set_current_line(55, ng0);
+    t1 = (t0 + 684U);
+    t2 = *((char **)t1);
+    t3 = *((unsigned char *)t2);
+    t4 = (t3 == (unsigned char)3);
+    if (t4 != 0)
         goto LAB2;
 
-LAB4:
-LAB3:    t1 = (t0 + 1908);
+LAB4:    xsi_set_current_line(58, ng0);
+    t1 = (t0 + 568U);
+    t3 = ieee_p_2592010699_sub_1744673427_503743352(IEEE_P_2592010699, t1, 0U, 0U);
+    if (t3 != 0)
+        goto LAB5;
+
+LAB7:
+LAB6:
+LAB3:    t1 = (t0 + 2000);
     *((int *)t1) = 1;
 
 LAB1:    return;
-LAB2:    xsi_set_current_line(55, ng0);
-    t3 = (t0 + 684U);
-    t4 = *((char **)t3);
-    t3 = (t0 + 1988);
-    t5 = (t3 + 32U);
-    t6 = *((char **)t5);
+LAB2:    xsi_set_current_line(56, ng0);
+    t1 = xsi_get_transient_memory(32U);
+    memset(t1, 0, 32U);
+    t5 = t1;
+    memset(t5, (unsigned char)2, 32U);
+    t6 = (t0 + 2080);
     t7 = (t6 + 32U);
     t8 = *((char **)t7);
-    memcpy(t8, t4, 32U);
-    xsi_driver_first_trans_fast(t3);
+    t9 = (t8 + 32U);
+    t10 = *((char **)t9);
+    memcpy(t10, t1, 32U);
+    xsi_driver_first_trans_fast(t6);
     goto LAB3;
+
+LAB5:    xsi_set_current_line(59, ng0);
+    t2 = (t0 + 776U);
+    t5 = *((char **)t2);
+    t2 = (t0 + 2080);
+    t6 = (t2 + 32U);
+    t7 = *((char **)t6);
+    t8 = (t7 + 32U);
+    t9 = *((char **)t8);
+    memcpy(t9, t5, 32U);
+    xsi_driver_first_trans_fast(t2);
+    goto LAB6;
 
 }
 

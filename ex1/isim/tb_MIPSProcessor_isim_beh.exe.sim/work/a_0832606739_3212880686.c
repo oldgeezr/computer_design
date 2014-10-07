@@ -169,12 +169,12 @@ LAB5:    xsi_set_current_line(36, ng0);
     goto LAB2;
 
 LAB6:    xsi_set_current_line(38, ng0);
-    t1 = (t0 + 684U);
+    t1 = (t0 + 592U);
     t2 = *((char **)t1);
-    t1 = (t0 + 3276U);
-    t3 = (t0 + 592U);
+    t1 = (t0 + 3260U);
+    t3 = (t0 + 684U);
     t4 = *((char **)t3);
-    t3 = (t0 + 3260U);
+    t3 = (t0 + 3276U);
     t5 = ieee_p_3620187407_sub_767740470_3965413181(IEEE_P_3620187407, t17, t2, t1, t4, t3);
     t8 = (t0 + 1868);
     t9 = (t8 + 32U);

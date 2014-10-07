@@ -36,6 +36,7 @@ entity program_counter is
 
 	Port ( 
 				clk : in  std_logic;
+				reset : in std_logic;
 				addr_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
 				addr_out : out  std_logic_vector(DATA_WIDTH-1 downto 0)
 				);
@@ -49,13 +50,15 @@ begin
 
 	addr_out <= pc;
 
-	process(clk)
+	process(clk, reset)
 	begin
-		if(rising_edge(clk)) then
-			pc <= addr_in;
+		if reset = '1' then
+			pc <= (others => '0');
+		else
+			if(rising_edge(clk)) then
+				pc <= addr_in;
+			end if;
 		end if;
 	end process;
-
-
 end Behavioral;
 
