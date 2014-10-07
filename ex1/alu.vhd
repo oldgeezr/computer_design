@@ -41,7 +41,7 @@ case alu_ctrl is
 		end if;
 	 when "0111" =>
 		if (data_1 < data_2) then
-			result <= (others => '1');
+			result <= x"00000001";
 		else
 			result <= (others => '0');
 		end if;
