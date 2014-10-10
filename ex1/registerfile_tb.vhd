@@ -27,6 +27,7 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
  
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -41,6 +42,7 @@ ARCHITECTURE behavior OF registerfile_tb IS
  
     COMPONENT registerfile
     PORT(
+			reset : IN std_logic;
          clk : IN  std_logic;
          reg_write : IN  std_logic;
          read_reg_1 : IN  std_logic_vector(4 downto 0);
@@ -54,16 +56,19 @@ ARCHITECTURE behavior OF registerfile_tb IS
     
 
    --Inputs
+	signal reset : std_logic := '0';
    signal clk : std_logic := '0';
    signal reg_write : std_logic := '0';
    signal read_reg_1 : std_logic_vector(4 downto 0) := (others => '0');
    signal read_reg_2 : std_logic_vector(4 downto 0) := (others => '0');
    signal write_reg : std_logic_vector(4 downto 0) := (others => '0');
    signal write_data : std_logic_vector(31 downto 0) := (others => '0');
+	signal I : integer := 0;
 
  	--Outputs
    signal read_data_1 : std_logic_vector(31 downto 0);
    signal read_data_2 : std_logic_vector(31 downto 0);
+	signal E : std_logic;
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -72,14 +77,15 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: registerfile PORT MAP (
-          clk => clk,
-          reg_write => reg_write,
-          read_reg_1 => read_reg_1,
-          read_reg_2 => read_reg_2,
-          write_reg => write_reg,
-          write_data => write_data,
-          read_data_1 => read_data_1,
-          read_data_2 => read_data_2
+			reset => reset,
+         clk => clk,
+         reg_write => reg_write,
+         read_reg_1 => read_reg_1,
+         read_reg_2 => read_reg_2,
+         write_reg => write_reg,
+         write_data => write_data,
+         read_data_1 => read_data_1,
+         read_data_2 => read_data_2
         );
 
    -- Clock process definitions
@@ -94,8 +100,18 @@ BEGIN
 
    -- Stimulus process
    stim_proc: process
-   begin		
+   begin
+		-- Reset error flag
+		E <= '0';
+		
       report "Testbench started...";
+		
+		-- Start with reset
+		reset <= '1';
+		wait for clk_period;
+		reset <= '0';
+		wait for clk_period;
+
 		
 		wait for clk_period;
 		write_data <= x"AAAAAAAA";
@@ -133,6 +149,27 @@ BEGIN
       wait for clk_period;
 		assert(read_data_1 = x"CCCCCCCC" and read_data_2 = x"CCCCCCCC") report "Dual read test 1 failed" severity note;
 		report "Dual read test 1 passed" severity note;
+		
+		wait for clk_period;
+		reg_write <= '0';
+		reset <= '1';
+		wait for clk_period;
+		reset <= '0';
+		for I in 0 to 32 loop
+			wait for clk_period;
+			read_reg_1 <= std_logic_vector(to_unsigned(I,5));
+			read_reg_2 <= std_logic_vector(to_unsigned(I,5));
+			if(read_data_1 /= x"00000000" or read_data_2 /= x"00000000") then
+				E <= '1';
+			end if;
+		end loop;
+		wait for clk_period;
+		if(E = '1') then
+			report "Reset test failed" severity note;
+		else
+			report "Reset test 1 passed" severity note;
+		end if;
+
 		
 		assert false report "Testbench finished" severity failure;
 		
