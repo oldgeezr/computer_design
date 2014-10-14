@@ -57,19 +57,19 @@ architecture Behavioral of registerfile is
 	
 begin
 
-	write: process(clk, reset) is
+	read_data_1 <= reg_file(to_integer(unsigned(read_reg_1)));
+	read_data_2 <= reg_file(to_integer(unsigned(read_reg_2)));
+
+	process(clk, reset) is
 	begin
 		if(reset = '1') then
 			reg_file <= (others => (others => '0'));
 		elsif(rising_edge(clk)) then
-			-- Register 0 is always zero
-			reg_file(0) <= (others => '0');
-			
-			read_data_1 <= reg_file(to_integer(unsigned(read_reg_1)));
-			read_data_2 <= reg_file(to_integer(unsigned(read_reg_2)));
-			if(reg_write = '1' and (write_reg /= "00000")) then
+			if(reg_write = '1') then
 				reg_file(to_integer(unsigned(write_reg))) <= write_data;
 			end if;
+			-- Register 0 is always zero
+			reg_file(0) <= (others => '0');
 		end if;
 	end process;
 	

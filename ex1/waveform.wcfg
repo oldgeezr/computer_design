@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/opt/dmlab/home/chriram/Documents/computer_design/ex1/tb_MIPSProcessor_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/opt/dmlab/home/victoriv/computer_design/ex1/tb_MIPSProcessor_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="std_logic_1164" />
@@ -15,7 +15,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="37" />
    <wvobject fp_name="/tb_mipsprocessor/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -38,6 +38,11 @@
       <obj_property name="ObjectShortName">pc_addr_in[31:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/pc/addr_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addr_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_mipsprocessor/Processor/jump_addr" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">jump_addr[31:0]</obj_property>
       <obj_property name="ObjectShortName">jump_addr[31:0]</obj_property>
@@ -53,6 +58,24 @@
       <obj_property name="ObjectShortName">data_2[31:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/read_data_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">read_data_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data_1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/read_data_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">read_data_2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data_2[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/read_reg_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">read_reg_1[4:0]</obj_property>
+      <obj_property name="ObjectShortName">read_reg_1[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/read_reg_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">read_reg_2[4:0]</obj_property>
+      <obj_property name="ObjectShortName">read_reg_2[4:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_mipsprocessor/Processor/alu_module/result" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">result[31:0]</obj_property>
       <obj_property name="ObjectShortName">result[31:0]</obj_property>
@@ -65,171 +88,6 @@
    <wvobject fp_name="/tb_mipsprocessor/Processor/alu_module/zero" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">zero</obj_property>
       <obj_property name="ObjectShortName">zero</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">mem[31:0]</obj_property>
-      <obj_property name="ObjectShortName">mem[31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[31]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[31]</obj_property>
-         <obj_property name="ObjectShortName">mem[31]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[30]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[30]</obj_property>
-         <obj_property name="ObjectShortName">mem[30]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[29]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[29]</obj_property>
-         <obj_property name="ObjectShortName">mem[29]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[28]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[28]</obj_property>
-         <obj_property name="ObjectShortName">mem[28]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[27]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[27]</obj_property>
-         <obj_property name="ObjectShortName">mem[27]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[26]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[26]</obj_property>
-         <obj_property name="ObjectShortName">mem[26]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[25]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[25]</obj_property>
-         <obj_property name="ObjectShortName">mem[25]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[24]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[24]</obj_property>
-         <obj_property name="ObjectShortName">mem[24]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[23]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[23]</obj_property>
-         <obj_property name="ObjectShortName">mem[23]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[22]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[22]</obj_property>
-         <obj_property name="ObjectShortName">mem[22]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[21]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[21]</obj_property>
-         <obj_property name="ObjectShortName">mem[21]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[20]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[20]</obj_property>
-         <obj_property name="ObjectShortName">mem[20]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[19]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[19]</obj_property>
-         <obj_property name="ObjectShortName">mem[19]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[18]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[18]</obj_property>
-         <obj_property name="ObjectShortName">mem[18]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[17]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[17]</obj_property>
-         <obj_property name="ObjectShortName">mem[17]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[16]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[16]</obj_property>
-         <obj_property name="ObjectShortName">mem[16]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[15]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[15]</obj_property>
-         <obj_property name="ObjectShortName">mem[15]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[14]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[14]</obj_property>
-         <obj_property name="ObjectShortName">mem[14]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[13]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[13]</obj_property>
-         <obj_property name="ObjectShortName">mem[13]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[12]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[12]</obj_property>
-         <obj_property name="ObjectShortName">mem[12]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[11]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[11]</obj_property>
-         <obj_property name="ObjectShortName">mem[11]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[10]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[10]</obj_property>
-         <obj_property name="ObjectShortName">mem[10]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[9]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[9]</obj_property>
-         <obj_property name="ObjectShortName">mem[9]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[8]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[8]</obj_property>
-         <obj_property name="ObjectShortName">mem[8]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[7]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[7]</obj_property>
-         <obj_property name="ObjectShortName">mem[7]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[6]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[6]</obj_property>
-         <obj_property name="ObjectShortName">mem[6]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[5]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[5]</obj_property>
-         <obj_property name="ObjectShortName">mem[5]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[4]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[4]</obj_property>
-         <obj_property name="ObjectShortName">mem[4]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[3]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[3]</obj_property>
-         <obj_property name="ObjectShortName">mem[3]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[2]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[2]</obj_property>
-         <obj_property name="ObjectShortName">mem[2]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[1]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[1]</obj_property>
-         <obj_property name="ObjectShortName">mem[1]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/mem[0]" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">[0]</obj_property>
-         <obj_property name="ObjectShortName">mem[0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject fp_name="/tb_mipsprocessor/Processor/alu_control_module/alu_op" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">alu_op[1:0]</obj_property>
@@ -280,6 +138,10 @@
       <obj_property name="ObjectShortName">write_data[31:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/write_reg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">write_reg[4:0]</obj_property>
+      <obj_property name="ObjectShortName">write_reg[4:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_mipsprocessor/Processor/shift_left_or_sign_extend" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">shift_left_or_sign_extend[31:0]</obj_property>
       <obj_property name="ObjectShortName">shift_left_or_sign_extend[31:0]</obj_property>
@@ -302,5 +164,19 @@
    <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/pc_mux" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pc_mux</obj_property>
       <obj_property name="ObjectShortName">pc_mux</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/register_file/reg_file" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_file[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_file[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/DataMem/douta" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">douta[31:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/DataMem/doutb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">doutb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
 </wave_config>

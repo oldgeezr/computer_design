@@ -15,7 +15,10 @@
   <version xil_pn:ise_version="12.4" xil_pn:schema_version="2"/>
 
   <files>
-    <file xil_pn:name="DualPortMem.ngc" xil_pn:type="FILE_NGC"/>
+    <file xil_pn:name="DualPortMem.ngc" xil_pn:type="FILE_NGC">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
     <file xil_pn:name="DualPortMem.v" xil_pn:type="FILE_VERILOG">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -54,8 +57,8 @@
     <!--                                                                                  -->
     <property xil_pn:name="PROP_DesignName" xil_pn:value="DualPortMem" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DevFamilyPMName" xil_pn:value="spartan6" xil_pn:valueState="default"/>
-    <property xil_pn:name="PROP_intProjectCreationTimestamp" xil_pn:value="2014-10-03T13:45:31" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="PROP_intWbtProjectID" xil_pn:value="024FE7EF601BEC071583010571D4F5B4" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_intProjectCreationTimestamp" xil_pn:value="2014-10-14T14:23:56" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_intWbtProjectID" xil_pn:value="3245AFBF16848271635FEDC4293A4492" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_intWorkingDirLocWRTProjDir" xil_pn:value="Same" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_intWorkingDirUsed" xil_pn:value="No" xil_pn:valueState="non-default"/>
   </properties>

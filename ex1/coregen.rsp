@@ -1,0 +1,2 @@
+SETPROJECT "/opt/dmlab/home/victoriv/computer_design/ex1/coregen.cgp"
+LAUNCHXCO "/opt/dmlab/home/victoriv/computer_design/ex1/DualPortMem.xco"
