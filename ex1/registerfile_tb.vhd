@@ -111,35 +111,54 @@ BEGIN
 		wait for clk_period;
 		reset <= '0';
 		wait for clk_period;
-
 		
+		-- Try to write to register 0
+		write_data <= x"AAAAAAAA";
+		write_reg <= "00000";
+		reg_write <= '1';
+		read_reg_1 <= "00000";
+      wait for clk_period;
+		reg_write <= '0';
+		assert(read_data_1 = x"00000000") report "Write/read test 1 failed" severity note;
+		report "Write/read test 1 passed" severity note;
+		
+		-- Write then read thorugh port 1
 		wait for clk_period;
 		write_data <= x"AAAAAAAA";
 		write_reg <= "10101";
 		reg_write <= '1';
 		read_reg_1 <= "10101";
       wait for clk_period;
-		assert(read_data_1 = x"AAAAAAAA") report "Write/read test 1 failed" severity note;
-		report "Write/read test 1 passed" severity note;
+		reg_write <= '0';
+		wait for clk_period;
+		assert(read_data_1 = x"AAAAAAAA") report "Write/read test 2 failed" severity note;
+		report "Write/read test 2 passed" severity note;
 		
+		-- Write then read thorugh port 2
 		wait for clk_period;
 		write_data <= x"BBBBBBBB";
 		write_reg <= "10111";
 		reg_write <= '1';
 		read_reg_2 <= "10111";
       wait for clk_period;
-		assert(read_data_2 = x"BBBBBBBB") report "Write/read test 2 failed" severity note;
-		report "Write/read test 2 passed" severity note;
+		reg_write <= '0';
+		wait for clk_period;
+		assert(read_data_2 = x"BBBBBBBB") report "Write/read test 3 failed" severity note;
+		report "Write/read test 3 passed" severity note;
 		
+		-- Try to write without asserting reg_write
 		wait for clk_period;
 		write_data <= x"CCCCCCCC";
 		write_reg <= "10111";
 		reg_write <= '0';
 		read_reg_2 <= "10111";
       wait for clk_period;
+		reg_write <= '0';
+		wait for clk_period;
 		assert(read_data_2 = x"BBBBBBBB") report "Non-write test 1 failed" severity note;
 		report "Non-write test 1 passed" severity note;
 		
+		-- Write then read same register through both read ports
 		wait for clk_period;
 		write_data <= x"CCCCCCCC";
 		write_reg <= "11111";
@@ -147,15 +166,18 @@ BEGIN
 		read_reg_1 <= "11111";
 		read_reg_2 <= "11111";
       wait for clk_period;
+		reg_write <= '0';
+		wait for clk_period;
 		assert(read_data_1 = x"CCCCCCCC" and read_data_2 = x"CCCCCCCC") report "Dual read test 1 failed" severity note;
 		report "Dual read test 1 passed" severity note;
 		
+		-- Test that reset clears all registers
 		wait for clk_period;
 		reg_write <= '0';
 		reset <= '1';
 		wait for clk_period;
 		reset <= '0';
-		for I in 0 to 32 loop
+		for I in 0 to 31 loop
 			wait for clk_period;
 			read_reg_1 <= std_logic_vector(to_unsigned(I,5));
 			read_reg_2 <= std_logic_vector(to_unsigned(I,5));
