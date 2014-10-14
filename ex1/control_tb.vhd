@@ -149,7 +149,7 @@ begin
 		-- mem_write, mem_to_reg, reg_dest, reg_write, alu_op, alu_src, branch, shift, pc_mux, jump
 		Checklist('0', '0', '0', '0', "01", '0', '1', '0', '1', '0');
 		
-		-- Beg instruction  
+		-- J-Type instruction  
 		opcode <= jtype;
 		
 		wait for clkperiod; 
