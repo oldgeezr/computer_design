@@ -129,6 +129,7 @@ architecture Behavioral of MIPSProcessor is
 	component registerfile is
 		port ( 	-- Input
 					clk : in  std_logic;
+					reset : in std_logic;
 					reg_write : in  std_logic;
 					read_reg_1 : in  std_logic_vector(4 downto 0);
 					read_reg_2 : in  std_logic_vector(4 downto 0);
@@ -192,6 +193,7 @@ begin
 	-- Initialize the register file
 	register_file : registerfile port map (	
 		clk => clk,
+		reset => reset,
 		reg_write => reg_write,
 		read_reg_1 => read_reg_1,
 		read_reg_2 => read_reg_2,
