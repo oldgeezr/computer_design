@@ -1,6 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+----------------------------------------------------------------
+-- Control Unit
+----------------------------------------------------------------
 entity control is
 	port (	-- Input
 				clk : in std_logic;
@@ -33,14 +36,16 @@ signal next_state : state_type;
 
 begin		
 
+	-- Generate the ALU_OP signal
 	with opcode select 
 		alu_op <=	"10" when "000000", -- 0, R-Type
 						"01" when "000100", -- 4, Beq
 						"00" when others; -- 15, 35 and 43, LUI | LW | SW
 	
+	-- FSM: Setting the correct control signals
 	control_output : process (current_state, opcode)
 	begin
-		
+	
 		if current_state /= stall then 
 			mem_write <= '0';
 			mem_to_reg <= '0'; 
