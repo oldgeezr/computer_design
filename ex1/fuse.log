@@ -1,23 +1,44 @@
-Running: /opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /opt/dmlab/home/victoriv/computer_design/ex1/registerfile_tb_isim_beh.exe -prj /opt/dmlab/home/victoriv/computer_design/ex1/registerfile_tb_beh.prj work.registerfile_tb 
+Running: /opt/Xilinx/12.4/ISE_DS/ISE/bin/lin/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /opt/dmlab/home/victoriv/computer_design/ex1/tb_MIPSProcessor_isim_beh.exe -prj /opt/dmlab/home/victoriv/computer_design/ex1/tb_MIPSProcessor_beh.prj work.tb_MIPSProcessor 
 ISim M.81d (signature 0x141a37e9)
 Number of CPUs detected in this system: 4
 Turning on mult-threading, number of parallel sub-compilation jobs: 8 
 Determining compilation order of HDL files
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/DualPortMem.vhd" into library work
 Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/registerfile.vhd" into library work
-Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/registerfile_tb.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/program_counter.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/control.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/alu_control.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/alu.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/MIPSProcessor.vhd" into library work
+Parsing VHDL file "/opt/dmlab/home/victoriv/computer_design/ex1/testbench/tb_MIPSProcessor.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 29584 KB
-Fuse CPU Usage: 180 ms
+Fuse Memory Usage: 30900 KB
+Fuse CPU Usage: 250 ms
 Using precompiled package standard from library std
 Using precompiled package std_logic_1164 from library ieee
 Using precompiled package numeric_std from library ieee
+Using precompiled package std_logic_arith from library ieee
+Using precompiled package std_logic_unsigned from library ieee
+Using precompiled package textio from library std
+Using precompiled package std_logic_textio from library ieee
+Compiling architecture fsm of entity control [control_default]
+Compiling architecture behavioral of entity alu [alu_default]
 Compiling architecture behavioral of entity registerfile [\registerfile(32,32)\]
-Compiling architecture behavior of entity registerfile_tb
+Compiling architecture behavioral of entity program_counter [\program_counter(32)\]
+Compiling architecture arch of entity alu_control [alu_control_default]
+Compiling architecture behavioral of entity mipsprocessor [mipsprocessor_default]
+Compiling architecture output_stage_behavioral of entity blk_mem_gen_v4_3_output_stage [\BLK_MEM_GEN_V4_3_output_stage("...]
+Compiling architecture output_stage_behavioral of entity blk_mem_gen_v4_3_output_stage [\BLK_MEM_GEN_V4_3_output_stage("...]
+Compiling architecture softecc_output_reg_stage_behavioral of entity blk_mem_gen_v4_3_softecc_output_reg_stage [\BLK_MEM_GEN_V4_3_softecc_output...]
+Compiling architecture mem_module_behavioral of entity blk_mem_gen_v4_3_mem_module [\BLK_MEM_GEN_V4_3_mem_module("bl...]
+Compiling architecture behavioral of entity blk_mem_gen_v4_3 [\BLK_MEM_GEN_V4_3("blk_mem_gen_v...]
+Compiling architecture dualportmem_a of entity dualportmem [dualportmem_default]
+Compiling architecture behavior of entity tb_mipsprocessor
 Time Resolution for simulation is 1ps.
 Waiting for 1 sub-compilation(s) to finish...
-Compiled 6 VHDL Units
-Built simulation executable /opt/dmlab/home/victoriv/computer_design/ex1/registerfile_tb_isim_beh.exe
-Fuse Memory Usage: 74676 KB
-Fuse CPU Usage: 200 ms
-GCC CPU Usage: 390 ms
+Compiled 32 VHDL Units
+Built simulation executable /opt/dmlab/home/victoriv/computer_design/ex1/tb_MIPSProcessor_isim_beh.exe
+Fuse Memory Usage: 76808 KB
+Fuse CPU Usage: 370 ms
+GCC CPU Usage: 1550 ms
