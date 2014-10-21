@@ -2,10 +2,12 @@
 *.xreport
 *.gise
 *.xmsgs
+*.pdf
 *.bgn
 *.bld
 *.cmd_log
 *.drc
+*.txt
 *.ll
 *.lso
 *.msd
