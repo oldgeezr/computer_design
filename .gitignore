@@ -2,6 +2,7 @@
 *.xreport
 *.gise
 *.xmsgs
+*.veo
 *.pdf
 *.bgn
 *.bld
