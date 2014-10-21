@@ -45,43 +45,47 @@ begin
 	-- FSM: Setting the correct control signals
 	control_output : process (current_state, opcode)
 	begin
-	
-		if current_state /= stall then 
-			mem_write <= '0';
-			mem_to_reg <= '0'; 
-			reg_dest <= '0'; 
-			reg_write <= '0'; 
-			alu_src <= '0';
-			branch <= '0';
-			jump <= '0';
-			pc_mux <= '0';
-			shift <= '0';
-		end if;
 
 		case current_state is
-			when idle =>
-				next_state <= fetch;
-		
 			when fetch => 
+			
+				mem_read <= '0';
+				mem_write <= '0'; 
+				mem_to_reg <= '0'; 
+				reg_dest <= '0'; 
+				reg_write <= '0'; 
+				-- alu_op <= '0'; 
+				alu_src <= '0'; 
+				branch <= '0'; 
+				jump <= '0'; 
+				shift <= '0'; 
+				pc_mux <= '0'; 
 				
 				next_state <= execute;
 				
 			when execute =>  
 				
+				mem_read <= '0';
+				mem_write <= '0'; 
+				mem_to_reg <= '0'; 
+				reg_dest <= '0'; 
+				reg_write <= '0'; 
+				-- alu_op <= '0'; 
+				alu_src <= '0'; 
+				branch <= '0'; 
+				jump <= '0'; 
+				shift <= '0'; 
+				pc_mux <= '0';
+				
 				next_state <= fetch;
 				
 				case opcode is
 				
-					when "000000" => -- R-Type
-						reg_dest <= '1'; 
-						reg_write <= '1'; 
-						pc_mux <= '1';
-			
 					when "100011" => -- LW
 						mem_to_reg <= '1';
 						alu_src <= '1';
 						reg_write <= '1'; 
-						mem_read <= '1'; 
+						-- mem_read <= '1'; 
 						
 						next_state <= stall;
 						
@@ -104,17 +108,54 @@ begin
 						jump <= '1';
 						pc_mux <= '1';
 
-					when others =>
-						null;
+					when others => -- R-Type
+						reg_dest <= '1'; 
+						reg_write <= '1'; 
+						pc_mux <= '1';
+						
 				end case;
 
 			when stall => 
+			
+				mem_read <= '0';
+				mem_write <= '0'; 
+				mem_to_reg <= '0'; 
+				reg_dest <= '0'; 
+				reg_write <= '0'; 
+				-- alu_op <= '0'; 
+				alu_src <= '0'; 
+				branch <= '0'; 
+				jump <= '0'; 
+				shift <= '0'; 
+				pc_mux <= '1';
+			
+				if opcode = "100011" then -- LW
+					mem_to_reg <= '1';
+						alu_src <= '1';
+						reg_write <= '1';
+				else -- SW
+					alu_src <= '1';
+						mem_write <= '1';
+				end if;
 				
 				next_state <= fetch;
-				pc_mux <= '1';
 				
 			when others =>
-				null;
+			
+			mem_read <= '0';
+				mem_write <= '0'; 
+				mem_to_reg <= '0'; 
+				reg_dest <= '0'; 
+				reg_write <= '0'; 
+				-- alu_op <= '0'; 
+				alu_src <= '0'; 
+				branch <= '0'; 
+				jump <= '0'; 
+				shift <= '0'; 
+				pc_mux <= '0';
+			
+				next_state <= fetch;
+				
 		end case;
 	end process;
 	
