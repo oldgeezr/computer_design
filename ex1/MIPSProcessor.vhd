@@ -90,75 +90,6 @@ architecture Behavioral of MIPSProcessor is
 	signal funct : std_logic_vector(5 downto 0);
 	signal alu_ctrl : std_logic_vector(3 downto 0);
 	
-	---------------------------------
-	-- Component Declarations
-	---------------------------------
-	
-	-- Control Unit
-	component control is
-		port (	-- Input
-					clk : in std_logic;
-					processor_enable : in std_logic;
-					opcode : in std_logic_vector(5 downto 0);
-					-- Output 
-					mem_read : out std_logic;
-					mem_write : out std_logic;
-					mem_to_reg : out std_logic;
-					reg_dest : out std_logic;
-					reg_write : out std_logic;
-					alu_op : out std_logic_vector(1 downto 0);
-					alu_src: out std_logic;
-					branch: out std_logic;
-					jump: out std_logic;
-					shift : out std_logic;
-					pc_mux : out std_logic);	
-	end component;
-	
-	-- ALU
-	component alu is
-		port(	-- Input
-				data_1:	in std_logic_vector(31 downto 0);
-				data_2:	in std_logic_vector(31 downto 0);
-				alu_ctrl: in std_logic_vector(3 downto 0);
-				-- Output
-				result:	out std_logic_vector(31 downto 0);
-				zero: out std_ulogic);
-	end component;
-				
-	-- Register
-	component registerfile is
-		port ( 	-- Input
-					clk : in  std_logic;
-					reset : in std_logic;
-					reg_write : in  std_logic;
-					read_reg_1 : in  std_logic_vector(4 downto 0);
-					read_reg_2 : in  std_logic_vector(4 downto 0);
-					write_reg : in  std_logic_vector(4 downto 0);
-					write_data : in  std_logic_vector(DATA_WIDTH-1 downto 0);
-					-- Output
-					read_data_1 : out  std_logic_vector(DATA_WIDTH-1 downto 0);
-					read_data_2 : out  std_logic_vector(DATA_WIDTH-1 downto 0));
-	end component;
-	
-	-- Program Counter
-	component program_counter is
-		port (	-- Input
-					clk : in  std_logic;
-					reset : in std_logic;
-					addr_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
-					-- Output
-					addr_out : out  std_logic_vector(DATA_WIDTH-1 downto 0));
-	end component;
-	
-	-- ALU Control
-	component alu_control is
-	port (	-- Input
-				alu_op : in std_logic_vector(1 downto 0);
-				funct : in std_logic_vector(5 downto 0);
-				-- Output
-				alu_ctrl : out std_logic_vector(3 downto 0));
-	end component;
-	
 begin
 
 	---------------------------------
@@ -166,7 +97,7 @@ begin
 	---------------------------------
 
 	-- Initialize the Control Unit
-	control_unit: control port map (	
+control_unit: 	entity work.control(fsm) port map (	
 		clk => clk,
 		processor_enable => processor_enable,
 		opcode => imem_data_in(31 downto 26),
@@ -183,7 +114,7 @@ begin
 		pc_mux => pc_mux);
 		
 	-- Initialize the ALU
-	alu_module : alu port map (	
+	alu_module : entity work.ALU(behavioral) port map (	
 		data_1 => read_data_1,
 		data_2 => alu_data_2,
 		alu_ctrl => alu_ctrl,
@@ -191,7 +122,7 @@ begin
 		zero => zero);
 								
 	-- Initialize the register file
-	register_file : registerfile port map (	
+	register_file : entity work.registerfile(Behavioral) port map (	
 		clk => clk,
 		reset => reset,
 		reg_write => reg_write,
@@ -203,14 +134,14 @@ begin
 		read_data_2 => read_data_2); 
 		
 	-- Initialize the program counter
-	pc : program_counter port map (
+	pc : entity work.program_counter(Behavioral) port map (
 		clk => clk,
 		reset => reset,
 		addr_in => pc_addr_in,
 		addr_out => pc_addr_out);
 		
 	-- Initialize the alu control
-	alu_control_module : alu_control port map (
+	alu_control_module : entity work.alu_control(arch) port map (
 		alu_op => alu_op,
 		funct => imem_data_in(5 downto 0),
 		alu_ctrl => alu_ctrl);
