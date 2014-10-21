@@ -44,6 +44,24 @@
 *_summary.xml
 *_usage.xml
 *_xst.xrpt
+*.exe
+*.asy
+*.ncf
+*.vcf
+*.vho
+*.nfs*
+*.sym
+*.tcl
+*.bak
+*.wdb
+*.ucf
+*.cgc
+*.cgp
+*.log
+*.rsp
+*.cmd
+*.ini
+*.v
 
 # project-wide generated files
 *.gise
@@ -58,4 +76,5 @@ xlnx_auto_0_xdb/
 xst/
 _ngo/
 _xmsgs/
+isim
 
