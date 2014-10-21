@@ -3,7 +3,6 @@
 *.gise
 *.xmsgs
 *.bgn
-*.bit
 *.bld
 *.cmd_log
 *.drc
