@@ -6,17 +6,16 @@
 -- MIPSProcessor.vhd
 -- The MIPS processor component to be used in Exercise 1 and 2.
 
--- TODO replace the architecture DummyArch with a working Behavioral
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity MIPSProcessor is
 	generic (
-		ADDR_WIDTH : integer := 8;
-		DATA_WIDTH : integer := 32;
-    OVERFLOW_EXECPTION : std_logic_vector(DATA_WIDTH-1 downto 0) := x"80000180";
+		ADDR_WIDTH          : integer := 8;
+		DATA_WIDTH          : integer := 32;
+    OVERFLOW_EXECPTION  : std_logic_vector(DATA_WIDTH-1 downto 0) := x"80000180";
+    FLUSH_EXCEPTION     : std_logic_vector(DATA_WIDTH-1 downto 0) := x"40000040"
 	);
 	port (
 		clk, reset                       : in std_logic;
@@ -44,6 +43,9 @@ architecture Behavioral of MIPSProcessor is
 	signal id_ex_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal id_ex_read_data_1            : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal id_ex_read_data_2            : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal id_ex_rd                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal id_ex_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal id_ex_sign_extend            : std_logic_vector(15 downto 0);
 	signal id_ex_lw_address             : std_logic_vector(15 downto 0);
 
@@ -64,8 +66,10 @@ architecture Behavioral of MIPSProcessor is
 	-- Signal Declarations
 	---------------------------------
 
+  -- Instruction Fetch
+	signal new_pc                       : std_logic_vector(ADDR_WIDTH-1 downto 0);
+
 	-- Jump/Branch mux out
-	signal new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal branch_sel                   : std_logic;
 	signal branch_or_pc_pluss_one       : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal shift_left                   : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -168,6 +172,24 @@ begin
 		alu_op                  => alu_op,
 		funct                   => imem_data_in(5 downto 0),
 		alu_ctrl                => alu_ctrl);
+
+  hazard_detection : entity work.hazard_detection_unit(rtl) port map (
+    id_ex_mem_write         => id_ex_mem_write,
+    if_id_rs                => if_id_rs,
+    id_ex_rt                => id_ex_rt,
+    pc_write                => pc_write,
+    if_id_write             => if_id_write,
+    stall                   => stall);
+
+  forwarding : entity work.forwarding_unit(rtl) port map (
+    id_ex_rs                => id_ex_rs,
+    id_ex_rt                => id_ex_rt,
+    ex_mem_rd               => ex_mem_rd,
+    mem_wb_rd               => mem_wb_rd,
+    ex_mem_reg_write        => ex_mem_reg_write,
+    mem_wb_reg_write        => mem_wb_reg_write,
+    forward_a               => forward_a,
+    forward_b               => forward_b);
 
 	---------------------------------
 	-- Main Curcuit
