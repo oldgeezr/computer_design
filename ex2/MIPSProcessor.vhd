@@ -12,10 +12,11 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity MIPSProcessor is
 	generic (
-		ADDR_WIDTH          : integer := 8;
-		DATA_WIDTH          : integer := 32;
-    OVERFLOW_EXECPTION  : std_logic_vector(DATA_WIDTH-1 downto 0) := x"80000180";
-    FLUSH_EXCEPTION     : std_logic_vector(DATA_WIDTH-1 downto 0) := x"40000040"
+		ADDR_WIDTH                       : integer := 8;
+		DATA_WIDTH                       : integer := 32;
+		REG_WIDTH                        : integer := 5;
+    OVERFLOW_EXECPTION               : std_logic_vector(DATA_WIDTH-1 downto 0) := x"80000180";
+    FLUSH_EXCEPTION                  : std_logic_vector(DATA_WIDTH-1 downto 0) := x"40000040"
 	);
 	port (
 		clk, reset                       : in std_logic;
@@ -40,27 +41,26 @@ architecture Behavioral of MIPSProcessor is
 	signal if_id_instruction            : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 	-- Instruction Decode/Execute
-	signal id_ex_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal id_ex_read_data_1            : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal id_ex_read_data_2            : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal id_ex_rd                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal id_ex_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal id_ex_sign_extend            : std_logic_vector(15 downto 0);
+	signal id_ex_sign_extend            : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal id_ex_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
+	signal id_ex_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
+	signal id_ex_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
 	signal id_ex_lw_address             : std_logic_vector(15 downto 0);
 
 	-- Execute/Memory
 	signal ex_mem_zero                  : std_logic;
 	signal ex_mem_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal ex_mem_read_data_2           : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal ex_mem_branch_addr           : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	-- signal ex_mem_branch_addr           : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal ex_mem_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal ex_mem_lw_address            : std_logic_vector(15 downto 0);
 
 	-- Memory/Writeback
-	signal mem_wb_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal mem_wb_read_dmem             : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal mem_wb_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal mem_wb_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal mem_wb_lw_address            : std_logic_vector(15 downto 0);
-
 
 	---------------------------------
 	-- Signal Declarations
@@ -68,6 +68,12 @@ architecture Behavioral of MIPSProcessor is
 
   -- Instruction Fetch
 	signal new_pc                       : std_logic_vector(ADDR_WIDTH-1 downto 0);
+
+  -- Instruction Decode
+  signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(26 downto 21);
+  signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(20 downto 16);
+  signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(15 downto 11);
+  signal id_lw_address                : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(15 downto 0);
 
 	-- Jump/Branch mux out
 	signal branch_sel                   : std_logic;
@@ -116,6 +122,24 @@ architecture Behavioral of MIPSProcessor is
 	-- ALU Control Signals
 	signal funct                        : std_logic_vector(5 downto 0);
 	signal alu_ctrl                     : std_logic_vector(3 downto 0);
+
+  -- Forwarding Unit Signals NOTE! Should probably remove some of these signals
+  signal id_ex_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal ex_mem_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal mem_wb_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal ex_mem_reg_write             : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal mem_wb_reg_write             : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal forward_a                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal forward_b                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+  -- Hazard Detection Unit Signals NOTE! Should probably remove some of these signals
+  signal id_ex_mem_write              : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal if_id_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal pc_write                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal if_id_write                  : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal stall                        : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
 
@@ -173,6 +197,7 @@ begin
 		funct                   => imem_data_in(5 downto 0),
 		alu_ctrl                => alu_ctrl);
 
+	-- Initialize the hazard detection unit
   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
     id_ex_mem_write         => id_ex_mem_write,
     if_id_rs                => if_id_rs,
@@ -181,6 +206,7 @@ begin
     if_id_write             => if_id_write,
     stall                   => stall);
 
+  -- Initialize the forwarding unit
   forwarding : entity work.forwarding_unit(rtl) port map (
     id_ex_rs                => id_ex_rs,
     id_ex_rt                => id_ex_rt,
@@ -215,20 +241,18 @@ begin
 	-- Instruction Decode
 	---------------------------------
 
-	-- Instruction to register
-	read_reg_1 <= imem_data_in(25 downto 21);
-	read_reg_2 <= imem_data_in(20 downto 16);
+	-- Branch adder
+  branch_addr <= std_logic_vector(unsigned(if_id_new_pc) + unsigned(sign_extend));
+
+	-- Addresses to register
+  read_reg_1          <= id_rs;
+  read_reg_2          <= id_rt; -- I think the mux enabled by the reg_dest signal is removed when pipelining
+  write_reg           <= mem_wb_rd;
+  write_data          <= -- data from the mux in the write back stage
 
 	-- Sign extend
-	sign_extend_bits <= (others => '0') when if_id_instruction = '0' else (others => '1'); -- Updated
-	sign_extend <= sign_extend_bits & if_id_instruction(15 downto 0); -- Updated
-
-	-- Shift left 16
-	shift_left <= imem_data_in(15 downto 0) & x"0000";
-	shift_left_or_sign_extend <= shift_left when shift = '1' else sign_extend;
-
-	-- Write register MUX
-	write_reg <= imem_data_in(15 downto 11) when reg_dest = '1' else imem_data_in(20 downto 16); -- Must be replaced
+	sign_extend_bits <= (others => '0') when if_id_instruction(15) = '0' else (others => '1');
+	sign_extend <= sign_extend_bits & if_id_instruction(15 downto 0);
 
 	---------------------------------
 	-- Execute
@@ -237,8 +261,6 @@ begin
 	-- ALU src MUX
 	alu_data_2 <= read_data_2 when alu_src = '0' else shift_left_or_sign_extend;
 
-	-- Branch adder
-	branch_addr <= std_logic_vector(unsigned(new_pc) + unsigned(shift_left_or_sign_extend));
 
 	-- Jump MUX
 	pc_addr <= jump_addr when jump = '1' else branch_or_pc_pluss_one;
@@ -274,21 +296,30 @@ begin
 			-- Do the reset thingy
 		else
 
-			-- Trying to pass the registers. Assuming VHDLs doesnt update signals to fast
-
-			-- Execute/Memory
-			ex_mem_branch_addr <=
-
-			-- Instruction Decode/Execute
-			id_ex_new_pc 		<= if_id_new_pc;
-			id_ex_lw_address 	<= id_if_instruction(15 downto 0);
-			id_ex_sign_extend <= sign_extend;
-			id_ex_read_data_1 <= read_data_1;
-			id_ex_read_data_2 <= read_data_2;
-
 			-- Instruction Fetch/Decode
 			if_id_new_pc 		  <= new_pc;
 			if_id_instruction <= imem_data_in;
+
+			-- Instruction Decode/Execute
+			id_ex_read_data_1 <= read_data_1;
+			id_ex_read_data_2 <= read_data_2;
+			id_ex_sign_extend <= sign_extend;
+      id_ex_rs          <= id_rs;
+      id_ex_rt          <= id_rt;
+      id_ex_rd          <= id_rd;
+			id_ex_lw_address 	<= id_lw_address;
+
+			-- Execute/Memory
+      ex_mem_zero       <= zero;
+      ex_mem_alu_result <= alu_result;
+      ex_mem_rd         <= -- from the mux here
+      ex_mem_lw_address <= id_ex_lw_address;
+
+      -- Memory/Write Back
+      mem_wb_read_dmem  <= dmem_data_in;
+      mem_wb_alu_result <= ex_mem_alu_result;
+      mem_wb_rd         <= ex_mem_rd;
+      mem_wb_lw_address <= ex_mem_lw_address;
 
 		end if;
 	end process;
