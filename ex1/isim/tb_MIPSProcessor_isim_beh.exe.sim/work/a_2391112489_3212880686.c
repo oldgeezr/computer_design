@@ -21,7 +21,7 @@
 #include <malloc.h>
 #define alloca _alloca
 #endif
-static const char *ng0 = "/opt/dmlab/home/victoriv/computer_design/ex1/registerfile.vhd";
+static const char *ng0 = "/opt/dmlab/home/chriram/Documents/computer_design/ex1/registerfile.vhd";
 extern char *IEEE_P_1242562249;
 extern char *IEEE_P_2592010699;
 
@@ -53,7 +53,7 @@ LAB3:    t1 = (t0 + 1420U);
     t2 = *((char **)t1);
     t1 = (t0 + 868U);
     t3 = *((char **)t1);
-    t1 = (t0 + 5012U);
+    t1 = (t0 + 5164U);
     t4 = ieee_p_1242562249_sub_1657552908_1035706684(IEEE_P_1242562249, t3, t1);
     t5 = (t4 - 31);
     t6 = (t5 * -1);
@@ -101,7 +101,7 @@ LAB3:    t1 = (t0 + 1420U);
     t2 = *((char **)t1);
     t1 = (t0 + 960U);
     t3 = *((char **)t1);
-    t1 = (t0 + 5028U);
+    t1 = (t0 + 5180U);
     t4 = ieee_p_1242562249_sub_1657552908_1035706684(IEEE_P_1242562249, t3, t1);
     t5 = (t4 - 31);
     t6 = (t5 * -1);
@@ -216,7 +216,7 @@ LAB9:    xsi_set_current_line(69, ng0);
     t7 = *((char **)t2);
     t2 = (t0 + 1052U);
     t10 = *((char **)t2);
-    t2 = (t0 + 5044U);
+    t2 = (t0 + 5196U);
     t15 = ieee_p_1242562249_sub_1657552908_1035706684(IEEE_P_1242562249, t10, t2);
     t16 = (t15 - 31);
     t6 = (t16 * -1);
