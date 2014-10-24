@@ -38,7 +38,11 @@ architecture Behavioral of MIPSProcessor is
 
 	-- Instruction Fetch/Decode
 	signal if_id_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
-	signal if_id_instruction            : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal if_id_opcode                       : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal if_id_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal if_id_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal if_id_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal if_id_address                : std_logic_vector(15 downto 0);
 
 	-- Instruction Decode/Execute
 	signal id_ex_read_data_1            : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -70,25 +74,20 @@ architecture Behavioral of MIPSProcessor is
 	signal new_pc                       : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
 	-- Instruction Decode
-	signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
-	signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
-	signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
+	signal opcode                       : std_logic_vector(5 downto 0) := if_id_instruction(32 downto 26);
+	signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(25 downto 21);
+	signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(20 downto 16);
+	signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(15 downto 11);
 	signal id_lw_address                : std_logic_vector(15 downto 0);
-
-	-- Instruction Decode
-	-- signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(25 downto 21);
-	-- signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(20 downto 16);
-	-- signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(15 downto 11);
-	-- signal id_lw_address                : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(15 downto 0);
+	signal branch_addr                  : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal sign_extend_bits             : std_logic_vector(15 downto 0);
+	signal sign_extend                  : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 	-- Jump/Branch mux out
 	signal branch_sel                   : std_logic;
 	signal branch_or_pc_pluss_one       : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal shift_left                   : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal sign_extend                  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal shift_left_or_sign_extend    : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal sign_extend_bits             : std_logic_vector(15 downto 0);
-	signal branch_addr                  : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal jump_addr                    : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal next_pc                      : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal pc_addr                      : std_logic_vector(DATA_WIDTH-1 downto 0); -- No longer needed
@@ -157,7 +156,7 @@ begin
 	control_unit: 	entity work.control(fsm) port map (
 		clk                     => clk,
 		processor_enable        => processor_enable, -- Excess.
-		opcode                  => imem_data_in(31 downto 26),
+		opcode                  => opcode,
 		mem_read                => mem_read, -- Excess. !mem_write TODO: remove
 		mem_write               => dmem_write_enable,
 		mem_to_reg              => mem_to_reg,
@@ -264,38 +263,33 @@ begin
 	-- Execute
 	---------------------------------
 
-	-- ALU src MUX
-	alu_data_2 <= read_data_2 when alu_src = '0' else shift_left_or_sign_extend;
+  -- Destination register  MUX
+  ex_rd <= id_ex_rd when reg_dest = '1' else id_ex_rt;
 
+  -- ALU data_1 MUX NOTE! BUT WHERE DO WE USE THE SIGNEXTEND
+  with forward_a select
+    alu_data_1 <=  wb_write_data when "00",
+                   mem_wb_alu_result when "01",
+                   read_reg_1 when others;
 
-	-- Jump MUX
-	pc_addr <= jump_addr when jump = '1' else branch_or_pc_pluss_one;
+  -- ALU data_2 MUX
+  with forward_b select
+    alu_data_2 <=  wb_write_data when "00",
+                   mem_wb_alu_result when "01",
+                   read_reg_2 when others;
 
 	---------------------------------
 	-- Memory
 	---------------------------------
 
-	-- Alu to mem MOVE THIS ONE
-	dmem_address <= alu_result(ADDR_WIDTH-1 downto 0);
-	dmem_data_out <= read_data_2;
 
-
-
-	-- Branch if zero
-	branch_sel <= branch and zero;
-
-	-- Branch MUX
-	-- branch_or_pc_pluss_one <= branch_addr when branch_sel = '1' else new_pc;
 
 	---------------------------------
 	-- Write Back
 	---------------------------------
 
-	-- Jump address
-	-- jump_addr <= new_pc & imem_data_in(25 downto 0);
-
 	-- Mem to reg MUX
-	write_data <= dmem_data_in when mem_to_reg = '1' else alu_result;
+	wb_write_data <= dmem_data_in when mem_to_reg = '1' else mem_wb_alu_result;
 
 	stage_registers : process (clk, reset)
 	begin
@@ -304,8 +298,14 @@ begin
 		else
 
 			-- Instruction Fetch/Decode
-			if_id_new_pc 		  <= new_pc;
-			if_id_instruction <= imem_data_in;
+      if_id_new_pc      <= new_pc;
+      opcode            <=
+      if_id_rs
+      if_id_rt
+      if_id_rd
+      if_id_address
+
+
 
 			-- Instruction Decode/Execute
 			id_ex_read_data_1 <= read_data_1;
@@ -319,7 +319,7 @@ begin
 			-- Execute/Memory
       ex_mem_zero       <= zero;
       ex_mem_alu_result <= alu_result;
-      -- ex_mem_rd         <= -- from the mux here
+      ex_mem_rd         <= ex_rd; -- from the mux here
       ex_mem_lw_address <= id_ex_lw_address;
 
       -- Memory/Write Back
