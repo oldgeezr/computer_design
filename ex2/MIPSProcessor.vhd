@@ -74,7 +74,7 @@ architecture Behavioral of MIPSProcessor is
 	signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
 	signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
 	signal id_lw_address                : std_logic_vector(15 downto 0);
-	
+
 	-- Instruction Decode
 	-- signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(25 downto 21);
 	-- signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0) := if_id_instruction(20 downto 16);
@@ -88,7 +88,7 @@ architecture Behavioral of MIPSProcessor is
 	signal sign_extend                  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal shift_left_or_sign_extend    : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal sign_extend_bits             : std_logic_vector(15 downto 0);
-	signal branch_addr                  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal branch_addr                  : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal jump_addr                    : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal next_pc                      : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal pc_addr                      : std_logic_vector(DATA_WIDTH-1 downto 0); -- No longer needed
@@ -236,8 +236,8 @@ begin
 
 	-- PC MUX
   with pc_src select
-    pc_addr_in <= branch_addr(ADDR_WIDTH-1 downto 0) when "10",
-                  OVERFLOW_EXECPTION(ADDR_WIDTH-1 downto 0) when "01",
+    pc_addr_in <= branch_addr when "10",
+                  OVERFLOW_EXECPTION(ADDR_WIDTH-1 downto 0) when "01", -- NOTE THAT WE ONLY USE THE 8 LSB
                   new_pc when others;
 
 	-- Pass PC to IM
@@ -248,13 +248,13 @@ begin
 	---------------------------------
 
 	-- Branch adder
-  branch_addr <= std_logic_vector(unsigned(if_id_new_pc) + unsigned(sign_extend));
+  branch_addr <= std_logic_vector(unsigned(if_id_new_pc(ADDR_WIDTH-1 downto 0)) + unsigned(sign_extend(ADDR_WIDTH-1 downto 0)));
 
 	-- Addresses to register
   read_reg_1          <= id_rs;
   read_reg_2          <= id_rt; -- I think the mux enabled by the reg_dest signal is removed when pipelining
   write_reg           <= mem_wb_rd;
-  -- write_data          <= -- data from the mux in the write back stage
+  write_data          <= wb_write_data;-- data from the mux in the write back stage
 
 	-- Sign extend
 	sign_extend_bits <= (others => '0') when if_id_instruction(15) = '0' else (others => '1');
