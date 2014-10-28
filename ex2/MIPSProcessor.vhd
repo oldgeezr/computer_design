@@ -32,38 +32,38 @@ end MIPSProcessor;
 
 architecture Behavioral of MIPSProcessor is
 
-  ---------------------------------
-  -- Register Declarations
-  ---------------------------------
+ -- ---------------------------------
+ -- -- Register Declarations
+ -- ---------------------------------
 
-  -- Instruction Fetch/Decode
-  signal if_id_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal if_id_opcode                 : std_logic_vector(5 downto 0);
-  signal if_id_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal if_id_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal if_id_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal if_id_address                : std_logic_vector(15 downto 0);
+ -- -- Instruction Fetch/Decode
+ -- signal if_id_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
+ -- signal if_id_opcode                 : std_logic_vector(5 downto 0);
+ -- signal if_id_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal if_id_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal if_id_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal if_id_address                : std_logic_vector(15 downto 0);
 
-  -- Instruction Decode/Execute
-  signal id_ex_read_data_1            : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal id_ex_read_data_2            : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal id_ex_sign_extend            : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal id_ex_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_ex_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_ex_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_ex_address                : std_logic_vector(15 downto 0);
+ -- -- Instruction Decode/Execute
+ -- signal id_ex_read_data_1            : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- signal id_ex_read_data_2            : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- signal id_ex_sign_extend            : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- signal id_ex_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal id_ex_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal id_ex_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal id_ex_address                : std_logic_vector(15 downto 0);
 
-  -- Execute/Memory
-  signal ex_mem_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
-  -- signal ex_mem_branch_addr           : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal ex_mem_rd                    : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_mem_address               : std_logic_vector(15 downto 0);
+ -- -- Execute/Memory
+ -- signal ex_mem_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- -- signal ex_mem_branch_addr           : std_logic_vector(ADDR_WIDTH-1 downto 0);
+ -- signal ex_mem_rd                    : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal ex_mem_address               : std_logic_vector(15 downto 0);
 
-  -- Memory/Writeback
-  signal mem_wb_read_dmem             : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal mem_wb_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal mem_wb_rd                    : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal mem_wb_address               : std_logic_vector(15 downto 0);
+ -- -- Memory/Writeback
+ -- signal mem_wb_read_dmem             : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- signal mem_wb_alu_result            : std_logic_vector(DATA_WIDTH-1 downto 0);
+ -- signal mem_wb_rd                    : std_logic_vector(REG_WIDTH-1 downto 0);
+ -- signal mem_wb_address               : std_logic_vector(15 downto 0);
 
   ---------------------------------
   -- Signal Declarations
@@ -231,24 +231,13 @@ begin
     reset                   => reset,
     new_pc                  => new_pc,
     opcode                  => opcode,
-    if_rs                   => if_rs,
-    if_rt                   => if_rt,
-    if_rd                   => if_rd,
     if_address              => if_address,
     read_data_1             => read_data_1,
     read_data_2             => read_data_2,
     sign_extend             => sign_extend,
-    if_id_rs                => if_id_rs,
-    if_id_rt                => if_id_rt,
-    if_id_rd                => if_id_rd,
-    if_id_address           => if_id_address,
     alu_result              => alu_result,
     ex_rd                   => ex_rd,
-    id_ex_address           => id_ex_address,
-    dmem_data_in            => dmem_data_in,
-    ex_mem_alu_result       => ex_mem_alu_result,
-    ex_mem_rd               => ex_mem_rd,
-    ex_mem_address          => ex_mem_address);
+    dmem_data_in            => dmem_data_in);
 
   -- *************************** --
   -- Main Curcuit

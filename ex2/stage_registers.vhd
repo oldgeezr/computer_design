@@ -9,27 +9,19 @@ entity stage_registers is
   );
   port (
     clk                 : in std_logic;
-    reset               : in std_logic;
-    new_pc              : in std_logic_vector(ADDR_WIDTH-1 downto 0);
-    opcode              : in std_logic_vector(5 downto 0);
-    if_rs               : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_rt               : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_rd               : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_address          : in std_logic_vector(15 downto 0);
-    read_data_1         : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    read_data_2         : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    sign_extend         : in std_logic_vector(15 downto 0);
-    if_id_rs            : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_id_rt            : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_id_rd            : in std_logic_vector(REG_WIDTH-1 downto 0);
-    if_id_address       : in std_logic_vector(15 downto 0);
-    alu_result          : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    ex_rd               : in std_logic_vector(REG_WIDTH-1 downto 0);
-    id_ex_address       : in std_logic_vector(15 downto 0);
-    dmem_data_in        : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    ex_mem_alu_result   : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    ex_mem_rd           : in std_logic_vector(REG_WIDTH-1 downto 0);
-    ex_mem_address      : in std_logic_vector(15 downto 0)
+    reset,              : in std_logic;
+    new_pc,             : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+    opcode,             : in std_logic_vector(5 downto 0);
+    if_rs,              : in std_logic_vector(REG_WIDTH-1 downto 0);
+    if_rt,              : in std_logic_vector(REG_WIDTH-1 downto 0);
+    if_rd,              : in std_logic_vector(REG_WIDTH-1 downto 0);
+    if_address,         : in std_logic_vector(15 downto 0);
+    read_data_1,        : in std_logic_vector(DATA_WIDTH-1 downto 0);
+    read_data_2,        : in std_logic_vector(DATA_WIDTH-1 downto 0);
+    sign_extend,        : in std_logic_vector(15 downto 0);
+    alu_result,         : in std_logic_vector(DATA_WIDTH-1 downto 0);
+    ex_rd,              : in std_logic_vector(REG_WIDTH-1 downto 0);
+    dmem_data_in,       : in std_logic_vector(DATA_WIDTH-1 downto 0)
   );
 end entity;
 
