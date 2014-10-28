@@ -56,7 +56,7 @@ begin
 		if reset = '1' then
 			pc <= (others => '0');
 		else
-			if(rising_edge(clk) and enable) then
+			if(rising_edge(clk) and enable = '1') then
 				pc <= addr_in;
 			end if;
 		end if;

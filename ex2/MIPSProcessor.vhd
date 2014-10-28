@@ -38,7 +38,7 @@ architecture Behavioral of MIPSProcessor is
 
   -- Instruction Fetch/Decode
   signal if_id_new_pc                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal if_id_opcode                 : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal if_id_opcode                 : std_logic_vector(5 downto 0);
   signal if_id_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
   signal if_id_rt                     : std_logic_vector(REG_WIDTH-1 downto 0);
   signal if_id_rd                     : std_logic_vector(REG_WIDTH-1 downto 0);
@@ -71,19 +71,25 @@ architecture Behavioral of MIPSProcessor is
 
   -- Instruction Fetch
   signal new_pc                       : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal opcode                       : std_logic_vector(5 downto 0) := imem_data_in(32 downto 26);
+  signal opcode                       : std_logic_vector(5 downto 0) := imem_data_in(31 downto 26);
   signal if_rs                        : std_logic_vector(REG_WIDTH-1 downto 0) := imem_data_in(25 downto 21);
   signal if_rt                        : std_logic_vector(REG_WIDTH-1 downto 0) := imem_data_in(20 downto 16);
   signal if_rd                        : std_logic_vector(REG_WIDTH-1 downto 0) := imem_data_in(15 downto 11);
-  signal if_address                : std_logic_vector(15 downto 0);
+  signal if_address                   : std_logic_vector(15 downto 0);
 
   -- Instruction Decode
   signal branch_addr                  : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal jump_addr                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal jump_addr                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal result                       : unsigned(DATA_WIDTH-1 downto 0);
   signal zero                         : std_ulogic;
   signal sign_extend_bits             : std_logic_vector(15 downto 0);
   signal sign_extend                  : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+  -- Execute
+  signal ex_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
+
+  -- Write Back
+  signal wb_write_data                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   -- Jump/Branch mux out
   signal branch_sel                   : std_logic;
@@ -92,10 +98,8 @@ architecture Behavioral of MIPSProcessor is
   signal shift_left_or_sign_extend    : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal next_pc                      : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal pc_addr                      : std_logic_vector(DATA_WIDTH-1 downto 0); -- No longer needed
-  signal pc_src                       : std_logic_vector(1 downto 0); -- Change to correct signal
 
   -- Control Unit Signals
-  signal opcode                       : std_logic_vector(5 downto 0);
   signal mem_read                     : std_logic; -- Excess. !mem_write TODO: remove
   signal mem_write                    : std_logic;
   signal mem_to_reg                   : std_logic;
@@ -105,6 +109,7 @@ architecture Behavioral of MIPSProcessor is
   signal branch                       : std_logic;
   signal jump                         : std_logic;
   signal shift                        : std_logic;
+  signal pc_src                       : std_logic_vector(1 downto 0);
 
   -- ALU Signals
   signal alu_data_1                   : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -113,9 +118,9 @@ architecture Behavioral of MIPSProcessor is
 
   -- Register Signals
   signal reg_write                    : std_logic;
-  signal read_reg_1                   : std_logic_vector(4 downto 0);
-  signal read_reg_2                   : std_logic_vector(4 downto 0);
-  signal write_reg                    : std_logic_vector(4 downto 0);
+  signal read_reg_1                   : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal read_reg_2                   : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal write_reg                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal write_data                   : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal read_data_1                  : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal read_data_2                  : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -141,7 +146,6 @@ architecture Behavioral of MIPSProcessor is
 
   -- Hazard Detection Unit Signals NOTE! Should probably remove some of these signals
   signal id_ex_mem_write              : std_logic;
-  signal if_id_rs                     : std_logic_vector(REG_WIDTH-1 downto 0);
   -- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal pc_write                     : std_logic;
   signal if_id_write                  : std_logic;
@@ -254,8 +258,8 @@ begin
   jump_addr <= if_id_address(ADDR_WIDTH-1 downto 0);
 
   -- Addresses to register
-  read_reg_1          <= id_rs;
-  read_reg_2          <= id_rt; -- I think the mux enabled by the reg_dest signal is removed when pipelining
+  read_reg_1          <= if_id_rs;
+  read_reg_2          <= if_id_rt; -- I think the mux enabled by the reg_dest signal is removed when pipelining
   write_reg           <= mem_wb_rd;
   write_data          <= wb_write_data;-- data from the mux in the write back stage
 
@@ -266,8 +270,8 @@ begin
             '0' when others;
 
   -- Sign extend
-  sign_extend_bits <= (others => '0') when if_id_instruction(15) = '0' else (others => '1');
-  sign_extend <= sign_extend_bits & if_id_instruction(15 downto 0);
+  sign_extend_bits <= (others => '0') when if_id_address(15) = '0' else (others => '1');
+  sign_extend <= sign_extend_bits & if_id_address;
 
   ---------------------------------
   -- Execute
@@ -283,13 +287,13 @@ begin
   with forward_a select
     alu_data_1 <=  wb_write_data when "00",
                    mem_wb_alu_result when "01",
-                   read_reg_1 when others;
+                   read_data_1 when others;
 
   -- ALU data_2 MUX
   with forward_b select
     alu_data_2 <=  wb_write_data when "00",
                    mem_wb_alu_result when "01",
-                   read_reg_2 when others;
+                   read_data_2 when others;
 
   ---------------------------------
   -- Memory
@@ -307,7 +311,28 @@ begin
   ---------------------------------
   -- Stage Registers
   ---------------------------------
-  stage_registers : process (clk, reset)
+  stage_registers : process ( clk, reset,
+                              new_pc,
+                              opcode,
+                              if_rs,
+                              if_rt,
+                              if_rd,
+                              if_address,
+                              read_data_1,
+                              read_data_2,
+                              sign_extend,
+                              if_id_rs,
+                              if_id_rt,
+                              if_id_rd,
+                              if_id_address,
+                              alu_result,
+                              ex_rd,
+                              id_ex_address,
+                              dmem_data_in,
+                              ex_mem_alu_result,
+                              ex_mem_rd,
+                              ex_mem_address
+    )
   begin
     if reset = '1' then
       -- Do the reset thingy

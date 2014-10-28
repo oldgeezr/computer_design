@@ -25,8 +25,6 @@ process(data_1,data_2,alu_ctrl)
 
 begin
 
-zero <= '0';
-
 case alu_ctrl is
 	 when "0000" =>
 		result <= data_1 and data_2;
