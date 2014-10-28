@@ -2,6 +2,11 @@ library ieee;
 use ieee.STD_LOGIC_1164.all;
 
 entity stage_registers is
+  generic (
+    ADDR_WIDTH          : integer := 8;
+    DATA_WIDTH          : integer := 32;
+    REG_WIDTH           : integer := 5;
+  )
   port (
     clk                 : in std_logic;
     reset               : in std_logic;
