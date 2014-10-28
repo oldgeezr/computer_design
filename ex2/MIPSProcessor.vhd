@@ -118,9 +118,9 @@ architecture Behavioral of MIPSProcessor is
 
   -- Register Signals
   signal reg_write                    : std_logic;
-  signal read_reg_1                   : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal read_reg_2                   : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal write_reg                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal read_reg_1                   : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal read_reg_2                   : std_logic_vector(REG_WIDTH-1 downto 0);
+  signal write_reg                    : std_logic_vector(REG_WIDTH-1 downto 0);
   signal write_data                   : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal read_data_1                  : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal read_data_2                  : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -337,35 +337,35 @@ begin
     if reset = '1' then
       -- Do the reset thingy
     else
+      if (rising_edge(clk)) then
+        -- Instruction Fetch/Decode
+        if_id_new_pc      <= new_pc;
+        if_id_opcode      <= opcode;
+        if_id_rs          <= if_rs;
+        if_id_rt          <= if_rt;
+        if_id_rd          <= if_rd;
+        if_id_address     <= if_address;
 
-      -- Instruction Fetch/Decode
-      if_id_new_pc      <= new_pc;
-      if_id_opcode      <= opcode;
-      if_id_rs          <= if_rs;
-      if_id_rt          <= if_rt;
-      if_id_rd          <= if_rd;
-      if_id_address     <= if_address;
+        -- Instruction Decode/Execute
+        id_ex_read_data_1 <= read_data_1;
+        id_ex_read_data_2 <= read_data_2;
+        id_ex_sign_extend <= sign_extend;
+        id_ex_rs          <= if_id_rs;
+        id_ex_rt          <= if_id_rt;
+        id_ex_rd          <= if_id_rd;
+        id_ex_address     <= if_id_address;
 
-      -- Instruction Decode/Execute
-      id_ex_read_data_1 <= read_data_1;
-      id_ex_read_data_2 <= read_data_2;
-      id_ex_sign_extend <= sign_extend;
-      id_ex_rs          <= if_id_rs;
-      id_ex_rt          <= if_id_rt;
-      id_ex_rd          <= if_id_rd;
-      id_ex_address     <= if_id_address;
+        -- Execute/Memory
+        ex_mem_alu_result <= alu_result;
+        ex_mem_rd         <= ex_rd; -- from the mux here
+        ex_mem_address    <= id_ex_address;
 
-      -- Execute/Memory
-      ex_mem_alu_result <= alu_result;
-      ex_mem_rd         <= ex_rd; -- from the mux here
-      ex_mem_address    <= id_ex_address;
-
-      -- Memory/Write Back
-      mem_wb_read_dmem  <= dmem_data_in;
-      mem_wb_alu_result <= ex_mem_alu_result;
-      mem_wb_rd         <= ex_mem_rd;
-      mem_wb_address    <= ex_mem_address;
-
+        -- Memory/Write Back
+        mem_wb_read_dmem  <= dmem_data_in;
+        mem_wb_alu_result <= ex_mem_alu_result;
+        mem_wb_rd         <= ex_mem_rd;
+        mem_wb_address    <= ex_mem_address;
+      end if;
     end if;
   end process;
 
