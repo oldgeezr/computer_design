@@ -16,4 +16,17 @@ end entity;
 architecture rtl of hazard_detection_unit is
 begin
 
+process(id_ex_mem_write,if_id_rs,id_ex_rt)
+
+begin
+
+if (ID/EX.MemRead and ((id_ex_rt = if_id_rs) or (id_ex_rt = IF/ID.RegisterRt))) then
+	stall <= '1';
+else 
+	stall <= '0';
+end if;
+
+
+end process;
+
 end architecture;

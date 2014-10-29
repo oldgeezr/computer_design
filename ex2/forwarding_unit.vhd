@@ -18,4 +18,31 @@ end entity;
 architecture rtl of forwarding_unit is
 begin
 
+process(id_ex_rs,id_ex_rt,ex_mem_rd,mem_wb_rd,ex_mem_reg_write,mem_wb_reg_write)
+
+begin 
+
+forward_a <= "00";
+forward_b <= "00";
+
+if((ex_mem_reg_write = '1') and (ex_mem_rd /= "00000")) then
+	if(ex_mem_rd = id_ex_rs) then
+		forward_a <= "10";
+	end if;
+	if(ex_mem_rd = id_ex_rt) then
+		forward_b <= "10";
+	end if;
+end if;
+
+if((mem_wb_reg_write = '1') and (mem_wb_rd /= "00000")) then
+	if(mem_wb_rd = id_ex_rs) then
+		forward_a <= "01";
+	end if;
+	if(mem_wb_rd = id_ex_rt) then
+		forward_b <= "01";
+	end if;
+end if;
+
+end process;
+
 end architecture;
