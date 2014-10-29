@@ -7,7 +7,7 @@ entity mem_wb_control_reg is
     reset           : in std_logic;
     reg_write_in    : in std_logic;
     mem_to_reg_in   : in std_logic;
-    mem_to_reg_out  : in std_logic;
+    mem_to_reg_out  : out std_logic;
     reg_write_out   : out std_logic
   );
 end entity;

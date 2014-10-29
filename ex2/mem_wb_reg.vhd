@@ -46,12 +46,12 @@ begin
   rd_out                <= rd;
   address_out           <= address;
 
-  process (clk, reset, dmem_data_in, alu_result_in, rd_in, address_in) begin
+  process (clk, reset, dmem_in, alu_result_in, rd_in, address_in) begin
     if reset = '1' then
       -- Do the reset thingy
     else
       if rising_edge(clk) then
-        dmem       <= dmem_data_in;
+        dmem       <= dmem_in;
         alu_result <= alu_result_in;
         rd         <= rd_in;
         address    <= address_in;

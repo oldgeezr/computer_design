@@ -31,6 +31,7 @@ begin
 
   clk <= not clk after clkperiod/2;
 
+  reset         <= '0';
   reg_write_in  <= '1' after clkperiod*2;
   mem_to_reg_in <= '1' after clkperiod*2;
   dmem_in       <= x"11110000" after clkperiod*2;
