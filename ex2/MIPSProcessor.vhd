@@ -188,6 +188,7 @@ begin
   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
     id_ex_mem_write         => id_ex_mem_write,
     if_id_rs                => id_rs,
+    if_id_rt                => id_rt,
     id_ex_rt                => id_ex_rt,
     pc_write                => pc_write,
     if_id_write             => if_id_write,

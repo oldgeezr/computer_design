@@ -7,6 +7,7 @@ entity hazard_detection_unit is
   port(
       id_ex_mem_write    : in std_logic; -- Think this should be std_logic and active low
       if_id_rs           : in std_logic_vector(REG_WIDTH-1 downto 0);
+      if_id_rt           : in std_logic_vector(REG_WIDTH-1 downto 0);
       id_ex_rt           : in std_logic_vector(REG_WIDTH-1 downto 0);
       pc_write           : out std_logic;
       if_id_write        : out std_logic;
@@ -21,9 +22,9 @@ process(id_ex_mem_write,if_id_rs,id_ex_rt)
 begin
 
 if (ID/EX.MemRead and ((id_ex_rt = if_id_rs) or (id_ex_rt = IF/ID.RegisterRt))) then
-	stall <= '1';
-else 
-	stall <= '0';
+  stall <= '1';
+else
+  stall <= '0';
 end if;
 
 
