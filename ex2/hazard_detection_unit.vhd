@@ -21,7 +21,7 @@ process(id_ex_mem_write,if_id_rs,id_ex_rt)
 
 begin
 
-if (ID/EX.MemRead and ((id_ex_rt = if_id_rs) or (id_ex_rt = IF/ID.RegisterRt))) then
+  if (id_ex_mem_write = '0' and ((id_ex_rt = if_id_rs) or (id_ex_rt = if_id_rt))) then
   stall <= '1';
 else
   stall <= '0';

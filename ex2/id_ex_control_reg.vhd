@@ -26,7 +26,8 @@ begin
   alu_src_out  <= alu_src;
   alu_op_out   <= alu_op;
 
-  process (clk, reset, reg_dest_in, alu_src_in, alu_op_in) begin
+  process (clk, reset, reg_dest_in, alu_src_in, alu_op_in) is
+  begin
     if reset = '1' then
       -- Do the reset thingy
     else
@@ -36,5 +37,6 @@ begin
         alu_op   <= alu_op_in;
       end if;
     end if;
+  end process;
 
 end architecture;

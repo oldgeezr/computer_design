@@ -139,7 +139,7 @@ begin
   control_unit:   entity work.control(fsm) port map (
     clk                     => clk,
     processor_enable        => processor_enable,
-    opcode                  => opcode,
+    opcode                  => id_opcode,
     mem_write               => dmem_write_enable,
     mem_to_reg              => mem_to_reg,
     reg_dest                => reg_dest,
@@ -189,7 +189,7 @@ begin
     id_ex_mem_write         => id_ex_mem_write,
     if_id_rs                => id_rs,
     if_id_rt                => id_rt,
-    id_ex_rt                => id_ex_rt,
+    id_ex_rt                => ex_rt,
     pc_write                => pc_write,
     if_id_write             => if_id_write,
     stall                   => stall);
@@ -224,18 +224,18 @@ begin
   ID_EX : entity work.id_ex_reg(rtl) port map (
     clk              => clk,
     reset            => reset,
-    reg_write_in     => reg_write_in, -- control signal
-    reg_write_out    => reg_write_out, -- control signal
-    mem_to_reg_in    => mem_to_reg_in, -- control signal
-    mem_to_reg_out   => mem_to_reg_out, -- control signal
-    mem_write_in     => mem_write_in, -- control signal
-    mem_write_out    => mem_write_out, -- control signal
-    reg_dest_in      => reg_dest_in, -- control signal
-    reg_dest_out     => reg_dest_out, -- control signal
-    alu_src_in       => alu_src_in, -- control signal
-    alu_src_out      => alu_src_out, -- control signal
-    alu_op_in        => alu_op_in, -- control signal
-    alu_op_out       => alu_op_out, -- control signal
+    reg_write_in     => id_reg_write, -- updated
+    reg_write_out    => ex_reg_write, -- updated
+    mem_to_reg_in    => id_mem_to_reg, -- updated
+    mem_to_reg_out   => ex_mem_to_reg, -- updated
+    mem_write_in     => id_mem_write, -- updated
+    mem_write_out    => ex_mem_write, -- updated
+    reg_dest_in      => id_reg_dest, -- updated
+    reg_dest_out     => ex_reg_dest, -- updated
+    alu_src_in       => id_alu_src, -- updated
+    alu_src_out      => ex_alu_src, -- updated
+    alu_op_in        => id_alu_op, -- updated
+    alu_op_out       => ex_alu_op, -- updated
     data_1_in        => read_data_1, -- updated
     data_1_out       => ex_data_1, -- updated
     data_2_in        => read_data_2, -- updated
@@ -254,12 +254,12 @@ begin
   EX_MEM : entity work.ex_mem_reg(rtl) port map (
     clk             => clk,
     reset           => reset,
-    reg_write_in    => reg_write_in, -- control signal
-    reg_write_out   => reg_write_out, -- control signal
-    mem_to_reg_in   => mem_to_reg_in, -- control signal
-    mem_to_reg_out  => mem_to_reg_out, -- control signal
-    mem_write_in    => mem_write_in, -- control signal
-    mem_write_out   => mem_write_out, -- control signal
+    reg_write_in    => ex_reg_write, -- updated
+    reg_write_out   => mem_reg_write, -- updated
+    mem_to_reg_in   => ex_mem_to_reg, -- updated
+    mem_to_reg_out  => mem_mem_to_reg, -- updated
+    mem_write_in    => ex_mem_write, -- updated
+    mem_write_out   => mem_mem_write, -- updated
     alu_result_in   => alu_result, -- updated
     alu_result_out  => mem_alu_result, -- updated
     rd_in           => ex_to_mem_rd, -- updated
@@ -270,10 +270,10 @@ begin
   MEM_WB : entity work.mem_wb_reg(rtl) port map (
     clk             => clk,
     reset           => reset,
-    reg_write_in    => reg_write_in, -- control signal
-    reg_write_out   => reg_write_out, -- control signal
-    mem_to_reg_in   => mem_to_reg_in, -- control signal
-    mem_to_reg_out  => mem_to_reg_out, -- control signal
+    reg_write_in    => mem_reg_write, -- updated
+    reg_write_out   => wb_reg_write, -- updated
+    mem_to_reg_in   => mem_mem_to_reg, -- updated
+    mem_to_reg_out  => wb_mem_to_reg, -- updated
     dmem_in         => dmem_data_out, -- updated
     dmem_out        => wb_dmem_data, -- updated
     alu_result_in   => mem_alu_result, -- updated

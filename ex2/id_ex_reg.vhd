@@ -9,6 +9,7 @@ entity id_ex_reg is
   generic (
     DATA_WIDTH          : integer := 32;
     REG_WIDTH           : integer := 5
+  );
   port (
     clk                    : in std_logic;
     reset                  : in std_logic;
