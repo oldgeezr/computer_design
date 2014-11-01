@@ -151,6 +151,7 @@ architecture Behavioral of MIPSProcessor is
 
   -- Hazard Detection Unit Signals NOTE! Should probably remove some of these signals
   signal id_ex_mem_write              : std_logic;
+  signal id_if_id_write               : std_logic;
   -- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal pc_write                     : std_logic;
   signal if_id_write                  : std_logic;
@@ -217,8 +218,10 @@ begin
     if_id_rt                => id_rt, -- OK
     id_ex_rt                => ex_rt, -- OK
     pc_write                => pc_write, --THIS SHOULD PROBABLY BE CONNECTED TO PC_ENABLE?
-    if_id_write             => ex_mem_write, -- OK
+    if_id_write             => id_if_id_write, -- OK
     stall                   => stall); -- DUNNO
+
+    -- TODO: impement if_id_write signal in IF ID Register
 
   -- Initialize the forwarding unit
   forwarding : entity work.forwarding_unit(rtl) port map (
@@ -238,6 +241,7 @@ begin
   IF_ID : entity work.if_id_reg(rtl) port map (
     clk          => clk,
     reset        => reset,
+    if_id_write  => id_if_id_write,
     new_pc_in    => if_new_pc,
     instruction  => if_instruction,
     new_pc_out   => id_new_pc,
@@ -250,28 +254,30 @@ begin
   ID_EX : entity work.id_ex_reg(rtl) port map (
     clk              => clk,
     reset            => reset,
+    -- Control signals
     reg_write_in     => id_reg_write,
     mem_to_reg_in    => id_mem_to_reg,
     mem_write_in     => id_mem_write,
     reg_dest_in      => id_reg_dest,
     alu_src_in       => id_alu_src,
     alu_op_in        => id_alu_op,
-    sign_extend_in   => id_sign_extend,
-    data_1_in        => read_data_1,
-    data_2_in        => read_data_2,
     reg_write_out    => ex_reg_write,
     mem_to_reg_out   => ex_mem_to_reg,
     mem_write_out    => ex_mem_write,
     reg_dest_out     => ex_reg_dest,
     alu_src_out      => ex_alu_src,
     alu_op_out       => ex_alu_op,
-    sign_extend_out  => ex_sign_extend,
-    data_1_out       => ex_data_1,
-    data_2_out       => ex_data_2,
+    -- Data
+    data_1_in        => read_data_1,
+    data_2_in        => read_data_2,
+    sign_extend_in   => id_sign_extend,
     rs_in            => id_rs,
     rt_in            => id_rt,
     rd_in            => id_rd,
     address_in       => id_address,
+    data_1_out       => ex_data_1,
+    data_2_out       => ex_data_2,
+    sign_extend_out  => ex_sign_extend,
     rt_out           => ex_rt,
     rs_out           => ex_rs,
     rd_out           => ex_rd,

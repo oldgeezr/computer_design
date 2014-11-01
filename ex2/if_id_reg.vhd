@@ -10,6 +10,7 @@ entity if_id_reg is
   port (
     clk             : in std_logic;
     reset           : in std_logic;
+    if_id_write     : in std_logic;
     new_pc_in       : in std_logic_vector(ADDR_WIDTH-1 downto 0);
     instruction     : in std_logic_vector(DATA_WIDTH-1 downto 0);
     new_pc_out      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
@@ -39,17 +40,19 @@ begin
   rd_out      <= rd;
   address_out <= address;
 
-  process (clk, reset, new_pc_in, instruction) begin
+  process (clk, reset, if_id_write, new_pc_in, instruction) begin
     if reset = '1' then
       -- Do the reset thingy
     else
-      if rising_edge(clk) then
-        new_pc  <= new_pc_in;
-        opcode  <= instruction(31 downto 26);
-        rs      <= instruction(25 downto 21);
-        rt      <= instruction(20 downto 16);
-        rd      <= instruction(15 downto 11);
-        address <= instruction(15 downto 0);
+      if if_id_write = '1' then
+        if rising_edge(clk) then
+          new_pc  <= new_pc_in;
+          opcode  <= instruction(31 downto 26);
+          rs      <= instruction(25 downto 21);
+          rt      <= instruction(20 downto 16);
+          rd      <= instruction(15 downto 11);
+          address <= instruction(15 downto 0);
+        end if;
       end if;
     end if;
   end process;
