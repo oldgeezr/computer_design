@@ -54,6 +54,30 @@ architecture Behavioral of MIPSProcessor is
   signal id_sign_extend_bits          : std_logic_vector(15 downto 0);
   signal id_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
 
+  signal id_reg_write                 : std_logic;
+  signal id_mem_to_re                 : std_logic;
+  signal id_mem_write                 : std_logic;
+  signal id_reg_dest                  : std_logic;
+  signal id_alu_src                   : std_logic;
+  signal id_alu_op                    : std_logic_vector(1 downto 0);
+  signal ex_reg_write                 : std_logic;
+  signal ex_mem_to_re                 : std_logic;
+  signal ex_mem_write                 : std_logic;
+  signal ex_reg_dest                  : std_logic;
+  signal ex_alu_src                   : std_logic;
+  signal ex_alu_op                    : std_logic_vector(1 downto 0);
+  signal ex_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+  signal mem_reg_write                : std_logic;
+  signal mem_mem_to_reg               : std_logic;
+  signal mem_mem_write                : std_logic;
+  signal mem_alu_result               : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+  signal wb_reg_write                 : std_logic;
+  signal wb_mem_to_reg                : std_logic;
+  signal wb_dmem_data                 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal wb_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
+
   -- Execute
   signal ex_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
   signal ex_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
@@ -260,7 +284,7 @@ begin
     mem_to_reg_out  => mem_mem_to_reg, -- updated
     mem_write_in    => ex_mem_write, -- updated
     mem_write_out   => mem_mem_write, -- updated
-    alu_result_in   => alu_result, -- updated
+    alu_result_in   => ex_alu_result, -- updated
     alu_result_out  => mem_alu_result, -- updated
     rd_in           => ex_to_mem_rd, -- updated
     rd_out          => mem_rd, -- updated
@@ -274,7 +298,7 @@ begin
     reg_write_out   => wb_reg_write, -- updated
     mem_to_reg_in   => mem_mem_to_reg, -- updated
     mem_to_reg_out  => wb_mem_to_reg, -- updated
-    dmem_in         => dmem_data_out, -- updated
+    dmem_in         => dmem_data_in, -- updated
     dmem_out        => wb_dmem_data, -- updated
     alu_result_in   => mem_alu_result, -- updated
     alu_result_out  => wb_alu_result, -- updated
