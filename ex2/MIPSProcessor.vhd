@@ -54,28 +54,31 @@ architecture Behavioral of MIPSProcessor is
   signal id_sign_extend_bits          : std_logic_vector(15 downto 0);
   signal id_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
 
+  -- Control signal in ID stage
   signal id_reg_write                 : std_logic;
-  signal id_mem_to_re                 : std_logic;
+  signal id_mem_to_reg                : std_logic;
   signal id_mem_write                 : std_logic;
   signal id_reg_dest                  : std_logic;
   signal id_alu_src                   : std_logic;
   signal id_alu_op                    : std_logic_vector(1 downto 0);
+
+  -- Control signals in EX stage
   signal ex_reg_write                 : std_logic;
-  signal ex_mem_to_re                 : std_logic;
+  signal ex_mem_to_reg                : std_logic;
   signal ex_mem_write                 : std_logic;
   signal ex_reg_dest                  : std_logic;
   signal ex_alu_src                   : std_logic;
   signal ex_alu_op                    : std_logic_vector(1 downto 0);
   signal ex_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
+  -- Control signals in MEM stage
   signal mem_reg_write                : std_logic;
   signal mem_mem_to_reg               : std_logic;
   signal mem_mem_write                : std_logic;
-  signal mem_alu_result               : std_logic_vector(DATA_WIDTH-1 downto 0);
 
+  -- Control signals in WB stage
   signal wb_reg_write                 : std_logic;
   signal wb_mem_to_reg                : std_logic;
-  signal wb_dmem_data                 : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal wb_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   -- Execute
@@ -164,12 +167,12 @@ begin
     clk                     => clk,
     processor_enable        => processor_enable,
     opcode                  => id_opcode,
-    mem_write               => dmem_write_enable,
-    mem_to_reg              => mem_to_reg,
-    reg_dest                => reg_dest,
-    reg_write               => reg_write,
-    alu_op                  => alu_op,
-    alu_src                 => alu_src,
+    mem_write               => id_mem_write,
+    mem_to_reg              => id_mem_to_reg,
+    reg_dest                => id_reg_dest,
+    reg_write               => id_reg_write,
+    alu_op                  => id_alu_op,
+    alu_src                 => id_alu_src,
     branch                  => branch,
     jump                    => jump,
     shift                   => shift,
