@@ -19,7 +19,6 @@ entity control is
 				alu_src : out std_logic;
 				branch : out std_logic;
 				jump : out std_logic;
-				shift : out std_logic;
 				pc_src : out std_logic_vector(1 downto 0));
 end entity;
 

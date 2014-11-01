@@ -47,6 +47,7 @@ architecture Behavioral of MIPSProcessor is
   signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
   signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
   signal id_address                   : std_logic_vector(15 downto 0);
+
   signal id_branch_addr               : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal id_jump_addr                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal id_result                    : unsigned(DATA_WIDTH-1 downto 0);
@@ -79,7 +80,6 @@ architecture Behavioral of MIPSProcessor is
   -- Control signals in WB stage
   signal wb_reg_write                 : std_logic;
   signal wb_mem_to_reg                : std_logic;
-  signal wb_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   -- Execute
   signal ex_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
@@ -175,51 +175,50 @@ begin
     alu_src                 => id_alu_src,
     branch                  => branch,
     jump                    => jump,
-    shift                   => shift,
     pc_src                  => pc_src);
 
   -- Initialize the ALU
   alu_module : entity work.ALU(behavioral) port map (
-    data_1                  => alu_data_1,
-    data_2                  => alu_data_2,
-    alu_ctrl                => alu_ctrl,
-    result                  => alu_result);
+    data_1                  => alu_data_1, -- OK
+    data_2                  => alu_data_2, -- OK
+    alu_ctrl                => alu_ctrl, -- OK
+    result                  => ex_alu_result); -- OK
 
   -- Initialize the register file
   register_file : entity work.registerfile(Behavioral) port map (
     clk                     => clk,
     reset                   => reset,
-    reg_write               => reg_write,
-    read_reg_1              => read_reg_1,
-    read_reg_2              => read_reg_2,
-    write_reg               => write_reg,
-    write_data              => write_data,
-    read_data_1             => read_data_1,
-    read_data_2             => read_data_2);
+    reg_write               => wb_reg_write, -- OK
+    read_reg_1              => read_reg_1, -- OK
+    read_reg_2              => read_reg_2, -- OK
+    write_reg               => write_reg, -- OK
+    write_data              => write_data, -- OK
+    read_data_1             => read_data_1, -- OK
+    read_data_2             => read_data_2); -- OK
 
   -- Initialize the program counter
   pc : entity work.program_counter(Behavioral) port map (
     clk                     => clk,
     reset                   => reset,
-    enable                  => pc_enable,
-    addr_in                 => pc_addr_in,
-    addr_out                => pc_addr_out);
+    enable                  => pc_enable, -- NOT CONNECTED TO CONTROL
+    addr_in                 => pc_addr_in, -- OK
+    addr_out                => pc_addr_out); -- OK
 
   -- Initialize the alu control
   alu_control_module : entity work.alu_control(arch) port map (
-    alu_op                  => alu_op,
-    funct                   => funct,
-    alu_ctrl                => alu_ctrl);
+    alu_op                  => id_alu_op, -- OK
+    funct                   => funct, -- OK
+    alu_ctrl                => alu_ctrl); -- OK
 
   -- Initialize the hazard detection unit
   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
-    id_ex_mem_write         => id_ex_mem_write,
-    if_id_rs                => id_rs,
-    if_id_rt                => id_rt,
-    id_ex_rt                => ex_rt,
-    pc_write                => pc_write,
-    if_id_write             => if_id_write,
-    stall                   => stall);
+    id_ex_mem_write         => ex_mem_write, -- OK
+    if_id_rs                => id_rs, -- OK
+    if_id_rt                => id_rt, -- OK
+    id_ex_rt                => ex_rt, -- OK
+    pc_write                => pc_write, --THIS SHOULD PROBABLY BE CONNECTED TO PC_ENABLE?
+    if_id_write             => ex_mem_write, -- OK
+    stall                   => stall); -- DUNNO
 
   -- Initialize the forwarding unit
   forwarding : entity work.forwarding_unit(rtl) port map (
@@ -227,8 +226,8 @@ begin
     id_ex_rt                => ex_rt,
     ex_mem_rd               => mem_rd,
     mem_wb_rd               => wb_rd,
-    ex_mem_reg_write        => ex_mem_reg_write,
-    mem_wb_reg_write        => mem_wb_reg_write,
+    ex_mem_reg_write        => ex_reg_write,
+    mem_wb_reg_write        => mem_reg_write,
     forward_a               => forward_a,
     forward_b               => forward_b);
 
@@ -239,76 +238,76 @@ begin
   IF_ID : entity work.if_id_reg(rtl) port map (
     clk          => clk,
     reset        => reset,
-    new_pc_in    => if_new_pc, -- updated
-    instruction  => if_instruction, -- updated
-    new_pc_out   => id_new_pc, -- updated
-    opcode_out   => id_opcode, -- updated
-    rs_out       => id_rs,-- updated
-    rt_out       => id_rt,-- updated
-    rd_out       => id_rd,-- updated
-    address_out  => id_address);-- updated
+    new_pc_in    => if_new_pc,
+    instruction  => if_instruction,
+    new_pc_out   => id_new_pc,
+    opcode_out   => id_opcode,
+    rs_out       => id_rs,
+    rt_out       => id_rt,
+    rd_out       => id_rd,
+    address_out  => id_address);
 
   ID_EX : entity work.id_ex_reg(rtl) port map (
     clk              => clk,
     reset            => reset,
-    reg_write_in     => id_reg_write, -- updated
-    reg_write_out    => ex_reg_write, -- updated
-    mem_to_reg_in    => id_mem_to_reg, -- updated
-    mem_to_reg_out   => ex_mem_to_reg, -- updated
-    mem_write_in     => id_mem_write, -- updated
-    mem_write_out    => ex_mem_write, -- updated
-    reg_dest_in      => id_reg_dest, -- updated
-    reg_dest_out     => ex_reg_dest, -- updated
-    alu_src_in       => id_alu_src, -- updated
-    alu_src_out      => ex_alu_src, -- updated
-    alu_op_in        => id_alu_op, -- updated
-    alu_op_out       => ex_alu_op, -- updated
-    data_1_in        => read_data_1, -- updated
-    data_1_out       => ex_data_1, -- updated
-    data_2_in        => read_data_2, -- updated
-    data_2_out       => ex_data_2, -- updated
-    sign_extend_in   => id_sign_extend, -- updated
-    sign_extend_out  => ex_sign_extend, -- updated
-    rs_in            => id_rs, -- updated
-    rs_out           => ex_rs, -- updated
-    rt_in            => id_rt, -- updated
-    rt_out           => ex_rt, -- updated
-    rd_in            => id_rd, -- updated
-    rd_out           => ex_rd, -- updated
-    address_in       => id_address, -- updated
-    address_out      => ex_address); -- updated
+    reg_write_in     => id_reg_write,
+    mem_to_reg_in    => id_mem_to_reg,
+    mem_write_in     => id_mem_write,
+    reg_dest_in      => id_reg_dest,
+    alu_src_in       => id_alu_src,
+    alu_op_in        => id_alu_op,
+    sign_extend_in   => id_sign_extend,
+    data_1_in        => read_data_1,
+    data_2_in        => read_data_2,
+    reg_write_out    => ex_reg_write,
+    mem_to_reg_out   => ex_mem_to_reg,
+    mem_write_out    => ex_mem_write,
+    reg_dest_out     => ex_reg_dest,
+    alu_src_out      => ex_alu_src,
+    alu_op_out       => ex_alu_op,
+    sign_extend_out  => ex_sign_extend,
+    data_1_out       => ex_data_1,
+    data_2_out       => ex_data_2,
+    rs_in            => id_rs,
+    rt_in            => id_rt,
+    rd_in            => id_rd,
+    address_in       => id_address,
+    rt_out           => ex_rt,
+    rs_out           => ex_rs,
+    rd_out           => ex_rd,
+    address_out      => ex_address);
 
   EX_MEM : entity work.ex_mem_reg(rtl) port map (
     clk             => clk,
     reset           => reset,
-    reg_write_in    => ex_reg_write, -- updated
-    reg_write_out   => mem_reg_write, -- updated
-    mem_to_reg_in   => ex_mem_to_reg, -- updated
-    mem_to_reg_out  => mem_mem_to_reg, -- updated
-    mem_write_in    => ex_mem_write, -- updated
-    mem_write_out   => mem_mem_write, -- updated
-    alu_result_in   => ex_alu_result, -- updated
-    alu_result_out  => mem_alu_result, -- updated
-    rd_in           => ex_to_mem_rd, -- updated
-    rd_out          => mem_rd, -- updated
-    address_in      => ex_address, -- updated
-    address_out     => mem_address); -- updated
+    reg_write_in    => ex_reg_write,
+    mem_to_reg_in   => ex_mem_to_reg,
+    mem_write_in    => ex_mem_write,
+    alu_result_in   => ex_alu_result,
+    rd_in           => ex_to_mem_rd,
+    address_in      => ex_address,
+    reg_write_out   => mem_reg_write,
+    mem_to_reg_out  => mem_mem_to_reg,
+    mem_write_out   => mem_mem_write,
+    alu_result_out  => mem_alu_result,
+    rd_out          => mem_rd,
+    address_out     => mem_address);
 
   MEM_WB : entity work.mem_wb_reg(rtl) port map (
     clk             => clk,
     reset           => reset,
-    reg_write_in    => mem_reg_write, -- updated
-    reg_write_out   => wb_reg_write, -- updated
-    mem_to_reg_in   => mem_mem_to_reg, -- updated
-    mem_to_reg_out  => wb_mem_to_reg, -- updated
-    dmem_in         => dmem_data_in, -- updated
-    dmem_out        => wb_dmem_data, -- updated
-    alu_result_in   => mem_alu_result, -- updated
-    alu_result_out  => wb_alu_result, -- updated
-    rd_in           => mem_rd, -- updated
-    rd_out          => wb_rd, -- updated
-    address_in      => mem_address, -- updated
-    address_out     => wb_address); -- updated
+    reg_write_in    => mem_reg_write,
+    mem_to_reg_in   => mem_mem_to_reg,
+    dmem_in         => dmem_data_in,
+    alu_result_in   => mem_alu_result,
+    rd_in           => mem_rd,
+    address_in      => mem_address,
+    mem_to_reg_out  => wb_mem_to_reg,
+    reg_write_out   => wb_reg_write,
+    dmem_out        => wb_dmem_data,
+    alu_result_out  => wb_alu_result,
+    rd_out          => wb_rd,
+    address_out     => wb_address);
 
   ---------------------------------
   -- Instruction Fetch
@@ -361,7 +360,7 @@ begin
   funct <= ex_address(5 downto 0);
 
   -- Destination register MUX
-  ex_to_mem_rd <= ex_rd when reg_dest = '1' else ex_rt;
+  ex_to_mem_rd <= ex_rd when ex_reg_dest = '1' else ex_rt;
 
   -- ALU data_1 MUX NOTE! BUT WHERE DO WE USE THE SIGNEXTEND
   with forward_a select
@@ -386,6 +385,6 @@ begin
   ---------------------------------
 
   -- Mem to reg MUX
-  wb_write_data <= wb_dmem_data when mem_to_reg = '1' else mem_alu_result;
+  wb_write_data <= wb_dmem_data when wb_mem_to_reg = '1' else mem_alu_result;
 
 end Behavioral;
