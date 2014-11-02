@@ -37,125 +37,125 @@ architecture Behavioral of MIPSProcessor is
   ---------------------------------
 
   -- Instruction Fetch
-  signal if_instruction               : std_logic_vector(DATA_WIDTH-1 downto 0) := imem_data_in;
-  signal if_new_pc                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  --signal if_instruction               : std_logic_vector(DATA_WIDTH-1 downto 0) := imem_data_in;
+  --signal if_new_pc                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
-  -- Instruction Decode
-  signal id_new_pc                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal id_opcode                    : std_logic_vector(5 downto 0);
-  signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal id_address                   : std_logic_vector(15 downto 0);
+  ---- Instruction Decode
+  --signal id_new_pc                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  --signal id_opcode                    : std_logic_vector(5 downto 0);
+  --signal id_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal id_address                   : std_logic_vector(15 downto 0);
 
-  signal id_branch_addr               : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal id_jump_addr                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal id_result                    : unsigned(DATA_WIDTH-1 downto 0);
-  signal id_zero                      : std_ulogic;
-  signal id_sign_extend_bits          : std_logic_vector(15 downto 0);
-  signal id_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal id_branch_addr               : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  --signal id_jump_addr                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  --signal id_result                    : unsigned(DATA_WIDTH-1 downto 0);
+  --signal id_zero                      : std_ulogic;
+  --signal id_sign_extend_bits          : std_logic_vector(15 downto 0);
+  --signal id_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Control signal in ID stage
-  signal id_reg_write                 : std_logic;
-  signal id_mem_to_reg                : std_logic;
-  signal id_mem_write                 : std_logic;
-  signal id_reg_dest                  : std_logic;
-  signal id_alu_src                   : std_logic;
-  signal id_alu_op                    : std_logic_vector(1 downto 0);
+  ---- Control signal in ID stage
+  --signal id_reg_write                 : std_logic;
+  --signal id_mem_to_reg                : std_logic;
+  --signal id_mem_write                 : std_logic;
+  --signal id_reg_dest                  : std_logic;
+  --signal id_alu_src                   : std_logic;
+  --signal id_alu_op                    : std_logic_vector(1 downto 0);
 
-  -- Control signals in EX stage
-  signal ex_reg_write                 : std_logic;
-  signal ex_mem_to_reg                : std_logic;
-  signal ex_mem_write                 : std_logic;
-  signal ex_reg_dest                  : std_logic;
-  signal ex_alu_src                   : std_logic;
-  signal ex_alu_op                    : std_logic_vector(1 downto 0);
-  signal ex_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- Control signals in EX stage
+  --signal ex_reg_write                 : std_logic;
+  --signal ex_mem_to_reg                : std_logic;
+  --signal ex_mem_write                 : std_logic;
+  --signal ex_reg_dest                  : std_logic;
+  --signal ex_alu_src                   : std_logic;
+  --signal ex_alu_op                    : std_logic_vector(1 downto 0);
+  --signal ex_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Control signals in MEM stage
-  signal mem_reg_write                : std_logic;
-  signal mem_mem_to_reg               : std_logic;
-  signal mem_mem_write                : std_logic;
+  ---- Control signals in MEM stage
+  --signal mem_reg_write                : std_logic;
+  --signal mem_mem_to_reg               : std_logic;
+  --signal mem_mem_write                : std_logic;
 
-  -- Control signals in WB stage
-  signal wb_reg_write                 : std_logic;
-  signal wb_mem_to_reg                : std_logic;
+  ---- Control signals in WB stage
+  --signal wb_reg_write                 : std_logic;
+  --signal wb_mem_to_reg                : std_logic;
 
-  -- Execute
-  signal ex_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_to_mem_rd                 : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_address                   : std_logic_vector(15 downto 0);
-  signal ex_sign_extend_bits          : std_logic_vector(15 downto 0);
-  signal ex_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal ex_data_1                    : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal ex_data_2                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- Execute
+  --signal ex_rs                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal ex_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal ex_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal ex_to_mem_rd                 : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal ex_address                   : std_logic_vector(15 downto 0);
+  --signal ex_sign_extend_bits          : std_logic_vector(15 downto 0);
+  --signal ex_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal ex_data_1                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal ex_data_2                    : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Memory
-  signal mem_alu_result               : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal mem_rd                       : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal mem_address                  : std_logic_vector(15 downto 0);
+  ---- Memory
+  --signal mem_alu_result               : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal mem_rd                       : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal mem_address                  : std_logic_vector(15 downto 0);
 
-  -- Write Back
-  signal wb_dmem_data                 : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal wb_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal wb_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal wb_address                   : std_logic_vector(15 downto 0);
-  signal wb_write_data                : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- Write Back
+  --signal wb_dmem_data                 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal wb_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal wb_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal wb_address                   : std_logic_vector(15 downto 0);
+  --signal wb_write_data                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Control Unit Signals
-  signal mem_read                     : std_logic; -- Excess. !mem_write TODO: remove
-  signal mem_write                    : std_logic;
-  signal mem_to_reg                   : std_logic;
-  signal reg_dest                     : std_logic;
-  signal alu_op                       : std_logic_vector(1 downto 0);
-  signal alu_src                      : std_logic;
-  signal branch                       : std_logic;
-  signal jump                         : std_logic;
-  signal shift                        : std_logic;
-  signal pc_src                       : std_logic_vector(1 downto 0);
+  ---- Control Unit Signals
+  --signal mem_read                     : std_logic; -- Excess. !mem_write TODO: remove
+  --signal mem_write                    : std_logic;
+  --signal mem_to_reg                   : std_logic;
+  --signal reg_dest                     : std_logic;
+  --signal alu_op                       : std_logic_vector(1 downto 0);
+  --signal alu_src                      : std_logic;
+  --signal branch                       : std_logic;
+  --signal jump                         : std_logic;
+  --signal shift                        : std_logic;
+  --signal pc_src                       : std_logic_vector(1 downto 0);
 
-  -- ALU Signals
-  signal alu_data_1                   : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal alu_data_2                   : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal alu_result                   : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- ALU Signals
+  --signal alu_data_1                   : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal alu_data_2                   : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal alu_result                   : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Register Signals
-  signal reg_write                    : std_logic;
-  signal read_reg_1                   : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal read_reg_2                   : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal write_reg                    : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal write_data                   : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal read_data_1                  : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal read_data_2                  : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- Register Signals
+  --signal reg_write                    : std_logic;
+  --signal read_reg_1                   : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal read_reg_2                   : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal write_reg                    : std_logic_vector(REG_WIDTH-1 downto 0);
+  --signal write_data                   : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal read_data_1                  : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal read_data_2                  : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  -- Program Counter Signals
-  signal pc_addr_in                   : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
-  signal pc_addr_out                  : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
-  signal pc_enable                       : std_logic;
+  ---- Program Counter Signals
+  --signal pc_addr_in                   : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
+  --signal pc_addr_out                  : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
+  --signal pc_enable                       : std_logic;
 
-  -- ALU Control Signals
-  signal funct                        : std_logic_vector(5 downto 0);
-  signal alu_ctrl                     : std_logic_vector(3 downto 0);
+  ---- ALU Control Signals
+  --signal funct                        : std_logic_vector(5 downto 0);
+  --signal alu_ctrl                     : std_logic_vector(3 downto 0);
 
-  -- Forwarding Unit Signals NOTE! Should probably remove some of these signals
-  -- signal id_ex_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-  -- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-  -- signal ex_mem_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
-  -- signal mem_wb_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal ex_mem_reg_write             : std_logic;
-  signal mem_wb_reg_write             : std_logic;
-  signal forward_a                    : std_logic_vector(1 downto 0);
-  signal forward_b                    : std_logic_vector(1 downto 0);
+  ---- Forwarding Unit Signals NOTE! Should probably remove some of these signals
+  ---- signal id_ex_rs                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- signal ex_mem_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  ---- signal mem_wb_rd                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal ex_mem_reg_write             : std_logic;
+  --signal mem_wb_reg_write             : std_logic;
+  --signal forward_a                    : std_logic_vector(1 downto 0);
+  --signal forward_b                    : std_logic_vector(1 downto 0);
 
-  -- Hazard Detection Unit Signals NOTE! Should probably remove some of these signals
-  signal id_ex_mem_write              : std_logic;
-  signal id_if_id_write               : std_logic;
-  -- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal pc_write                     : std_logic;
-  signal if_id_write                  : std_logic;
-  signal stall                        : std_logic;
+  ---- Hazard Detection Unit Signals NOTE! Should probably remove some of these signals
+  --signal id_ex_mem_write              : std_logic;
+  --signal id_if_id_write               : std_logic;
+  ---- signal id_ex_rt                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  --signal pc_write                     : std_logic;
+  --signal if_id_write                  : std_logic;
+  --signal stall                        : std_logic;
 
 begin
 
@@ -241,7 +241,9 @@ begin
   IF_ID : entity work.if_id_reg(rtl) port map (
     clk          => clk,
     reset        => reset,
+    -- Control signals
     if_id_write  => id_if_id_write,
+    -- Data signals
     new_pc_in    => if_new_pc,
     instruction  => if_instruction,
     new_pc_out   => id_new_pc,

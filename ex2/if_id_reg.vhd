@@ -44,8 +44,8 @@ begin
     if reset = '1' then
       -- Do the reset thingy
     else
-      if if_id_write = '1' then
-        if rising_edge(clk) then
+      if rising_edge(clk) then
+        if if_id_write = '1' then
           new_pc  <= new_pc_in;
           opcode  <= instruction(31 downto 26);
           rs      <= instruction(25 downto 21);
