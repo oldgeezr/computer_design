@@ -377,7 +377,7 @@ begin
   funct <= ex_immediate(5 downto 0);
 
   -- Destination register MUX
-  ex_write_reg <= ex_rd when ex_reg_dest = '1' else ex_rt;
+  ex_write_reg <= ex_rd when ex_control_reg_dest = '1' else ex_rt;
 
   -- Alu src MUX
   --with ex_control_alu_src select
