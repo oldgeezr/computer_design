@@ -235,7 +235,7 @@ begin
 
   IF_ID : entity work.if_id_reg(rtl) port map (
     -- Control inputs
-    if_id_write  => id_if_id_write,
+    if_id_write  => if_id_write,
     -- Data inputs
     clk          => clk,
     reset        => reset,
