@@ -65,6 +65,7 @@ architecture Behavioral of MIPSProcessor is
   signal ex_immediate                 : std_logic_vector(15 downto 0);
   signal ex_data_1                    : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal ex_data_2                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal ex_sign_extend               : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   ---- Memory
   signal mem_alu_result               : std_logic_vector(DATA_WIDTH-1 downto 0);
