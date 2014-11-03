@@ -47,7 +47,7 @@ architecture Behavioral of MIPSProcessor is
   signal id_rt                        : std_logic_vector(REG_WIDTH-1 downto 0);
   signal id_rd                        : std_logic_vector(REG_WIDTH-1 downto 0);
   signal id_immediate                 : std_logic_vector(15 downto 0);
-  signal id_branch                    : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal id_branch                    : std_logic;
   signal id_branch_addr               : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal id_jump_addr                 : std_logic_vector(ADDR_WIDTH-1 downto 0);
   signal id_result                    : unsigned(DATA_WIDTH-1 downto 0);
