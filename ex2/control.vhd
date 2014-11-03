@@ -23,28 +23,16 @@ entity control is
 end entity;
 
 architecture fsm of control is
-
-type state_type is (idle, fetch, execute, stall);
-
-attribute enum_encoding : string;
-attribute enum_encoding of
-state_type : type is "10 00 01 11";
-
-signal current_state : state_type := idle;
-signal next_state : state_type;
-
 begin
 
-	fsm_state : process (clk, processor_enable)
-	begin
-
-		if clk'event and clk = '1' then
-
-			current_state <= idle;
-
-			if processor_enable = '1' then
-				current_state <= next_state;
-			end if;
-		end if;
-	end process;
+  mem_read <= '0';
+  mem_write <= '0';
+  mem_to_reg <= '0';
+  reg_dest <= '0';
+  reg_write <= '0';
+  alu_op <= "00";
+  alu_src <= '0';
+  branch <= '0';
+  jump <= '0';
+  pc_src <= "00";
 end architecture;
