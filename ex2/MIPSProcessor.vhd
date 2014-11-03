@@ -406,6 +406,6 @@ begin
   ---------------------------------
 
   -- Mem to reg MUX
-  wb_write_data <= wb_dmem_data when wb_mem_to_reg = '1' else mem_alu_result;
+  wb_write_data <= wb_dmem_data when wb_control_mem_to_reg = '1' else mem_alu_result;
 
 end Behavioral;
