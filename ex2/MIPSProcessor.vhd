@@ -107,6 +107,7 @@ architecture Behavioral of MIPSProcessor is
   -- Control Unit Signals
   signal id_control_mem_read                     : std_logic; -- Excess. !mem_write TODO: remove
   signal id_control_mem_write                    : std_logic;
+  signal id_control_reg_write                    : std_logic;
   signal id_control_mem_to_reg                   : std_logic;
   signal id_control_reg_dest                     : std_logic;
   signal id_control_alu_op                       : std_logic_vector(1 downto 0);
