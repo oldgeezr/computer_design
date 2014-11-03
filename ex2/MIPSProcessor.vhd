@@ -83,22 +83,22 @@ architecture Behavioral of MIPSProcessor is
   ---------------------------------
 
   ---- Control signals in EX stage
-  signal ex_reg_write                 : std_logic;
-  signal ex_mem_to_reg                : std_logic;
-  signal ex_mem_write                 : std_logic;
-  signal ex_reg_dest                  : std_logic;
-  signal ex_alu_src                   : std_logic;
-  signal ex_alu_op                    : std_logic_vector(1 downto 0);
-  signal ex_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal ex_control_reg_write                 : std_logic;
+  signal ex_control_mem_to_reg                : std_logic;
+  signal ex_control_mem_write                 : std_logic;
+  signal ex_control_reg_dest                  : std_logic;
+  signal ex_control_alu_src                   : std_logic;
+  signal ex_control_alu_op                    : std_logic_vector(1 downto 0);
+  signal ex_control_alu_result                : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   ---- Control signals in MEM stage
-  signal mem_reg_write                : std_logic;
-  signal mem_mem_to_reg               : std_logic;
-  signal mem_mem_write                : std_logic;
+  signal mem_control_reg_write                : std_logic;
+  signal mem_control_mem_to_reg               : std_logic;
+  signal mem_control_mem_write                : std_logic;
 
   ---- Control signals in WB stage
-  signal wb_reg_write                 : std_logic;
-  signal wb_mem_to_reg                : std_logic;
+  signal wb_control_reg_write                 : std_logic;
+  signal wb_control_mem_to_reg                : std_logic;
 
   ---------------------------------
   -- Component signals
