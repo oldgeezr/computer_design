@@ -301,7 +301,7 @@ begin
     address_in      => ex_immediate,
     -- Data outputs
     alu_result_out  => mem_alu_result,
-    rd_out          => mem_rd,
+    rd_out          => mem_write_reg,
     address_out     => mem_immediate);
 
   MEM_WB : entity work.mem_wb_reg(rtl) port map (
@@ -316,12 +316,12 @@ begin
     reset           => reset,
     dmem_in         => dmem_data_in,
     alu_result_in   => mem_alu_result,
-    rd_in           => mem_rd,
+    rd_in           => mem_write_reg,
     address_in      => mem_immediate,
     -- Data outputs
     dmem_out        => wb_dmem_data,
     alu_result_out  => wb_alu_result,
-    rd_out          => wb_rd,
+    rd_out          => wb_write_reg,
     address_out     => wb_immediate);
 
   ---------------------------------
