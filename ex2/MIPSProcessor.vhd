@@ -191,7 +191,7 @@ begin
     -- Inputs
     clk                     => clk,
     reset                   => reset,
-    enable                  => id_pc_write, -- NOT CONNECTED TO CONTROL
+    enable                  => pc_write, -- NOT CONNECTED TO CONTROL
     addr_in                 => pc_addr_in, -- OK
     -- Outputs
     addr_out                => pc_addr_out); -- OK
