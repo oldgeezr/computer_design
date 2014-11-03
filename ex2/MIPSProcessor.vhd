@@ -337,7 +337,7 @@ begin
   --                the other mux when ...
 
   -- PC MUX
-  with pc_src select
+  with id_control_pc_src select
     pc_addr_in <= OVERFLOW_EXECPTION(ADDR_WIDTH-1 downto 0) when "11", -- NOTE THAT WE ONLY USE THE 8 LSB
                   id_jump_addr when "10",
                   id_branch_addr when "01",
