@@ -207,7 +207,7 @@ begin
   -- Initialize the hazard detection unit
   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
     -- Inputs
-    id_ex_mem_write         => wb_control_mem_write, -- OK
+    id_ex_mem_write         => ex_control_mem_write, -- OK
     if_id_rs                => id_rs, -- OK
     if_id_rt                => id_rt, -- OK
     id_ex_rt                => id_rt, -- OK
