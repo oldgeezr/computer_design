@@ -1,19 +1,19 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Design Name: 
--- Module Name:    registerfile - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
+-- Company:
+-- Engineer:
 --
--- Dependencies: 
+-- Design Name:
+-- Module Name:    registerfile - Behavioral
+-- Project Name:
+-- Target Devices:
+-- Tool versions:
+-- Description:
 --
--- Revision: 
+-- Dependencies:
+--
+-- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: 
+-- Additional Comments:
 --
 ----------------------------------------------------------------------------------
 library IEEE;
@@ -34,7 +34,7 @@ entity registerfile is
 	generic (
 				DATA_WIDTH : integer := 32;
 				size : integer := 32
-				
+
 				);
 
 	Port (
@@ -54,7 +54,7 @@ architecture Behavioral of registerfile is
 
 	type reg_type_t is array(size-1 downto 0) of std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal reg_file : reg_type_t;
-	
+
 begin
 
 	read_data_1 <= reg_file(to_integer(unsigned(read_reg_1)));
@@ -72,7 +72,7 @@ begin
 			reg_file(0) <= (others => '0');
 		end if;
 	end process;
-	
+
 
 end Behavioral;
 

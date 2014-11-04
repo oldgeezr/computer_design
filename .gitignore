@@ -62,7 +62,6 @@
 *.rsp
 *.cmd
 *.ini
-*.v
 
 # project-wide generated files
 *.gise
