@@ -164,7 +164,7 @@ begin
   ---------------------------------
 
   -- Initialize the Control Unit
-  control_unit:   entity work.control(fsm) port map (
+  control_unit:   entity work.control(arch) port map (
     clk                     => clk,
     processor_enable        => processor_enable,
     opcode                  => id_opcode,
