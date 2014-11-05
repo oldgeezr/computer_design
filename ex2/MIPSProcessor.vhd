@@ -100,6 +100,10 @@ architecture Behavioral of MIPSProcessor is
   signal ex_control_alu_op                       : std_logic_vector(1 downto 0);
   signal ex_control_alu_result                   : std_logic_vector(DATA_WIDTH-1 downto 0);
 
+  signal ex_reg_write                            : std_logic;
+  signal ex_mem_to_reg                           : std_logic;
+  signal ex_mem_write                            : std_logic;
+
   ---- Control signals in MEM stage
   signal mem_control_reg_write                   : std_logic;
   signal mem_control_mem_to_reg                  : std_logic;
@@ -124,6 +128,7 @@ architecture Behavioral of MIPSProcessor is
   signal id_control_jump                         : std_logic;
   signal id_control_pc_src                       : std_logic_vector(1 downto 0);
   signal id_control_flush                        : std_logic;
+  signal ex_control_flush                        : std_logic;
 
   -- ALU Signals
   signal alu_data_1                              : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -171,7 +176,8 @@ begin
     branch                  => id_control_branch,
     jump                    => id_control_jump,
     pc_src                  => id_control_pc_src,
-    flush                   => id_control_flush);
+    id_flush                => id_control_flush);
+    ex_flush                => ex_control_flush);
 
   -- Initialize the ALU
   alu_module : entity work.ALU(behavioral) port map (
@@ -365,7 +371,6 @@ begin
                           id_control_mem_to_reg,
                           id_control_reg_dest,
                           id_control_reg_write,
-                          id_control_reg_write,
                           id_control_alu_op,
                           id_control_alu_src)
   begin
@@ -408,6 +413,23 @@ begin
   ---------------------------------
   -- Execute
   ---------------------------------
+
+  -- THIS MIGHT INFERRE LATCHES?
+  EX_FLUSH_MUX : process (ex_control_flush,
+                          ex_control_mem_write,
+                          ex_control_mem_to_reg,
+                          ex_control_reg_write)
+  begin
+    if ex_control_flush = '1' then
+      ex_mem_write  <= ex_control_mem_write;
+      ex_mem_to_reg <= ex_control_mem_to_reg;
+      ex_reg_write  <= ex_control_reg_write;
+    else
+      ex_mem_write  <= '0';
+      ex_mem_to_reg <= '0';
+      ex_reg_write  <= '0';
+    end if;
+  end process;
 
   -- Get the funct bits from the instruction
   funct <= ex_immediate(5 downto 0);

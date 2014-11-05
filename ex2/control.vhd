@@ -19,7 +19,8 @@ entity control is
 				branch : out std_logic;
 				jump : out std_logic;
 				pc_src : out std_logic_vector(1 downto 0);
-				flush : out std_logic);
+				id_flush : out std_logic;
+				ex_flush : out std_logic);
 end entity;
 
 architecture fsm of control is
@@ -34,6 +35,7 @@ begin
   branch <= clk;
   jump <= clk;
   pc_src <= clk & clk;
-  flush <= clk;
+  id_flush <= clk;
+  ex_flush <= clk;
 
 end architecture;
