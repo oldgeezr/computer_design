@@ -37,7 +37,7 @@ architecture Behavioral of MIPSProcessor is
   ---------------------------------
 
   -- Instruction Fetch
-  signal if_instruction                          : std_logic_vector(DATA_WIDTH-1 downto 0) := imem_data_in;
+  alias if_instruction                           : std_logic_vector(DATA_WIDTH-1 downto 0) is imem_data_in;
   signal if_new_pc                               : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
   ---- Instruction Decode
@@ -308,7 +308,7 @@ begin
     -- Control outputs
     reg_write_out           => mem_control_reg_write,
     mem_to_reg_out          => mem_control_mem_to_reg,
-    mem_write_out           => mem_control_mem_write,
+    mem_write_out           => mem_control_mem_write, -- REMEMBER TO ASSIGN THIS TO DMEM_WRITE_ENABLE
     -- Data inputs
     clk                     => clk,
     reset                   => reset,
