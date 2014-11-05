@@ -17,7 +17,7 @@ end entity;
 architecture rtl of hazard_detection_unit is
 begin
 
-process(id_ex_mem_write,if_id_rs,id_ex_rt)
+  process(id_ex_mem_write,if_id_rs,if_id_rt,id_ex_rt)
 
 begin
 

@@ -140,14 +140,14 @@ architecture Behavioral of MIPSProcessor is
   signal read_data_2                             : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   ---- Program Counter Signals
-  signal pc_addr_in                              : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
-  signal pc_addr_out                             : std_logic_vector(ADDR_WIDTH-1 downto 0); -- Changed for new PC
+  signal pc_addr_in                              : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal pc_addr_out                             : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
   ---- ALU Control Signals
   signal funct                                   : std_logic_vector(5 downto 0);
   signal alu_ctrl                                : std_logic_vector(3 downto 0);
 
-  -- Forwarding Unit Signals NOTE! Should probably remove some of these signals
+  -- Forwarding Unit Signals
   signal forward_a                               : std_logic_vector(1 downto 0);
   signal forward_b                               : std_logic_vector(1 downto 0);
 
@@ -182,25 +182,25 @@ begin
   -- Initialize the ALU
   alu_module : entity work.ALU(behavioral) port map (
     -- Inputs
-    data_1                  => alu_data_1, -- OK
-    data_2                  => alu_data_2, -- OK
-    alu_ctrl                => alu_ctrl, -- OK
+    data_1                  => alu_data_1,
+    data_2                  => alu_data_2,
+    alu_ctrl                => alu_ctrl,
     -- Outputs
-    result                  => alu_result); -- OK
+    result                  => alu_result);
 
   -- Initialize the register file
   register_file : entity work.registerfile(Behavioral) port map (
     -- Inputs
     clk                     => clk,
     reset                   => reset,
-    reg_write               => wb_control_reg_write, -- OK
-    read_reg_1              => id_rs, -- OK
-    read_reg_2              => id_rt, -- OK
-    write_reg               => wb_write_reg, -- OK
-    write_data              => wb_write_data, -- OK
+    reg_write               => wb_control_reg_write,
+    read_reg_1              => id_rs,
+    read_reg_2              => id_rt,
+    write_reg               => wb_write_reg,
+    write_data              => wb_write_data,
     -- Outputs
-    read_data_1             => read_data_1, -- OK
-    read_data_2             => read_data_2); -- OK
+    read_data_1             => read_data_1,
+    read_data_2             => read_data_2);
 
   -- Initialize the program counter
   pc : entity work.program_counter(Behavioral) port map (
@@ -208,28 +208,28 @@ begin
     clk                     => clk,
     reset                   => reset,
     enable                  => pc_write, -- NOT CONNECTED TO CONTROL
-    addr_in                 => pc_addr_in, -- OK
+    addr_in                 => pc_addr_in,
     -- Outputs
-    addr_out                => pc_addr_out); -- OK
+    addr_out                => pc_addr_out);
 
   -- Initialize the alu control
   alu_control_module : entity work.alu_control(arch) port map (
     -- Inputs
-    alu_op                  => ex_control_alu_op, -- OK
-    funct                   => funct, -- OK
+    alu_op                  => ex_control_alu_op,
+    funct                   => funct,
     -- Outputs
-    alu_ctrl                => alu_ctrl); -- OK
+    alu_ctrl                => alu_ctrl);
 
   -- Initialize the hazard detection unit
   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
     -- Inputs
-    id_ex_mem_write         => ex_control_mem_write, -- OK
-    if_id_rs                => id_rs, -- OK
-    if_id_rt                => id_rt, -- OK
-    id_ex_rt                => id_rt, -- OK
+    id_ex_mem_write         => ex_control_mem_write,
+    if_id_rs                => id_rs,
+    if_id_rt                => id_rt,
+    id_ex_rt                => id_rt,
     -- Outputs
     pc_write                => pc_write, --THIS SHOULD PROBABLY BE CONNECTED TO PC_ENABLE?
-    if_id_write             => if_id_write, -- OK
+    if_id_write             => if_id_write,
     stall                   => stall); -- DUNNO
 
   -- Initialize the forwarding unit
@@ -285,11 +285,11 @@ begin
     reset                   => reset,
     data_1_in               => read_data_1,
     data_2_in               => read_data_2,
-    sign_extend_in          => id_sign_extend, -- OK
-    rs_in                   => id_rs, -- OK
-    rt_in                   => id_rt, -- OK
-    rd_in                   => id_rd, -- OK
-    address_in              => id_immediate, -- OK
+    sign_extend_in          => id_sign_extend,
+    rs_in                   => id_rs,
+    rt_in                   => id_rt,
+    rd_in                   => id_rd,
+    address_in              => id_immediate,
     -- Data outputs
     data_1_out              => ex_data_1,
     data_2_out              => ex_data_2,
