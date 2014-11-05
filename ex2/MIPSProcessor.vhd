@@ -377,12 +377,12 @@ begin
       id_alu_op     <= id_control_alu_op;
       id_alu_src    <= id_control_alu_src;
     else
-      id_mem_write  <= 0;
-      id_mem_to_reg <= 0;
-      id_reg_dest   <= 0;
-      id_reg_write  <= 0;
-      id_alu_op     <= 0;
-      id_alu_src    <= 0;
+      id_mem_write  <= '0';
+      id_mem_to_reg <= '0';
+      id_reg_dest   <= '0';
+      id_reg_write  <= '0';
+      id_alu_op     <= '0';
+      id_alu_src    <= '0';
     end if;
   end process;
 
