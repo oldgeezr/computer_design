@@ -425,7 +425,7 @@ begin
   with forward_b & ex_control_alu_src select
     alu_data_2 <=  wb_write_data when "000",
                    mem_alu_result when "010",
-                   ex_data_2 when 100,
+                   ex_data_2 when "100",
                    ex_sign_extend when others; -- Might be error prone. At ex_control_alu_src high
 
   ---------------------------------
