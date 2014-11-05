@@ -30,10 +30,10 @@ begin
   mem_to_reg <= clk;
   reg_dest <= clk;
   reg_write <= clk;
-  alu_op <= {clk,clk};
+  alu_op <= clk & clk;
   alu_src <= clk;
   branch <= clk;
   jump <= clk;
-  pc_src <= {clk,clk};
+  pc_src <= clk & clk;
 
 end architecture;
