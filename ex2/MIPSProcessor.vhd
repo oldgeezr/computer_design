@@ -176,7 +176,7 @@ begin
     branch                  => id_control_branch,
     jump                    => id_control_jump,
     pc_src                  => id_control_pc_src,
-    id_flush                => id_control_flush);
+    id_flush                => id_control_flush,
     ex_flush                => ex_control_flush);
 
   -- Initialize the ALU
