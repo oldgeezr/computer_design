@@ -308,7 +308,7 @@ begin
     -- Control outputs
     reg_write_out           => mem_control_reg_write,
     mem_to_reg_out          => mem_control_mem_to_reg,
-    mem_write_out           => mem_control_mem_write, -- REMEMBER TO ASSIGN THIS TO DMEM_WRITE_ENABLE
+    mem_write_out           => dmem_write_enable, -- REMEMBER TO DELETE MEM_CONTROL_MEM_WRITE
     -- Data inputs
     clk                     => clk,
     reset                   => reset,
