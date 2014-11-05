@@ -69,6 +69,7 @@ architecture Behavioral of MIPSProcessor is
 
   ---- Memory
   signal mem_alu_result                          : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal mem_data                                : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal mem_write_reg                           : std_logic_vector(REG_WIDTH-1 downto 0);
   signal mem_immediate                           : std_logic_vector(15 downto 0);
 
@@ -312,10 +313,12 @@ begin
     clk                     => clk,
     reset                   => reset,
     alu_result_in           => alu_result,
+    data_in                 => ex_data_2,
     rd_in                   => ex_write_reg,
     address_in              => ex_immediate,
     -- Data outputs
     alu_result_out          => mem_alu_result,
+    data_out                => mem_data,
     rd_out                  => mem_write_reg,
     address_out             => mem_immediate);
 
@@ -454,7 +457,8 @@ begin
   -- Memory
   ---------------------------------
 
-  dmem_data_out <= mem_alu_result;
+  dmem_data_out <= mem_data;
+  dmem_address  <= mem_alu_result(ADDR_WIDTH-1 downto 0);
 
   ---------------------------------
   -- Write Back
