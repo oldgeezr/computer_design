@@ -25,29 +25,15 @@ end entity;
 architecture fsm of control is
 begin
 
-  process (clk) begin
-    if rising_edge(clk) then
-      mem_read <= '0';
-      mem_write <= '0';
-      mem_to_reg <= '0';
-      reg_dest <= '0';
-      reg_write <= '0';
-      alu_op <= "00";
-      alu_src <= '0';
-      branch <= '0';
-      jump <= '0';
-      pc_src <= "00";
-    else
-      mem_read <= '1';
-      mem_write <= '1';
-      mem_to_reg <= '1';
-      reg_dest <= '1';
-      reg_write <= '1';
-      alu_op <= "11";
-      alu_src <= '1';
-      branch <= '1';
-      jump <= '1';
-      pc_src <= "11";
-    end if;
-  end process;
+  mem_read <= clk;
+  mem_write <= clk;
+  mem_to_reg <= clk;
+  reg_dest <= clk;
+  reg_write <= clk;
+  alu_op <= {clk,clk};
+  alu_src <= clk;
+  branch <= clk;
+  jump <= clk;
+  pc_src <= {clk,clk};
+
 end architecture;
