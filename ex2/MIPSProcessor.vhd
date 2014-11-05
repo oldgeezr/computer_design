@@ -301,9 +301,9 @@ begin
 
   EX_MEM : entity work.ex_mem_reg(rtl) port map (
     -- Control inputs
-    reg_write_in            => ex_control_reg_write,
-    mem_to_reg_in           => ex_control_mem_to_reg,
-    mem_write_in            => ex_control_mem_write,
+    reg_write_in            => ex_reg_write,
+    mem_to_reg_in           => ex_mem_to_reg,
+    mem_write_in            => ex_mem_write,
     -- Control outputs
     reg_write_out           => mem_control_reg_write,
     mem_to_reg_out          => mem_control_mem_to_reg,
