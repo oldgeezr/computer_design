@@ -6,36 +6,67 @@ use ieee.std_logic_1164.all;
 ----------------------------------------------------------------
 entity control is
 	port (	-- Input
-				clk : in std_logic;
 				processor_enable : in std_logic;
 				opcode : in std_logic_vector(5 downto 0);
 				-- Output
-				mem_write : out std_logic;
-				mem_to_reg : out std_logic;
-				reg_dest : out std_logic;
-				reg_write : out std_logic;
-				alu_op : out std_logic_vector(1 downto 0);
+				reg_dst : out std_logic;
 				alu_src : out std_logic;
+				mem_to_reg : out std_logic;
+				reg_write : out std_logic;
+				mem_write : out std_logic;
 				branch : out std_logic;
 				jump : out std_logic;
-				pc_src : out std_logic_vector(1 downto 0);
-				id_flush : out std_logic;
-				ex_flush : out std_logic);
+				alu_op : out std_logic_vector(1 downto 0));
 end entity;
 
-architecture fsm of control is
+architecture arch of control is
+		signal op0 : std_logic := opcode(0);
+		signal op1 : std_logic := opcode(1);
+		signal op2 : std_logic := opcode(2);
+		signal op3 : std_logic := opcode(3);
+		-- signal op4 : std_logic; -- not used
+		signal op5 : std_logic := opcode(5);
 begin
 
-  mem_write <= clk;
-  mem_to_reg <= clk;
-  reg_dest <= clk;
-  reg_write <= clk;
-  alu_op <= clk & clk;
-  alu_src <= clk;
-  branch <= clk;
-  jump <= clk;
-  pc_src <= clk & clk;
-  id_flush <= clk;
-  ex_flush <= clk;
+	op0 <= opcode(0);
+	op1 <= opcode(1);
+	op2 <= opcode(2);
+	op3 <= opcode(3);
+	op5 <= opcode(5);
+	
+	reg_dst <= processor_enable and (not op2) and (not op1);
+	alu_src <= processor_enable and (op5 or op3);
+	mem_to_reg <= processor_enable and op5;
+	reg_write <= processor_enable and ((op5 xor op3) or ((not op2) and (not op1)));
+	mem_write <= processor_enable and op5 and op3;
+	branch <= processor_enable and op2 and (not op1);
+	jump <= processor_enable and op1 and (not op0);
+	alu_op(0) <= processor_enable and op2;
+	alu_op(1) <= processor_enable and (not op5);
 
+--	process (processor_enable, op0, op1, op2, op3, op5)
+--	begin
+--		if processor_enable = '1' then
+--			reg_dst <= (not op2) and (not op1);
+--			alu_src <= op5 or op3;
+--			mem_to_reg <= op5;
+--			reg_write <= (op5 xor op3) or ((not op2) and (not op1));
+--			mem_write <= op5 and op3;
+--			branch <= op2 and (not op1);
+--			jump <= op1 and (not op0);
+--			alu_op(0) <= op2;
+--			alu_op(1) <= not op5;
+--		else
+--			reg_dst <= '0';
+--			alu_src <= '0';
+--			mem_to_reg <= '0';
+--			reg_write <= '0';
+--			mem_write <= '0';
+--			branch <= '0';
+--			jump <= '0';
+--			alu_op(0) <= '0';
+--			alu_op(1) <= '0';
+--		end if;
+--	end process;
+	
 end architecture;
