@@ -16,6 +16,7 @@ entity id_ex_reg is
     reg_write_in           : in std_logic;
     mem_to_reg_in          : in std_logic;
     mem_write_in           : in std_logic;
+	 mem_read_in            : in std_logic;
     reg_dest_in            : in std_logic;
     alu_src_in             : in std_logic;
     alu_op_in              : in std_logic_vector(1 downto 0);
@@ -25,10 +26,10 @@ entity id_ex_reg is
     rs_in                  : in std_logic_vector(REG_WIDTH-1 downto 0);
     rt_in                  : in std_logic_vector(REG_WIDTH-1 downto 0);
     rd_in                  : in std_logic_vector(REG_WIDTH-1 downto 0);
-    address_in             : in std_logic_vector(15 downto 0);
     reg_write_out          : out std_logic;
     mem_to_reg_out         : out std_logic;
     mem_write_out          : out std_logic;
+	 mem_read_out           : out std_logic;
     reg_dest_out           : out std_logic;
     alu_src_out            : out std_logic;
     alu_op_out             : out std_logic_vector(1 downto 0);
@@ -37,8 +38,7 @@ entity id_ex_reg is
     sign_extend_out        : out std_logic_vector(DATA_WIDTH-1 downto 0);
     rs_out                 : out std_logic_vector(REG_WIDTH-1 downto 0);
     rt_out                 : out std_logic_vector(REG_WIDTH-1 downto 0);
-    rd_out                 : out std_logic_vector(REG_WIDTH-1 downto 0);
-    address_out            : out std_logic_vector(15 downto 0)
+    rd_out                 : out std_logic_vector(REG_WIDTH-1 downto 0)
   );
 end entity;
 
@@ -50,7 +50,6 @@ architecture rtl of id_ex_reg is
   signal rs           : std_logic_vector(REG_WIDTH-1 downto 0) := (others => '0');
   signal rt           : std_logic_vector(REG_WIDTH-1 downto 0) := (others => '0');
   signal rd           : std_logic_vector(REG_WIDTH-1 downto 0) := (others => '0');
-  signal address      : std_logic_vector(15 downto 0) := (others => '0');
 
 begin
 
@@ -66,7 +65,9 @@ begin
     clk             => clk,
     reset           => reset,
     mem_write_in    => mem_write_in,
-    mem_write_out   => mem_write_out);
+    mem_write_out   => mem_write_out,
+	 mem_read_in     => mem_read_in,
+    mem_read_out    => mem_read_out);
 
   EX_control : entity work.id_ex_control_reg(rtl) port map (
     clk             => clk,
@@ -84,11 +85,16 @@ begin
   rs_out          <= rs;
   rt_out          <= rt;
   rd_out          <= rd;
-  address_out     <= address;
 
-  process (clk, reset, data_1_in, data_2_in, sign_extend_in, rs_in, rt_in, rd_in, address_in) begin
+  process (clk, reset, data_1_in, data_2_in, sign_extend_in, rs_in, rt_in, rd_in) begin
     if reset = '1' then
       -- Do the reset thingy
+		data_1      <= (others => '0');
+      data_2      <= (others => '0');
+      sign_extend <= (others => '0');
+		rs          <= (others => '0');
+      rt          <= (others => '0');
+      rd          <= (others => '0');
     else
       if rising_edge(clk) then
         data_1      <= data_1_in;
@@ -97,7 +103,6 @@ begin
         rs          <= rs_in;
         rt          <= rt_in;
         rd          <= rd_in;
-        address     <= address_in;
       end if;
     end if;
   end process;

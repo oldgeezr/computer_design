@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/opt/dmlab/home/chriram/Documents/computer_design/exercise_2/tb_MIPSProcessor_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_textio" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tb_mipsprocessor" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="28" />
+   <wvobject fp_name="/tb_mipsprocessor/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/processor_enable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">processor_enable</obj_property>
+      <obj_property name="ObjectShortName">processor_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/reg_dst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_dst</obj_property>
+      <obj_property name="ObjectShortName">reg_dst</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/alu_src" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_src</obj_property>
+      <obj_property name="ObjectShortName">alu_src</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/mem_to_reg" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_to_reg</obj_property>
+      <obj_property name="ObjectShortName">mem_to_reg</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/reg_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_write</obj_property>
+      <obj_property name="ObjectShortName">reg_write</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/mem_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_write</obj_property>
+      <obj_property name="ObjectShortName">mem_write</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/mem_read" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_read</obj_property>
+      <obj_property name="ObjectShortName">mem_read</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/branch" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">branch</obj_property>
+      <obj_property name="ObjectShortName">branch</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/jump" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">jump</obj_property>
+      <obj_property name="ObjectShortName">jump</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/alu_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_op[1:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op[1:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/WB_control/mem_to_reg_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_to_reg_out</obj_property>
+      <obj_property name="ObjectShortName">mem_to_reg_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/WB_control/reg_write_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_write_out</obj_property>
+      <obj_property name="ObjectShortName">reg_write_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/MEM_control/mem_write_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_write_out</obj_property>
+      <obj_property name="ObjectShortName">mem_write_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/MEM_control/mem_read_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_read_out</obj_property>
+      <obj_property name="ObjectShortName">mem_read_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/EX_control/reg_dest_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_dest_out</obj_property>
+      <obj_property name="ObjectShortName">reg_dest_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/EX_control/alu_src_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_src_out</obj_property>
+      <obj_property name="ObjectShortName">alu_src_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ID_EX/EX_control/alu_op_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_op_out[1:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op_out[1:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/EX_MEM/WB_control/mem_to_reg_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_to_reg_out</obj_property>
+      <obj_property name="ObjectShortName">mem_to_reg_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/EX_MEM/WB_control/reg_write_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_write_out</obj_property>
+      <obj_property name="ObjectShortName">reg_write_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/EX_MEM/MEM_control/mem_write_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_write_out</obj_property>
+      <obj_property name="ObjectShortName">mem_write_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/EX_MEM/MEM_control/mem_read_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_read_out</obj_property>
+      <obj_property name="ObjectShortName">mem_read_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/MEM_WB/reg_write_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_write_out</obj_property>
+      <obj_property name="ObjectShortName">reg_write_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/MEM_WB/mem_to_reg_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_to_reg_out</obj_property>
+      <obj_property name="ObjectShortName">mem_to_reg_out</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/hazard_detection/pc_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pc_write</obj_property>
+      <obj_property name="ObjectShortName">pc_write</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/hazard_detection/if_id_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">if_id_write</obj_property>
+      <obj_property name="ObjectShortName">if_id_write</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/hazard_detection/stall" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">stall</obj_property>
+      <obj_property name="ObjectShortName">stall</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+</wave_config>

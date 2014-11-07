@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/opt/dmlab/home/chriram/Documents/computer_design/exercise_2/tb_MIPSProcessor_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_textio" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tb_mipsprocessor" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="19" />
+   <wvobject fp_name="/tb_mipsprocessor/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/processor_enable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">processor_enable</obj_property>
+      <obj_property name="ObjectShortName">processor_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/dummy_if" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dummy_if[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dummy_if[31:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/dummy_id" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dummy_id[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dummy_id[31:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/dummy_ex" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dummy_ex[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dummy_ex[31:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/dummy_mem" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dummy_mem[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dummy_mem[31:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/dummy_wb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dummy_wb[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dummy_wb[31:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/alu_module/data_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/alu_module/data_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_2[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/alu_module/result" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">result[31:0]</obj_property>
+      <obj_property name="ObjectShortName">result[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ex_data_1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ex_data_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_data_1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ex_data_2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ex_data_2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_data_2[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/ex_sign_extend" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ex_sign_extend[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_sign_extend[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/mem_alu_result" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_alu_result[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_alu_result[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/wb_write_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">wb_write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_write_data[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/forwarding/forward_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">forward_a[1:0]</obj_property>
+      <obj_property name="ObjectShortName">forward_a[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/forwarding/forward_b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">forward_b[1:0]</obj_property>
+      <obj_property name="ObjectShortName">forward_b[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mipsprocessor/Processor/control_unit/alu_src" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_src</obj_property>
+      <obj_property name="ObjectShortName">alu_src</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+</wave_config>

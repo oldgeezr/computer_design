@@ -25,6 +25,8 @@ begin
   process (clk, reset, reg_write_in, mem_to_reg_in) begin
     if reset = '1' then
       -- Do the reset thingy
+		reg_write  <= '0';
+      mem_to_reg <= '0';
     else
       if rising_edge(clk) then
         reg_write  <= reg_write_in;

@@ -37,8 +37,9 @@ architecture Behavioral of MIPSProcessor is
   ---------------------------------
 
   -- Instruction Fetch
-  alias if_instruction                           : std_logic_vector(DATA_WIDTH-1 downto 0) is imem_data_in;
+  signal if_instruction                          : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal if_new_pc                               : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal if_next_pc                              : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
   ---- Instruction Decode
   signal id_new_pc                               : std_logic_vector(ADDR_WIDTH-1 downto 0);
@@ -62,22 +63,21 @@ architecture Behavioral of MIPSProcessor is
   signal ex_rs                                   : std_logic_vector(REG_WIDTH-1 downto 0);
   signal ex_rt                                   : std_logic_vector(REG_WIDTH-1 downto 0);
   signal ex_rd                                   : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal ex_immediate                            : std_logic_vector(15 downto 0);
   signal ex_data_1                               : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal ex_data_2                               : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal ex_alu_data_2                           : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal ex_sign_extend                          : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   ---- Memory
   signal mem_alu_result                          : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal mem_data                                : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal mem_dmem_data                           : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal mem_write_reg                           : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal mem_immediate                           : std_logic_vector(15 downto 0);
 
   ---- Write Back
   signal wb_dmem_data                            : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal wb_alu_result                           : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal wb_write_reg                            : std_logic_vector(REG_WIDTH-1 downto 0);
-  signal wb_immediate                            : std_logic_vector(15 downto 0);
   signal wb_write_data                           : std_logic_vector(DATA_WIDTH-1 downto 0);
 
   ---------------------------------
@@ -86,16 +86,19 @@ architecture Behavioral of MIPSProcessor is
 
   -- Control signals in the ID stage
   signal id_mem_write                            : std_logic;
+  signal id_mem_read                             : std_logic;
   signal id_reg_write                            : std_logic;
   signal id_mem_to_reg                           : std_logic;
   signal id_reg_dest                             : std_logic;
   signal id_alu_op                               : std_logic_vector(1 downto 0);
   signal id_alu_src                              : std_logic;
+  signal id_pc_src 										 : std_logic_vector(1 downto 0);
 
   ---- Control signals in EX stage
   signal ex_control_reg_write                    : std_logic;
   signal ex_control_mem_to_reg                   : std_logic;
   signal ex_control_mem_write                    : std_logic;
+  signal ex_control_mem_read                     : std_logic;
   signal ex_control_reg_dest                     : std_logic;
   signal ex_control_alu_src                      : std_logic;
   signal ex_control_alu_op                       : std_logic_vector(1 downto 0);
@@ -104,11 +107,13 @@ architecture Behavioral of MIPSProcessor is
   signal ex_reg_write                            : std_logic;
   signal ex_mem_to_reg                           : std_logic;
   signal ex_mem_write                            : std_logic;
+  signal ex_mem_read                             : std_logic;
 
   ---- Control signals in MEM stage
   signal mem_control_reg_write                   : std_logic;
   signal mem_control_mem_to_reg                  : std_logic;
   signal mem_control_mem_write                   : std_logic;
+  signal mem_control_mem_read                    : std_logic;
 
   ---- Control signals in WB stage
   signal wb_control_reg_write                    : std_logic;
@@ -120,6 +125,7 @@ architecture Behavioral of MIPSProcessor is
 
   -- Control Unit Signals
   signal id_control_mem_write                    : std_logic;
+  signal id_control_mem_read                     : std_logic;
   signal id_control_reg_write                    : std_logic;
   signal id_control_mem_to_reg                   : std_logic;
   signal id_control_reg_dest                     : std_logic;
@@ -127,7 +133,7 @@ architecture Behavioral of MIPSProcessor is
   signal id_control_alu_src                      : std_logic;
   signal id_control_branch                       : std_logic;
   signal id_control_jump                         : std_logic;
-  signal id_control_pc_src                       : std_logic_vector(1 downto 0);
+  -- signal id_control_pc_src                       : std_logic_vector(1 downto 0);
   signal id_control_flush                        : std_logic;
   signal ex_control_flush                        : std_logic;
 
@@ -157,8 +163,15 @@ architecture Behavioral of MIPSProcessor is
   signal if_id_write                             : std_logic;
   signal pc_write                                : std_logic;
 
+  signal dummy_if 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal dummy_id 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal dummy_ex 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal dummy_mem										 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal dummy_wb 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
+
 begin
 
+	if_instruction <= imem_data_in;
   ---------------------------------
   -- Component Initialization
   ---------------------------------
@@ -168,6 +181,7 @@ begin
     processor_enable        => processor_enable,
     opcode                  => id_opcode,
     mem_write               => id_control_mem_write,
+	 mem_read                => id_control_mem_read,
     mem_to_reg              => id_control_mem_to_reg,
     reg_dst                 => id_control_reg_dest,
     reg_write               => id_control_reg_write,
@@ -207,6 +221,7 @@ begin
     -- Inputs
     clk                     => clk,
     reset                   => reset,
+	 processor_enable        => processor_enable,
     enable                  => pc_write, -- NOT CONNECTED TO CONTROL
     addr_in                 => pc_addr_in,
     -- Outputs
@@ -220,13 +235,13 @@ begin
     -- Outputs
     alu_ctrl                => alu_ctrl);
 
-  -- Initialize the hazard detection unit
-  hazard_detection : entity work.hazard_detection_unit(rtl) port map (
-    -- Inputs
-    id_ex_mem_write         => ex_control_mem_write,
+   -- Initialize the hazard detection unit
+   hazard_detection : entity work.hazard_detection_unit(rtl) port map (
+     -- Inputs
+    id_ex_mem_read          => ex_control_mem_read,
     if_id_rs                => id_rs,
     if_id_rt                => id_rt,
-    id_ex_rt                => id_rt,
+    id_ex_rt                => ex_rt,
     -- Outputs
     pc_write                => pc_write, --THIS SHOULD PROBABLY BE CONNECTED TO PC_ENABLE?
     if_id_write             => if_id_write,
@@ -239,8 +254,8 @@ begin
     id_ex_rt                => ex_rt,
     ex_mem_rd               => mem_write_reg,
     mem_wb_rd               => wb_write_reg,
-    ex_mem_reg_write        => ex_control_reg_write,
-    mem_wb_reg_write        => mem_control_reg_write,
+    ex_mem_reg_write        => mem_control_reg_write,
+    mem_wb_reg_write        => wb_control_reg_write,
     -- Outputs
     forward_a               => forward_a,
     forward_b               => forward_b);
@@ -270,6 +285,7 @@ begin
     reg_write_in            => id_reg_write,
     mem_to_reg_in           => id_mem_to_reg,
     mem_write_in            => id_mem_write,
+	 mem_read_in             => id_mem_read,
     reg_dest_in             => id_reg_dest,
     alu_src_in              => id_alu_src,
     alu_op_in               => id_alu_op,
@@ -277,6 +293,7 @@ begin
     reg_write_out           => ex_control_reg_write,
     mem_to_reg_out          => ex_control_mem_to_reg,
     mem_write_out           => ex_control_mem_write,
+	 mem_read_out            => ex_control_mem_read,
     reg_dest_out            => ex_control_reg_dest,
     alu_src_out             => ex_control_alu_src,
     alu_op_out              => ex_control_alu_op,
@@ -289,37 +306,35 @@ begin
     rs_in                   => id_rs,
     rt_in                   => id_rt,
     rd_in                   => id_rd,
-    address_in              => id_immediate,
     -- Data outputs
     data_1_out              => ex_data_1,
     data_2_out              => ex_data_2,
     sign_extend_out         => ex_sign_extend,
     rt_out                  => ex_rt,
     rs_out                  => ex_rs,
-    rd_out                  => ex_rd,
-    address_out             => ex_immediate);
+    rd_out                  => ex_rd);
 
   EX_MEM : entity work.ex_mem_reg(rtl) port map (
     -- Control inputs
     reg_write_in            => ex_reg_write,
     mem_to_reg_in           => ex_mem_to_reg,
     mem_write_in            => ex_mem_write,
+	 mem_read_in             => ex_mem_read,
     -- Control outputs
     reg_write_out           => mem_control_reg_write,
     mem_to_reg_out          => mem_control_mem_to_reg,
     mem_write_out           => dmem_write_enable, -- REMEMBER TO DELETE MEM_CONTROL_MEM_WRITE
+	 mem_read_out            => mem_control_mem_read,
     -- Data inputs
     clk                     => clk,
     reset                   => reset,
     alu_result_in           => alu_result,
-    data_in                 => ex_data_2,
+    data_in                 => ex_alu_data_2,
     rd_in                   => ex_write_reg,
-    address_in              => ex_immediate,
     -- Data outputs
     alu_result_out          => mem_alu_result,
     data_out                => mem_data,
-    rd_out                  => mem_write_reg,
-    address_out             => mem_immediate);
+    rd_out                  => mem_write_reg);
 
   MEM_WB : entity work.mem_wb_reg(rtl) port map (
     -- Control inputs
@@ -331,15 +346,35 @@ begin
     -- Data inputs
     clk                     => clk,
     reset                   => reset,
-    dmem_in                 => dmem_data_in,
+    dmem_in                 => mem_dmem_data,
     alu_result_in           => mem_alu_result,
     rd_in                   => mem_write_reg,
-    address_in              => mem_immediate,
     -- Data outputs
     dmem_out                => wb_dmem_data,
     alu_result_out          => wb_alu_result,
-    rd_out                  => wb_write_reg,
-    address_out             => wb_immediate); -- Is it necessary to store this signal through all these stages?
+    rd_out                  => wb_write_reg);
+	 
+  ---------------------------------
+  -- DUMMY REGISTERS for testbenching
+  --------------------------------- 
+  
+  DUMMY : process (clk, reset, processor_enable, dummy_if, dummy_id, dummy_ex, dummy_mem, imem_data_in) begin
+    if reset = '1' then 
+		dummy_if <= (others => '0');
+		dummy_id <= (others => '0');
+		dummy_ex <= (others => '0');
+		dummy_mem <= (others => '0');
+		dummy_wb <= (others => '0');
+	 else
+		if rising_edge(clk) and processor_enable = '1' then 
+		  dummy_if <= imem_data_in;
+		  dummy_id <= dummy_if;
+		  dummy_ex <= dummy_id;
+		  dummy_mem <= dummy_ex;
+		  dummy_wb <= dummy_mem;
+		end if;
+	 end if;
+  end process;
 
   ---------------------------------
   -- Instruction Fetch
@@ -353,12 +388,18 @@ begin
   --  pc_addr_in <= id_branch_addr when something,
   --                the other mux when ...
 
+  id_pc_src <= id_branch & id_control_jump;
+
   -- PC MUX
-  with id_branch select -- id_control_jump select 
-    pc_addr_in <= if_new_pc when '0',
-						-- id_jump_addr when "10", 
-						id_branch_addr when others;
+  with id_pc_src select 
+    if_next_pc <=  if_new_pc when "00",
+						 id_jump_addr when "01", 
+						 id_branch_addr when others;
 	 -- OVERFLOW_EXECPTION(ADDR_WIDTH-1 downto 0) when "11", -- NOTE THAT WE ONLY USE THE 8 LSB
+
+	with processor_enable select 
+     pc_addr_in <= if_next_pc when '1',
+						 (others => '0') when others;
 
   -- Pass PC to IM
   imem_address <= pc_addr_out;
@@ -368,16 +409,18 @@ begin
   ---------------------------------
 
   -- THIS MIGHT INFERRE LATCHES?
-  ID_FLUSH_MUX : process (stall, id_control_flush,
+  ID_FLUSH_MUX : process (stall, -- id_control_flush,
                           id_control_mem_write,
+								  id_control_mem_read,
                           id_control_mem_to_reg,
                           id_control_reg_dest,
                           id_control_reg_write,
                           id_control_alu_op,
                           id_control_alu_src)
   begin
-    if stall = '1' or id_control_flush = '1' then
+    if stall = '0' then -- or id_control_flush = '1' then
       id_mem_write  <= id_control_mem_write;
+		id_mem_read   <= id_control_mem_read;
       id_mem_to_reg <= id_control_mem_to_reg;
       id_reg_dest   <= id_control_reg_dest;
       id_reg_write  <= id_control_reg_write;
@@ -385,6 +428,7 @@ begin
       id_alu_src    <= id_control_alu_src;
     else
       id_mem_write  <= '0';
+		id_mem_read   <= '0';
       id_mem_to_reg <= '0';
       id_reg_dest   <= '0';
       id_reg_write  <= '0';
@@ -417,40 +461,44 @@ begin
   ---------------------------------
 
   -- THIS MIGHT INFERRE LATCHES?
-  EX_FLUSH_MUX : process (ex_control_flush,
-                          ex_control_mem_write,
-                          ex_control_mem_to_reg,
-                          ex_control_reg_write)
-  begin
-    if ex_control_flush = '1' then
+  -- EX_FLUSH_MUX : process (ex_control_flush,
+  --                        ex_control_mem_write,
+  --                        ex_control_mem_to_reg,
+  --                        ex_control_reg_write)
+  --begin
+  --  if ex_control_flush = '1' then
       ex_mem_write  <= ex_control_mem_write;
+		ex_mem_read   <= ex_control_mem_read;
       ex_mem_to_reg <= ex_control_mem_to_reg;
       ex_reg_write  <= ex_control_reg_write;
-    else
-      ex_mem_write  <= '0';
-      ex_mem_to_reg <= '0';
-      ex_reg_write  <= '0';
-    end if;
-  end process;
+  --  else
+  --    ex_mem_write  <= '0';
+  --    ex_mem_to_reg <= '0';
+  --    ex_reg_write  <= '0';
+  --  end if;
+  --end process;
 
   -- Get the funct bits from the instruction
-  funct <= ex_immediate(5 downto 0);
+  funct <= ex_sign_extend(5 downto 0);
 
   -- Destination register MUX
   ex_write_reg <= ex_rd when ex_control_reg_dest = '1' else ex_rt;
 
   -- ALU data_1 MUX NOTE! BUT WHERE DO WE USE THE SIGNEXTEND
   with forward_a select
-    alu_data_1 <=  wb_write_data when "00",
-                   mem_alu_result when "01",
-                   ex_data_1 when others;
+    alu_data_1 <=  ex_data_1 when "00",
+                   wb_write_data when "01",
+                   mem_alu_result when others;
 
   -- ALU data_2 MUX
-  with forward_b & ex_control_alu_src select
-    alu_data_2 <=  wb_write_data when "000",
-                   mem_alu_result when "010",
-                   ex_data_2 when "100",
-                   ex_sign_extend when others; -- Might be error prone. At ex_control_alu_src high
+  with forward_b select
+    ex_alu_data_2 <= ex_data_2 when "00",
+							wb_write_data when "01",
+							mem_alu_result when others;
+						 
+  with ex_control_alu_src select
+    alu_data_2 <= ex_alu_data_2 when '0',
+						ex_sign_extend when others;
 
   ---------------------------------
   -- Memory
@@ -459,11 +507,13 @@ begin
   dmem_data_out <= mem_data;
   dmem_address  <= mem_alu_result(ADDR_WIDTH-1 downto 0);
 
+  mem_dmem_data <= wb_dmem_data when mem_control_mem_read = '1' else dmem_data_in;
+
   ---------------------------------
   -- Write Back
   ---------------------------------
 
   -- Mem to reg MUX
-  wb_write_data <= wb_dmem_data when wb_control_mem_to_reg = '1' else wb_alu_result;
+  wb_write_data <= dmem_data_in when wb_control_mem_to_reg = '1' else wb_alu_result;
 
 end Behavioral;

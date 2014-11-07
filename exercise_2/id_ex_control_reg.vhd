@@ -30,6 +30,9 @@ begin
   begin
     if reset = '1' then
       -- Do the reset thingy
+		reg_dest <= '0';
+      alu_src  <= '0';
+      alu_op   <= "00";
     else
       if rising_edge(clk) then
         reg_dest <= reg_dest_in;

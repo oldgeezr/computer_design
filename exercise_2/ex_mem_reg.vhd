@@ -12,17 +12,17 @@ entity ex_mem_reg is
     reg_write_in     : in std_logic;
     mem_to_reg_in    : in std_logic;
     mem_write_in     : in std_logic;
+	 mem_read_in      : in std_logic;
     alu_result_in    : in std_logic_vector(DATA_WIDTH-1 downto 0);
     data_in          : in std_logic_vector(DATA_WIDTH-1 downto 0);
     rd_in            : in std_logic_vector(REG_WIDTH-1 downto 0);
-    address_in       : in std_logic_vector(15 downto 0);
     reg_write_out    : out std_logic;
     mem_to_reg_out   : out std_logic;
     mem_write_out    : out std_logic;
+	 mem_read_out     : out std_logic;
     alu_result_out   : out std_logic_vector(DATA_WIDTH-1 downto 0);
     data_out         : out std_logic_vector(DATA_WIDTH-1 downto 0);
-    rd_out           : out std_logic_vector(REG_WIDTH-1 downto 0);
-    address_out      : out std_logic_vector(15 downto 0)
+    rd_out           : out std_logic_vector(REG_WIDTH-1 downto 0)
   );
 end entity;
 
@@ -31,7 +31,6 @@ architecture rtl of ex_mem_reg is
   signal alu_result  : std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
   signal data        : std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
   signal rd          : std_logic_vector(REG_WIDTH-1 downto 0) := (others => '0');
-  signal address     : std_logic_vector(15 downto 0) := (others => '0');
 
 begin
 
@@ -47,22 +46,25 @@ begin
     clk             => clk,
     reset           => reset,
     mem_write_in    => mem_write_in,
-    mem_write_out   => mem_write_out);
+    mem_write_out   => mem_write_out,
+	 mem_read_in     => mem_read_in,
+    mem_read_out    => mem_read_out);
 
   alu_result_out        <= alu_result;
   rd_out                <= rd;
-  address_out           <= address;
   data_out              <= data;
 
-  process (clk, reset, alu_result_in, data_in, rd_in, address_in) begin
+  process (clk, reset, alu_result_in, data_in, rd_in) begin
     if reset = '1' then
       -- Do the reset thingy
+		alu_result <= (others => '0');
+      data       <= (others => '0');
+      rd         <= (others => '0');
     else
       if rising_edge(clk) then
         alu_result <= alu_result_in;
         data       <= data_in;
         rd         <= rd_in;
-        address    <= address_in;
       end if;
     end if;
   end process;
