@@ -13,6 +13,7 @@ architecture arch of control_tb is
 					opcode : in std_logic_vector(5 downto 0);
 					-- Output 
 					mem_write : out std_logic;
+					mem_read : out std_logic;
 					mem_to_reg : out std_logic;
 					reg_dst : out std_logic; 
 					reg_write : out std_logic;
@@ -25,6 +26,7 @@ architecture arch of control_tb is
 	signal processor_enable : std_logic;
 	signal opcode : std_logic_vector(5 downto 0);
 	signal mem_write : std_logic;
+	signal mem_read : std_logic;
 	signal mem_to_reg : std_logic;
 	signal reg_dst : std_logic; 
 	signal reg_write : std_logic;
@@ -55,6 +57,7 @@ begin
 		processor_enable => processor_enable,
 		opcode => opcode,
 		mem_write => mem_write,
+		mem_read => mem_read,
 		mem_to_reg => mem_to_reg,
 		reg_dst => reg_dst, 
 		reg_write => reg_write,
@@ -72,6 +75,7 @@ begin
 			tb_mem_to_reg : in std_logic;
  			tb_reg_write : in std_logic;
 			tb_mem_write : in std_logic;
+			tb_mem_read : in std_logic;
 			tb_branch : in std_logic;
 			tb_jump : in std_logic;
 			tb_alu_op : in std_logic_vector(1 downto 0)) is
@@ -92,6 +96,9 @@ begin
 			end if;
 			if(tb_mem_write /= '-') then
 			assert tb_mem_write = mem_write report "mem_write is wrong, found = " & std_logic'image(mem_write) severity note;
+			end if;
+			if(tb_mem_read /= '-') then
+			assert tb_mem_read = mem_read report "mem_read is wrong, found = " & std_logic'image(mem_read) severity note;
 			end if;
 			if(tb_branch /= '-') then
 			assert tb_branch = branch report "branch is wrong, found = " & std_logic'image(branch) severity note;
@@ -123,45 +130,45 @@ begin
 		opcode <= rtype;	
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('1', '0', '0', '1', '0', '0', '0', "10");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('1', '0', '0', '1', '0', '0', '0', '0', "10");
 		 
 		
 		-- Store instruction
 		opcode <= lw;
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('0', '1', '1', '1', '0', '0', '0', "00");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('0', '1', '1', '1', '0', '1', '0', '0', "00");
 		 
 		
 		-- Beg instruction  
 		opcode <= sw;
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('-', '1', '-', '0', '1', '0', '0', "00");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('-', '1', '-', '0', '1', '0', '0', '0', "00");
 		
 		-- J-Type instruction  
 		opcode <= beq;
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('-', '0', '-', '0', '0', '1', '0', "--");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('-', '0', '-', '0', '0', '0', '1', '0', "--");
 		
 		-- Register instructions
 		opcode <= jtype;
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('-', '-', '-', '0', '0', '-', '1', "--");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('-', '-', '-', '0', '0', '0', '-', '1', "--");
 		
 		-- LUI instrucion
 		opcode <= lui;
 		
 		wait for clkperiod; 
-		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('0', '1', '0', '1', '0', '0', '0', "11");
+		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, mem_read, branch, jump, alu_op
+		Checklist('0', '1', '0', '1', '0', '0', '0', '0', "11");
 		
 		
 		-- Disable processor
@@ -176,7 +183,7 @@ begin
 		
 		wait for clkperiod; 
 		-- reg_dst, alu_src, mem_to_reg, reg_write, mem_write, branch, jump, alu_op
-		Checklist('0', '1', '0', '1', '0', '0', '0', "11");
+		Checklist('0', '1', '0', '1', '0', '0', '0', '0', "11");
 
 		
 		-- END SIMULATION

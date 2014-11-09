@@ -12,8 +12,7 @@ architecture behavior of alu_tb is
 		data_1 : in std_logic_vector(31 downto 0);
 		data_2 : in std_logic_vector(31 downto 0);
 		alu_ctrl : in std_logic_vector(3 downto 0);
-		result : out std_logic_vector(31 downto 0);
-		zero : out std_ulogic
+		result : out std_logic_vector(31 downto 0)
 		);
 	end component;
 	
@@ -21,7 +20,6 @@ architecture behavior of alu_tb is
 	signal data_2 : std_logic_vector(31 downto 0);
 	signal alu_ctrl : std_logic_vector(3 downto 0);
 	signal result : std_logic_vector(31 downto 0);
-	signal zero : std_ulogic;
 	
 	signal clk_period : time := 10ns;
 	
@@ -32,8 +30,7 @@ begin
 		data_1 => data_1,
 		data_2 => data_2,
 		alu_ctrl => alu_ctrl,
-		result => result,
-		zero => zero
+		result => result
 	);
 	
 	--Test process
@@ -58,14 +55,6 @@ begin
 		assert(result = x"11000011") report "AND test 2 failed" severity note;
 		report "AND test 2 passed" severity note;
 		
-		wait for clk_period;
-		data_1 <= x"11111111";
-		data_2 <= x"11111111";
-		alu_ctrl <= "0000";
-      wait for clk_period;
-		assert(result = x"11111111") report "AND test 3 failed" severity note;
-		report "AND test 3 passed" severity note;
-		
 		--OR test
 		wait for clk_period;
 		data_1 <= x"00000001";
@@ -82,14 +71,6 @@ begin
       wait for clk_period;
 		assert(result = x"11111111") report "OR test 2 failed" severity note;
 		report "OR test 2 passed" severity note;
-		
-		wait for clk_period;
-		data_1 <= x"11111111";
-		data_2 <= x"11111111";
-		alu_ctrl <= "0001";
-      wait for clk_period;
-		assert(result = x"11111111") report "OR test 3 failed" severity note;
-		report "OR test 3 passed" severity note;
 		
 		--ADD test
 		wait for clk_period;
@@ -108,14 +89,6 @@ begin
 		assert(result = std_logic_vector(to_signed(0,32))) report "ADD test 2 failed" severity note;
 		report "ADD test 2 passed" severity note;
 		
-		wait for clk_period;
-		data_1 <= std_logic_vector(to_signed(1000055,32));
-		data_2 <= std_logic_vector(to_signed(1555000,32));
-		alu_ctrl <= "0010";
-      wait for clk_period;
-		assert(result = std_logic_vector(to_signed(2555055,32))) report "ADD test 3 failed" severity note;
-		report "ADD test 3 passed" severity note;
-		
 		--SUB test
 		wait for clk_period;
 		data_1 <= std_logic_vector(to_signed(45,32));
@@ -132,14 +105,6 @@ begin
       wait for clk_period;
 		assert(result = std_logic_vector(to_signed(0,32))) report "SUB test 2 failed" severity note;
 		report "SUB test 2 passed" severity note;
-		
-		wait for clk_period;
-		data_1 <= std_logic_vector(to_signed(45,32));
-		data_2 <= std_logic_vector(to_signed(10,32));
-		alu_ctrl <= "0110";
-      wait for clk_period;
-		assert(result = std_logic_vector(to_signed(35,32))) report "SUB test 3 failed" severity note;
-		report "SUB test 3 passed" severity note;
 		
 		--SLT test
 		wait for clk_period;
@@ -159,12 +124,12 @@ begin
 		report "SLT test 2 passed" severity note;
 		
 		wait for clk_period;
-		data_1 <= std_logic_vector(to_signed(45,32));
-		data_2 <= std_logic_vector(to_signed(10,32));
-		alu_ctrl <= "0111";
+		data_1 <= std_logic_vector(to_signed(0,32));
+		data_2 <= std_logic_vector(to_signed(6,32));
+		alu_ctrl <= "1000";
       wait for clk_period;
-		assert(result = std_logic_vector(to_signed(0,32))) report "SLT test 3 failed" severity note;
-		report "SLT test 3 passed" severity note;
+		assert(result = std_logic_vector(to_signed(393216,32))) report "SLL test 1 failed" severity note;
+		report "SLL test 1 passed" severity note;
 		
 		assert false report "Testbench finished" severity failure;
 		

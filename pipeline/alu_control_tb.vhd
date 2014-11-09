@@ -22,7 +22,10 @@ architecture arch of alu_control_tb is
 	signal clk : std_logic;
 	
 	-- Load/Store instructions
-	signal lwsw : std_logic_vector(1 downto 0) := "00";   
+	signal lwsw : std_logic_vector(1 downto 0) := "00"; 
+
+	-- Lui instructions
+	signal lui : std_logic_vector(1 downto 0) := "11";
 	
 	-- Beg instruction
 	signal beq : std_logic_vector(1 downto 0) := "01";
@@ -60,7 +63,11 @@ begin
 			tb_alu_ctrl : in std_logic_vector(3 downto 0)) is
 		begin
 			wait for 0.5*clkperiod;
-			assert tb_alu_ctrl = alu_ctrl report "alu_ctrl is wrong, found = " & integer'image(to_integer(unsigned(alu_ctrl))) severity note;
+			if tb_alu_ctrl(3) = '1' then
+				assert tb_alu_ctrl(3) = alu_ctrl(3) report "alu_ctrl(3) is wrong, found = " & integer'image(to_integer(unsigned(alu_ctrl))) severity note;
+			else
+				assert tb_alu_ctrl = alu_ctrl report "alu_ctrl is wrong, found = " & integer'image(to_integer(unsigned(alu_ctrl))) severity note;
+			end if;
 			wait for 0.5*clkperiod;
 			
 		end Checklist;
@@ -109,6 +116,12 @@ begin
 		
 		-- alu_ctrl
 		Checklist("0111");
+		
+		alu_op <= lui;
+		funct <= or_op;
+		
+		-- alu_ctrl
+		Checklist("1---");
 		
 		-- END SIMULATION
 		assert false report"END SIM" severity failure;

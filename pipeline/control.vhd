@@ -44,6 +44,6 @@ begin
 	jump <= processor_enable and op1 and (not op0);
 	alu_op(0) <= processor_enable and op2;
 	alu_op(1) <= processor_enable and (not op5);
-	mem_read <= not op3 and op5;
+	mem_read <= (not op3) and op5;
 	
 end architecture;
