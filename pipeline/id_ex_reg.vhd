@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity id_ex_reg is
   generic (
-    DATA_WIDTH          : integer := 32;
-    REG_WIDTH           : integer := 5
+    DATA_WIDTH             : integer := 32;
+    REG_WIDTH              : integer := 5
   );
   port (
     clk                    : in std_logic;
@@ -12,7 +12,7 @@ entity id_ex_reg is
     reg_write_in           : in std_logic;
     mem_to_reg_in          : in std_logic;
     mem_write_in           : in std_logic;
-	 mem_read_in            : in std_logic;
+    mem_read_in            : in std_logic;
     reg_dest_in            : in std_logic;
     alu_src_in             : in std_logic;
     alu_op_in              : in std_logic_vector(1 downto 0);
@@ -25,7 +25,7 @@ entity id_ex_reg is
     reg_write_out          : out std_logic;
     mem_to_reg_out         : out std_logic;
     mem_write_out          : out std_logic;
-	 mem_read_out           : out std_logic;
+    mem_read_out           : out std_logic;
     reg_dest_out           : out std_logic;
     alu_src_out            : out std_logic;
     alu_op_out             : out std_logic_vector(1 downto 0);
@@ -62,7 +62,7 @@ begin
     reset           => reset,
     mem_write_in    => mem_write_in,
     mem_write_out   => mem_write_out,
-	 mem_read_in     => mem_read_in,
+    mem_read_in     => mem_read_in,
     mem_read_out    => mem_read_out);
 
   EX_control : entity work.id_ex_control_reg(rtl) port map (
@@ -84,12 +84,12 @@ begin
 
   process (clk, reset, data_1_in, data_2_in, sign_extend_in, rs_in, rt_in, rd_in) begin
     if reset = '1' then
-		data_1      <= (others => '0');
-      data_2      <= (others => '0');
-      sign_extend <= (others => '0');
-		rs          <= (others => '0');
-      rt          <= (others => '0');
-      rd          <= (others => '0');
+      data_1        <= (others => '0');
+      data_2        <= (others => '0');
+      sign_extend   <= (others => '0');
+      rs            <= (others => '0');
+      rt            <= (others => '0');
+      rd            <= (others => '0');
     else
       if rising_edge(clk) then
         data_1      <= data_1_in;

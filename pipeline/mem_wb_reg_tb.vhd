@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity mem_wb_reg_tb is
   generic (
-    DATA_WIDTH          : integer := 32;
-    REG_WIDTH           : integer := 5
+    DATA_WIDTH                        : integer := 32;
+    REG_WIDTH                         : integer := 5
   );
 end entity;
 

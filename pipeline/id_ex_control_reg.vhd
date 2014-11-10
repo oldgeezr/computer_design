@@ -29,7 +29,7 @@ begin
   process (clk, reset, reg_dest_in, alu_src_in, alu_op_in) is
   begin
     if reset = '1' then
-		reg_dest <= '0';
+      reg_dest <= '0';
       alu_src  <= '0';
       alu_op   <= "00";
     else

@@ -6,9 +6,9 @@ entity ex_mem_control_reg is
     clk             : in std_logic;
     reset           : in std_logic;
     mem_write_in    : in std_logic;
-	 mem_read_in     : in std_logic;
+    mem_read_in     : in std_logic;
     mem_write_out   : out std_logic;
-	 mem_read_out    : out std_logic
+    mem_read_out    : out std_logic
   );
 end entity;
 
@@ -24,12 +24,12 @@ begin
 
   process (clk, reset, mem_write_in, mem_read_in) begin
     if reset = '1' then
-		mem_write <= '0';
-		mem_read  <= '0';
+      mem_write <= '0';
+      mem_read  <= '0';
     else
       if rising_edge(clk) then
         mem_write <= mem_write_in;
-		  mem_read  <= mem_read_in;
+        mem_read  <= mem_read_in;
       end if;
     end if;
   end process;

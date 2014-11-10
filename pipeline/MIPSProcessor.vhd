@@ -89,7 +89,7 @@ architecture Behavioral of MIPSProcessor is
   signal id_reg_dest                             : std_logic;
   signal id_alu_op                               : std_logic_vector(1 downto 0);
   signal id_alu_src                              : std_logic;
-  signal id_pc_src 										 : std_logic_vector(1 downto 0);
+  signal id_pc_src                               : std_logic_vector(1 downto 0);
 
   ---- Control signals in EX stage
   signal ex_control_reg_write                    : std_logic;
@@ -154,17 +154,17 @@ architecture Behavioral of MIPSProcessor is
   signal if_id_write                             : std_logic;
   signal pc_write                                : std_logic;
 
---  signal dummy_if 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
---  signal dummy_id 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
---  signal dummy_ex 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
---  signal dummy_mem										 : std_logic_vector(DATA_WIDTH-1 downto 0);
---  signal dummy_wb 										 : std_logic_vector(DATA_WIDTH-1 downto 0);
-  
-  -- temp 
-  signal previous_instruction : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal previous_if_id_write : std_logic;
-  signal if_id_reset : std_logic;
-  signal if_instruction : std_logic_vector(DATA_WIDTH-1 downto 0);
+--  signal dummy_if                      : std_logic_vector(DATA_WIDTH-1 downto 0);
+--  signal dummy_id                      : std_logic_vector(DATA_WIDTH-1 downto 0);
+--  signal dummy_ex                      : std_logic_vector(DATA_WIDTH-1 downto 0);
+--  signal dummy_mem                     : std_logic_vector(DATA_WIDTH-1 downto 0);
+--  signal dummy_wb                      : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+  -- temp
+  signal previous_instruction                    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal previous_if_id_write                    : std_logic;
+  signal if_id_reset                             : std_logic;
+  signal if_instruction                          : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
 
@@ -177,7 +177,7 @@ begin
     processor_enable        => processor_enable,
     opcode                  => id_opcode,
     mem_write               => id_control_mem_write,
-	 mem_read                => id_control_mem_read,
+    mem_read                => id_control_mem_read,
     mem_to_reg              => id_control_mem_to_reg,
     reg_dst                 => id_control_reg_dest,
     reg_write               => id_control_reg_write,
@@ -214,7 +214,7 @@ begin
     -- Inputs
     clk                     => clk,
     reset                   => reset,
-	 processor_enable        => processor_enable,
+    processor_enable        => processor_enable,
     enable                  => pc_write,
     addr_in                 => pc_addr_in,
     -- Outputs
@@ -278,7 +278,7 @@ begin
     reg_write_in            => id_reg_write,
     mem_to_reg_in           => id_mem_to_reg,
     mem_write_in            => id_mem_write,
-	 mem_read_in             => id_mem_read,
+    mem_read_in             => id_mem_read,
     reg_dest_in             => id_reg_dest,
     alu_src_in              => id_alu_src,
     alu_op_in               => id_alu_op,
@@ -286,7 +286,7 @@ begin
     reg_write_out           => ex_control_reg_write,
     mem_to_reg_out          => ex_control_mem_to_reg,
     mem_write_out           => ex_control_mem_write,
-	 mem_read_out            => ex_control_mem_read,
+    mem_read_out            => ex_control_mem_read,
     reg_dest_out            => ex_control_reg_dest,
     alu_src_out             => ex_control_alu_src,
     alu_op_out              => ex_control_alu_op,
@@ -312,12 +312,12 @@ begin
     reg_write_in            => ex_control_reg_write,
     mem_to_reg_in           => ex_control_mem_to_reg,
     mem_write_in            => ex_control_mem_write,
-	 mem_read_in             => ex_control_mem_read,
+    mem_read_in             => ex_control_mem_read,
     -- Control outputs
     reg_write_out           => mem_control_reg_write,
     mem_to_reg_out          => mem_control_mem_to_reg,
     mem_write_out           => dmem_write_enable,
-	 mem_read_out            => mem_control_mem_read,
+    mem_read_out            => mem_control_mem_read,
     -- Data inputs
     clk                     => clk,
     reset                   => reset,
@@ -346,27 +346,27 @@ begin
     dmem_out                => wb_dmem_data,
     alu_result_out          => wb_alu_result,
     rd_out                  => wb_write_reg);
-	 
+
   ---------------------------------
   -- DUMMY REGISTERS for testbenching
-  --------------------------------- 
-  
+  ---------------------------------
+
 --  dummy_if <= imem_data_in;
---  
+--
 --  DUMMY : process (clk, reset, processor_enable, dummy_if, dummy_id, dummy_ex, dummy_mem, imem_data_in) begin
---    if reset = '1' then 
---		dummy_id <= (others => '0');
---		dummy_ex <= (others => '0');
---		dummy_mem <= (others => '0');
---		dummy_wb <= (others => '0');
---	 else
---		if rising_edge(clk) and processor_enable = '1' then 
---		  dummy_id <= dummy_if;
---		  dummy_ex <= dummy_id;
---		  dummy_mem <= dummy_ex;
---		  dummy_wb <= dummy_mem;
---		end if;
---	 end if;
+--    if reset = '1' then
+--    dummy_id <= (others => '0');
+--    dummy_ex <= (others => '0');
+--    dummy_mem <= (others => '0');
+--    dummy_wb <= (others => '0');
+--   else
+--    if rising_edge(clk) and processor_enable = '1' then
+--      dummy_id <= dummy_if;
+--      dummy_ex <= dummy_id;
+--      dummy_mem <= dummy_ex;
+--      dummy_wb <= dummy_mem;
+--    end if;
+--   end if;
 --  end process;
 
   ---------------------------------
@@ -375,28 +375,28 @@ begin
 
   -- Increment PC
   if_new_pc <= std_logic_vector(unsigned(pc_addr_out) + 1) ;
-  
+
   branch_jump_registers : process (clk, imem_data_in, if_id_write, id_branch, id_control_jump) begin
     if rising_edge(clk) then
-      previous_instruction <= imem_data_in;
-		previous_if_id_write <= if_id_write;
-		if_id_reset <= id_branch or id_control_jump;
+      previous_instruction  <= imem_data_in;
+      previous_if_id_write  <= if_id_write;
+      if_id_reset           <= id_branch or id_control_jump;
     end if;
   end process;
-  
+
   if_instruction <= imem_data_in when previous_if_id_write = '1' else previous_instruction;
 
   id_pc_src <= id_branch & id_control_jump;
 
   -- PC MUX
-  with id_pc_src select 
-    if_next_pc <=  if_new_pc when "00",
-						 id_jump_addr when "01", 
-						 id_branch_addr when others;
+  with id_pc_src select
+    if_next_pc <= if_new_pc when "00",
+                  id_jump_addr when "01",
+                  id_branch_addr when others;
 
-	with processor_enable select 
+  with processor_enable select
      pc_addr_in <= if_next_pc when '1',
-						 (others => '0') when others;
+                   (others => '0') when others;
 
   -- Pass PC to IM
   imem_address <= pc_addr_out;
@@ -407,16 +407,16 @@ begin
 
   ID_FLUSH_MUX : process (stall,
                           id_control_mem_write,
-								  id_control_mem_read,
+                          id_control_mem_read,
                           id_control_mem_to_reg,
                           id_control_reg_dest,
                           id_control_reg_write,
                           id_control_alu_op,
                           id_control_alu_src)
   begin
-    if stall = '0' then 
+    if stall = '0' then
       id_mem_write  <= id_control_mem_write;
-		id_mem_read   <= id_control_mem_read;
+      id_mem_read   <= id_control_mem_read;
       id_mem_to_reg <= id_control_mem_to_reg;
       id_reg_dest   <= id_control_reg_dest;
       id_reg_write  <= id_control_reg_write;
@@ -424,7 +424,7 @@ begin
       id_alu_src    <= id_control_alu_src;
     else
       id_mem_write  <= '0';
-		id_mem_read   <= '0';
+      id_mem_read   <= '0';
       id_mem_to_reg <= '0';
       id_reg_dest   <= '0';
       id_reg_write  <= '0';
@@ -446,7 +446,7 @@ begin
   id_result <= unsigned(read_data_1) - unsigned(read_data_2);
   with id_result select
     id_zero <= '1' when x"00000000",
-            '0' when others;
+               '0' when others;
 
   -- Sign extend
   id_sign_extend_bits <= (others => '0') when id_immediate(15) = '0' else (others => '1');
@@ -462,7 +462,7 @@ begin
   -- Destination register MUX
   ex_write_reg <= ex_rd when ex_control_reg_dest = '1' else ex_rt;
 
-  -- ALU data_1 MUX 
+  -- ALU data_1 MUX
   with forward_a select
     alu_data_1 <=  ex_data_1 when "00",
                    wb_write_data when "01",
@@ -471,12 +471,12 @@ begin
   -- ALU data_2 MUX
   with forward_b select
     ex_alu_data_2 <= ex_data_2 when "00",
-							wb_write_data when "01",
-							mem_alu_result when others;
-						 
+                     wb_write_data when "01",
+                     mem_alu_result when others;
+
   with ex_control_alu_src select
     alu_data_2 <= ex_alu_data_2 when '0',
-						ex_sign_extend when others;
+                  ex_sign_extend when others;
 
   ---------------------------------
   -- Memory
