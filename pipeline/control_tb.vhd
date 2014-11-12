@@ -10,7 +10,7 @@ architecture arch of control_tb is
   component control
     port (  -- Input
           processor_enable        : in std_logic;
-          opcode i                : in std_logic_vector(5 downto 0);
+          opcode                  : in std_logic_vector(5 downto 0);
           -- Output
           mem_write               : out std_logic;
           mem_read                : out std_logic;
