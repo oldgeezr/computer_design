@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=/opt/dmlab/home/chriram/Documents/computer_design/exercise0/RPNSystem.ncd
-OUTFILE=/opt/dmlab/home/chriram/Documents/computer_design/exercise0/RPNSystem.bit
-FAMILY=Spartan6
-PART=xc6slx16-2csg324
-WORKINGDIR=/opt/dmlab/home/chriram/Documents/computer_design/exercise0
-LICENSE=ISE
-USER_INFO=174154421_208900020_000

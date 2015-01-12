@@ -1,6 +1,0 @@
-vhdl work "defs.vhd"
-vhdl work "stack.vhd"
-vhdl work "control.vhd"
-vhdl work "testutil.vhd"
-vhdl work "stack_machine.vhd"
-vhdl work "stack_machine_tb.vhd"
